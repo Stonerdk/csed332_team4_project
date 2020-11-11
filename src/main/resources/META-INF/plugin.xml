@@ -14,6 +14,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <toolWindow id="Software Metrics" anchor="right" factoryClass="org.team4.team4_project.MyToolWindowFactory"/>
     </extensions>
 
     <actions>
