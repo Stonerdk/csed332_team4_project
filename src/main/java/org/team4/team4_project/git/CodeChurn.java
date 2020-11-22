@@ -45,29 +45,30 @@ public class CodeChurn {
     public ChurnResult calc() throws GitAPIException, IOException {
         ChurnResult result = new ChurnResult();
         Iterable<RevCommit> commits = log.call();
-        for (RevCommit commit : commits) {
+        //for (RevCommit commit : commits) {
+        RevCommit commit = commits.iterator().next();
             RevCommit[] parents = commit.getParents();
-            for (RevCommit parent : parents){
+            for (RevCommit parent : parents) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 DiffFormatter formatter = new DiffFormatter(stream);
                 formatter.setRepository(repo);
                 formatter.setContext(0);
                 formatter.setPathFilter(PathFilter.create(path));
                 formatter.format(parent, commit);
-                Scanner scanner = new Scanner(stream.toString());
-                while (scanner.hasNextLine()){
+                String difference = stream.toString();
+                Scanner scanner = new Scanner(difference);
+                System.out.println(difference);
+                while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
-                    if (line.startsWith("+")){
+                    if (line.startsWith("+") && !line.startsWith("+++")) {
                         result.plusLinesAdded();
-                    }
-                    else if (line.startsWith("-")){
+                    } else if (line.startsWith("-") && !line.startsWith("---")) {
                         result.plusLinesDeleted();
                     }
                 }
             }
-        }
+        //}
         return result;
-
     }
 
 
