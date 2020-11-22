@@ -16,6 +16,7 @@ public class GitCodeChurnTest {
         Repository repo = new FileRepositoryBuilder().setGitDir(testfile).readEnvironment().findGitDir().build();
         ChurnResult result = new CodeChurn(repo).addPath("README.md").calc();
         assertEquals(1,result.getLinesAdded());
+        assertEquals(1,result.getLinesDeleted());
     }
 
 }
