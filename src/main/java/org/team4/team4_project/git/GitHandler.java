@@ -17,6 +17,12 @@ public class GitHandler {
         repository = git.getRepository();
     }
 
+    public GitHandler(String path) throws IOException {
+        git = Git.open(new File(path + "/.git"));
+        git.checkout();
+        repository = git.getRepository();
+    }
+
     public Git getGit() {
         return git;
     }

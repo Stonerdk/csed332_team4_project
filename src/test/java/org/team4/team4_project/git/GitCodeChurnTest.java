@@ -9,12 +9,13 @@ import org.junit.Test;
 
 public class GitCodeChurnTest {
 
-    public static final File testfile = new File("datatest/homework0/.git");
+    public static final String testFilePath = "datatest/homework0";
 
     @Test
     public void CodeChurnTest() throws Exception{
-        Repository repo = new FileRepositoryBuilder().setGitDir(testfile).readEnvironment().findGitDir().build();
-        ChurnResult result = new CodeChurn(repo).addPath("README.md").calc();
+        GitHandler gitHandler = new GitHandler(testFilePath);
+        Repository repo = gitHandler.getRepository();
+        ChurnResult result = new CodeChurn(repo).addPath(".gitignore").calc();
         assertEquals(1,result.getLinesAdded());
     }
 
