@@ -11,11 +11,12 @@ import org.junit.Test;
 
 public class GitCodeChurnTest {
 
-    public static final File testfile = new File("datatest/homework0/.git");
+    public static final String testFilePath = "datatest/homework0";
 
     @Test
     public void CodeChurnTest() throws Exception{
-        Repository repo = new FileRepositoryBuilder().setGitDir(testfile).readEnvironment().findGitDir().build();
+        GitHandler gitHandler = new GitHandler(testFilePath);
+        Repository repo = gitHandler.getRepository();
         List<ChurnResult> result = new CodeChurn(repo).addPath("README.md").calc();
         assertEquals(5,result.get(result.size()-1).getLinesAdded());
         //assertEquals(1,result.getLinesDeleted());
