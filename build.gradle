@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '0.6.3'
+    id 'eclipse'
 }
 
 group 'org.team4'
@@ -13,6 +14,9 @@ repositories {
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.5.2"
+
+    // https://mvnrepository.com/artifact/org.eclipse.jdt/core
+    compile group: 'org.eclipse.jdt', name: 'core', version: '3.3.0-v_771'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
