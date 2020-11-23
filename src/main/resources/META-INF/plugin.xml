@@ -1,12 +1,9 @@
 <idea-plugin>
     <id>org.team4.team4_project</id>
-    <name>Plugin display name here</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <name>Software Metrics</name>
+    <vendor email="lapis@postech.ac.kr" url="https://csed332.postech.ac.kr/team4-2020/team4_project">Software Metrics</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>Software Metrics is for drawing fancy graph of something awesome such as maintainability,,,</description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -17,7 +14,13 @@
         <toolWindow id="Software Metrics" anchor="right" factoryClass="org.team4.team4_project.MyToolWindowFactory"/>
     </extensions>
 
+
     <actions>
-        <!-- Add your actions here -->
+        <action id="org.team4.team4_project.MyToolWindowAction" class="org.team4.team4_project.MyToolWindowAction"
+                text="Show Metrics Graph" description="Show metrics graph">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+        </action>
     </actions>
+
+
 </idea-plugin>
