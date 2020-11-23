@@ -81,5 +81,94 @@ public class MetricMain {
     }
 
 
+    // construct AST of the .java files
+    public static ASTVisitorSearch parse(char[] str, int opt) {
+        /**
+         * option 1: using compilationUnit
+         * option 2: using a sequence of statements
+         * option 3: using a
+         */
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setSource(str);
+        parser.setResolveBindings(true);
+        //parser.setBindingsRecovery(true);
+        parser.setStatementsRecovery(true);
+
+        if (opt == 1){
+            parser.setKind(ASTParser.K_COMPILATION_UNIT);
+            final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+
+            // Check for compilationUnits problems in the provided file
+            IProblem[] problems = cu.getProblems();
+            for(IProblem problem : problems) {
+                // Ignore some error because of the different versions.
+                if (problem.getID() == 1610613332) 		 // 1610613332 = Syntax error, annotations are only available if source level is 5.0
+                    continue;
+                else if (problem.getID() == 1610613329) // 1610613329 = Syntax error, parameterized types are only available if source level is 5.0
+                    continue;
+                else if (problem.getID() == 1610613328) // 1610613328 = Syntax error, 'for each' statements are only available if source level is 5.0
+                    continue;
+                else
+                {
+                    // quit compilation if
+                    System.out.println("CompilationUnit problem Message " + problem.getMessage() + " \t At line= "+problem.getSourceLineNumber() + "\t Problem ID="+ problem.getID());
+
+                    System.out.println("The program will quit now!");
+
+                    /** We need to modify **/
+                    /**
+                     * We are not considering trouble making files!!!!!!!!!!!!!!!!!!!!!!!
+                     */
+                    //System.exit(1);
+                    ASTVisitorSearch tempVisitor = new ASTVisitorSearch();
+                    return tempVisitor;
+                }
+            }
+            // visit nodes of the constructed AST
+            ASTVisitorSearch visitor= new ASTVisitorSearch();
+            cu.accept(visitor);
+
+            //Calculate the number of source, comments (for Cyclomatic complexity)
+            visitor.codeLen += (new String(str)).lines().count();
+
+            for (Comment comment : (List<Comment>) cu.getCommentList()) {
+                int start = comment.getStartPosition();
+                int end = start + comment.getLength();
+                String comment_str = (new String(str)).substring(start, end);
+
+                visitor.commentLen += comment_str.lines().count();
+
+                //System.out.println(comment_str);
+                //System.out.println(comment_str.lines().count());
+
+
+            }
+
+            return visitor;
+        }
+        else if(opt ==2){
+            parser.setKind(ASTParser.K_STATEMENTS);
+            final Block cu = (Block) parser.createAST(null);
+
+            // Check for compilationUnits problems in the provided file
+
+            // visit nodes of the constructed AST
+            ASTVisitorSearch visitor= new ASTVisitorSearch();
+            cu.accept(visitor);
+
+            //Calculate the number of source, comments (for Cyclomatic complexity)
+            visitor.codeLen += (new String(str)).lines().count();
+
+
+            return visitor;
+
+        }
+        else{
+            System.out.println("WRONG PARSING OPTION INPUT");
+            return null;
+        }
+
+    }
+
 
 }
