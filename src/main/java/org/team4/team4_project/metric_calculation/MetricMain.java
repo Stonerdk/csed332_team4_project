@@ -10,6 +10,24 @@ import org.eclipse.jdt.core.dom.*;
 
 public class MetricMain {
 
+    public static List<char[]> ParseFilesInDir(List<String> JavaFiles) throws IOException{
+        if(JavaFiles.isEmpty())
+        {
+            System.out.println("There is no java source code in the provided directory");
+            System.exit(0);
+        }
+
+        List<char[]> FilesRead= new ArrayList<char []>();
+
+        for(int i=0; i<JavaFiles.size(); i++)
+        {
+            System.out.println("Now, reading: "+ JavaFiles.get(i));
+            FilesRead.add(ReadFileToCharArray(JavaFiles.get(i)));
+        }
+
+        return FilesRead;
+    }
+
     // parse file in char array
     public static char[] ReadFileToCharArray(String filePath) throws IOException {
         StringBuilder fileData = new StringBuilder(1000);
