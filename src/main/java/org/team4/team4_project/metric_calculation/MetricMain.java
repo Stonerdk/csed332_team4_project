@@ -10,6 +10,22 @@ import org.eclipse.jdt.core.dom.*;
 
 public class MetricMain {
 
+    // parse file in char array
+    public static char[] ReadFileToCharArray(String filePath) throws IOException {
+        StringBuilder fileData = new StringBuilder(1000);
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        char[] buf = new char[10];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+            buf = new char[1024];
+        }
+        reader.close();
+
+        return  fileData.toString().toCharArray();
+    }
+
     // retrieve all .java files in the directory and subdirectories.
     public static List<String> retrieveFiles(String directory) {
         List<String> Files = new ArrayList<String>();
