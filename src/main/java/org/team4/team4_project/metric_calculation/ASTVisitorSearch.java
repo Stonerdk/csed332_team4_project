@@ -196,4 +196,28 @@ public class ASTVisitorSearch extends ASTVisitor{
 
         return true;
     }
+    // Override visit the compilationUnit to be able to retrieve the line numbers.
+    public boolean visit(CompilationUnit unit)	{
+        compilation=unit;
+        return true;
+    }
+    /**
+     * visit() for Cyclomatic Complexity
+     */
+    public boolean visit(IfStatement unit)	{
+        cycloComplexity++;
+        return true;
+    }
+    public boolean visit(ForStatement unit)	{
+        cycloComplexity++;
+        return true;
+    }
+    public boolean visit(WhileStatement unit)	{
+        cycloComplexity++;
+        return true;
+    }
+    public boolean visit(AssertStatement unit)	{
+        cycloComplexity++;
+        return true;
+    }
 }
