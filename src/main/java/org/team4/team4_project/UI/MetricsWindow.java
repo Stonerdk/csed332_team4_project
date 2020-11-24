@@ -1,20 +1,33 @@
 package org.team4.team4_project.UI;
 
+import org.team4.team4_project.history.HistoryData;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MetricsWindow extends JFrame {
     private static MetricsWindow instance = null;
 
     static class GraphPanel extends JPanel {
+        double graphMaxValue;
+        double graphMinValue;
+        int xCount;
+        int nodeCount;
+        ArrayList<HistoryData> historyList;
+
         GraphPanel() {
             setPreferredSize(new Dimension(640, 480));
+        }
+
+        private void refresh() {
+            nodeCount = Math.min(xCount, historyList.size());
         }
 
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawString("BLAH", 20, 20);
+
         }
     }
 
