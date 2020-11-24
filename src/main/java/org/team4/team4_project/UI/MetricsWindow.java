@@ -33,21 +33,26 @@ public class MetricsWindow extends JFrame {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.clearRect(0,0,getWidth(),getHeight());
-            g.drawLine(100,500,100 + 200*historyList.size(),500);
+            g.drawLine(100,500,100 + 100*historyList.size(),500);
             for(int cnt = 1; cnt < 11; cnt++)
             {
                 g.drawString(cnt *10 +"",50,510-40*cnt);
-                g.drawLine(100, 500-40*cnt, 100 + 200*historyList.size(),500-40*cnt);
+                g.drawLine(100, 500-40*cnt, 100 + 100*historyList.size(),500-40*cnt);
             }
             g.drawLine(100,40,100,500);
 
-            //g.setColor(Color.BLUE);
             int i = 1;
+            int postX = 100;
+            int postY = 500;
             for(HistoryData h : historyList){
-                g.drawString(h.getCommitString(), 200 * i, 540);
+                g.setColor(Color.BLACK);
+                g.drawString(Long.toString(h.getDate().getTime()), 100 * i + 15, 540);
 
-                g.fillRect(200*(i++) + 17, 500 -Integer.parseInt(String.valueOf(Math.round(h.getAttribute(Type))))*4,
-                        20, Integer.parseInt(String.valueOf(Math.round(h.getAttribute(Type))))*4);
+                g.setColor(Color.BLUE);
+                g.drawLine(postX, postY, 100*i + 45,500 -Integer.parseInt(String.valueOf(Math.round(h.getAttribute(Type))))*4);
+                postX = 100*i + 45;
+                postY = 500 -Integer.parseInt(String.valueOf(Math.round(h.getAttribute(Type))))*4;
+                i++;
             }
 
         }
