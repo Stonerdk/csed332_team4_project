@@ -1,20 +1,20 @@
 package org.team4.team4_project.metric_calculation;
 
 public class MetricModify {
-    MetricStorage metricOrg;
+    MetricInfo metricOrg;
 
-    public void setOrgMetric(MetricStorage m){
+    public void setOrgMetric(MetricInfo m){
         metricOrg = m;
         return;
     }
 
-    public MetricStorage addToMetric(String addStr){
+    public MetricInfo addToMetric(String addStr){
         return metricOrg;
 
 
     }
 
-    public MetricStorage deleteFromMetric(String deleteStr){
+    public MetricInfo deleteFromMetric(String deleteStr){
         return metricOrg;
     }
 
