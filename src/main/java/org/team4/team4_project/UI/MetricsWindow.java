@@ -2,11 +2,14 @@ package org.team4.team4_project.UI;
 
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
+import org.team4.team4_project.metric_calculation.MetricMain;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class MetricsWindow extends JFrame {
@@ -74,7 +77,18 @@ public class MetricsWindow extends JFrame {
     }
 
     private MetricsWindow () {
-        ArrayList<HistoryData> historyList = new HistoryReader().getHistoryList();;
+        MetricMain metricMain = new MetricMain();
+        ArrayList<HistoryData> historyList;
+        try {
+            historyList = (ArrayList<HistoryData>) metricMain.mcMain();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        //ArrayList<HistoryData> historyList =
 
         setTitle("Software Metrics Graph");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
