@@ -47,6 +47,7 @@ public class MetricsWindow extends JFrame {
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 try {
                     graphPanel.setType(Objects.requireNonNull(comboBox.getSelectedItem()).toString());
                     graphPanel.repaint();

@@ -11,6 +11,8 @@ public class GraphPanel extends JPanel {
     double graphMinValue;
     int xCount;
     int nodeCount;
+    int width = 500;
+    int height = 400;
     ArrayList<HistoryData> historyList;
     String type;
 
@@ -41,18 +43,39 @@ public class GraphPanel extends JPanel {
         for(HistoryData h : historyList){
             g.setColor(Color.BLACK);
             g.drawString(Long.toString(h.getDate().getTime()), 100 * i + 15, 540);
-
             g.setColor(Color.BLUE);
-            g.drawLine(postX, postY, 100*i + 45,500 -Integer.parseInt(String.valueOf(Math.round(h.getAttribute(type))))*4);
+            int value = Integer.parseInt(String.valueOf(Math.round(h.getAttribute(type))));
+            g.drawLine(postX, postY, 100*i + 45,500 -value*4);
             postX = 100*i + 45;
-            postY = 500 -Integer.parseInt(String.valueOf(Math.round(h.getAttribute(type))))*4;
+            postY = 500 -value*4;
             i++;
         }
+    }
+
+    private void paintDefaultGraph(Graphics g) {
+        /*int nodeCnt = Math.min(historyList.size(), xCount);
+        int maxValue = 0;
+        ArrayList<Double> valueList = new ArrayList<>();
+        for (HistoryData h : historyList) {
+            double value = h.getAttribute(type);
+            valueList.add(value);
+            maxValue = Math.max(maxValue, (int)value);
+        }
+        maxValue = (int)(maxValue * 1.2);
+        int j = 0;
+        for(int i = historyList.size() - 1; i >= nodeCnt; i--) {
+            int value = Integer.parseInt(String.valueOf(Math.round(valueList.get(i))));
+            int x = width - j * (width / xCount);
+        }*/
+    }
+
+
+    private void paintCodeChurn(Graphics g) {
 
     }
 
-    void setType(String variable) {
-        this.type = variable;
+    void setType(String type) {
+        this.type = type;
     }
 }
 

@@ -69,23 +69,13 @@ public class HistoryData {
         //TODO
         return attr.getOrDefault("Halstead Complexity", 0.0);
     }
-    /*
-    private int halSteadVocabulary=0;
-    private int halSteadProgLength=0;
-    private double halSteadCalProgLength=0;
-    private double halSteadVolume=0;
-    private double halSteadDifficulty=0;
-    private double halSteadEffort=0;
-    private double halSteadTimeRequired=0;
-    private double halSteadNumDelBugs=0;
-    */
 
-    public int getHalsteadVocabulary() {
+    public double getHalsteadVocabulary() {
         //TODO
         return 0;
     }
 
-    public int getHalsteadProgLength() {
+    public double getHalsteadProgLength() {
         //TODO
         return 0;
     }
@@ -96,6 +86,27 @@ public class HistoryData {
     }
     public double getHalsteadDifficulty() {
         //TODO
+        return 0;
+    }
+    public double getHalsteadEffort() {
+        //TODO
+        return 0;
+    }
+    public double getHalsteadTimeRequired() {
+        //TODO
+        return 0;
+    }
+    public double getHalsteadNumDelBugs() {
+        //TODO
+        return 0;
+    }
+    public double getMaintainablityIndex() {
+        return attr.get("Maintainability");
+    }
+    public double getCodeChurnPlus() {
+        return 0;
+    }
+    public double getCodeChurnMinus() {
         return 0;
     }
 
