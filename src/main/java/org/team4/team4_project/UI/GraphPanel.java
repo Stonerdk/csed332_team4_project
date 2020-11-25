@@ -44,7 +44,7 @@ public class GraphPanel extends JPanel {
             g.setColor(Color.BLACK);
             g.drawString(Long.toString(h.getDate().getTime()), 100 * i + 15, 540);
             g.setColor(Color.BLUE);
-            int value = Integer.parseInt(String.valueOf(Math.round(h.getAttribute(type))));
+            int value = Integer.parseInt(String.valueOf(Math.round(getValue(h, type))));
             g.drawLine(postX, postY, 100*i + 45,500 -value*4);
             postX = 100*i + 45;
             postY = 500 -value*4;
@@ -69,6 +69,35 @@ public class GraphPanel extends JPanel {
         }*/
     }
 
+    private double getValue(HistoryData h, String type) {
+        /*
+        * this.halSteadVocabulary = metricInfo.getHalsteadVocabulary();
+        this.halSteadProgLength = metricInfo.getHalsteadProgLength();
+        this.halSteadCalProgLength = metricInfo.getHalsteadCalProgLength();
+        this.halSteadVolume = metricInfo.getHalsteadVolume();
+        this.halSteadDifficulty = metricInfo.getHalsteadDifficulty();
+        this.halSteadEffort = metricInfo.getHalsteadEffort();
+        this.halSteadTimeRequired = metricInfo.getHalsteadTimeRequired();
+        this.halSteadNumDelBugs = metricInfo.getHalsteadNumDelBugs();
+        this.cyclomaticComplexity = metricInfo.getCyclomaticComplexity();
+        this.maintainabilityIndex = metricInfo.getMaintainabilityIndex();
+        * */
+        switch(type) {
+            case "Halstead Vocabulary": return h.getHalsteadVocabulary();
+            case "Halstead Program Length": return h.getHalsteadProgLength();
+            case "Halstead Cal Prog Length": return h.getHalsteadCalProgLength();
+            case "Halstead Volume": return h.getHalsteadVolume();
+            case "Halstead Difficulty": return h.getHalsteadDifficulty();
+            case "Halstead Effort": return h.getHalsteadEffort();
+            case "Halstead Time Required": return h.getHalsteadTimeRequired();
+            case "Halstead Num Del Bugs": return h.getHalsteadNumDelBugs();
+            case "Cyclomatic Complexity": return h.getCyclomaticComplexity();
+            case "Maintainability" : return h.getMaintainablityIndex();
+            case "Code Churn" : return 0; // Implement code churn own way without using getValue
+        }
+        System.out.println("Wrong type name : " + type);
+        return 0;
+    }
 
     private void paintCodeChurn(Graphics g) {
 

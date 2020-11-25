@@ -1,7 +1,9 @@
 package org.team4.team4_project.history;
 
+import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.metric_calculation.MetricInfo;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,13 +17,64 @@ public class HistoryData {
     //private final MetricInfo metricInfo;
     private static final String[] attrKeys = new String[] {"Halstead Complexity", "Cyclomatic Complexity", "Maintainability"};
 
+    private final double halSteadVocabulary;
+    private final double halSteadProgLength;
+    private final double halSteadCalProgLength;
+    private final double halSteadVolume;
+    private final double halSteadDifficulty;
+    private final double halSteadEffort;
+    private final double halSteadTimeRequired;
+    private final double halSteadNumDelBugs;
+    private final double cyclomaticComplexity;
+    private final double maintainabilityIndex;
+    private final double codeChurnAdded;
+    private final double codeChurnDeleted;
+
+    @Deprecated
     public HistoryData(Date date, String commitString, String branchName, Map<String, Double> attr) {
         this.date = date;
         this.commitString = commitString;
         this.branchName = branchName;
         this.attr = Collections.unmodifiableMap(attr);
+        this.halSteadVocabulary = 0;
+        this.halSteadProgLength = 0;
+        this.halSteadCalProgLength = 0;
+        this.halSteadVolume = 0;
+        this.halSteadDifficulty = 0;
+        this.halSteadEffort = 0;
+        this.halSteadTimeRequired = 0;
+        this.halSteadNumDelBugs = 0;
+        this.cyclomaticComplexity = 0;
+        this.maintainabilityIndex = 0;
+        this.codeChurnAdded = 0;
+        this.codeChurnDeleted = 0;
     }
 
+    public HistoryData(Date date, String commitString, String branchName, MetricInfo metricInfo, @Nullable ChurnResult churnResult) {
+        this.date = date;
+        this.commitString = commitString;
+        this.branchName = branchName;
+        this.attr = new HashMap<>();
+        this.halSteadVocabulary = metricInfo.getHalsteadVocabulary();
+        this.halSteadProgLength = metricInfo.getHalsteadProgLength();
+        this.halSteadCalProgLength = metricInfo.getHalsteadCalProgLength();
+        this.halSteadVolume = metricInfo.getHalsteadVolume();
+        this.halSteadDifficulty = metricInfo.getHalsteadDifficulty();
+        this.halSteadEffort = metricInfo.getHalsteadEffort();
+        this.halSteadTimeRequired = metricInfo.getHalsteadTimeRequired();
+        this.halSteadNumDelBugs = metricInfo.getHalsteadNumDelBugs();
+        this.cyclomaticComplexity = metricInfo.getCyclomaticComplexity();
+        this.maintainabilityIndex = metricInfo.getMaintainabilityIndex();
+        if (churnResult == null) {
+            this.codeChurnAdded = 0;
+            this.codeChurnDeleted = 0;
+        } else {
+            this.codeChurnAdded = churnResult.getLinesAdded();
+            this.codeChurnDeleted = churnResult.getLinesDeleted();
+        }
+    }
+
+    @Deprecated
     public static Map<String,Double> makeAttrMap(double... value) {
         HashMap<String, Double> ret = new HashMap<>();
         for(int i = 0; i < attrKeys.length; i++) {
@@ -32,14 +85,6 @@ public class HistoryData {
                 e.printStackTrace();
             }
         }
-        return ret;
-    }
-
-    public static Map<String, Double> makeAttrMap(MetricInfo metricInfo) {
-        HashMap<String, Double> ret = new HashMap<>();
-        ret.put(attrKeys[0], (double)metricInfo.getCyclomaticComplexity());
-        ret.put(attrKeys[1], (double)metricInfo.getHalsteadVolume());
-        ret.put(attrKeys[2], metricInfo.getMaintainabilityIndex());
         return ret;
     }
 
@@ -55,59 +100,52 @@ public class HistoryData {
         return branchName;
     }
 
-    //TODO : implement an easier getter that client does not need to know whole name of attributes
+    @Deprecated
     public Double getAttribute(String key) {
         return attr.getOrDefault(key, 0.0);
     }
 
     public double getCyclomaticComplexity() {
-        //TODO
-        return attr.getOrDefault("Cyclomatic Complexity", 0.0);
+        return cyclomaticComplexity;
     }
 
     public double getHalsteadVolume() {
-        //TODO
-        return attr.getOrDefault("Halstead Complexity", 0.0);
+        return halSteadVolume;
     }
 
     public double getHalsteadVocabulary() {
-        //TODO
-        return 0;
+        return halSteadVocabulary;
     }
 
     public double getHalsteadProgLength() {
-        //TODO
-        return 0;
+        return halSteadProgLength;
     }
 
     public double getHalsteadCalProgLength() {
-        //TODO
-        return 0;
+        return halSteadCalProgLength;
     }
+
     public double getHalsteadDifficulty() {
-        //TODO
-        return 0;
+        return halSteadDifficulty;
     }
     public double getHalsteadEffort() {
-        //TODO
-        return 0;
+        return halSteadEffort;
     }
     public double getHalsteadTimeRequired() {
-        //TODO
-        return 0;
+        return halSteadTimeRequired;
     }
+
     public double getHalsteadNumDelBugs() {
-        //TODO
-        return 0;
+        return halSteadNumDelBugs;
     }
     public double getMaintainablityIndex() {
-        return attr.get("Maintainability");
+        return maintainabilityIndex;
     }
     public double getCodeChurnPlus() {
-        return 0;
+        return codeChurnAdded;
     }
     public double getCodeChurnMinus() {
-        return 0;
+        return codeChurnDeleted;
     }
 
 

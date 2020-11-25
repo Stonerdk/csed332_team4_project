@@ -21,7 +21,19 @@ public class MetricsWindow extends JFrame {
     private JPanel topPanel;
     private ComboBox<String> comboBox;
     private ArrayList<HistoryData> historyList;
-    private String[] comboStrings = {"Halstead Complexity", "Cyclomatic Complexity", "Maintainability", "Code Churn +", "Code Churn -"};
+    private String[] comboStrings = {
+            "Halstead Vocabulary",
+            "Halstead Program Length",
+            "Halstead Cal Prog Length",
+            "Halstead Volume",
+            "Halstead Difficulty",
+            "Halstead Effort",
+            "Halstead Time Required",
+            "Halstead Num Del Bugs",
+            "Cyclomatic Complexity",
+            "Maintainability",
+            "Code Churn"
+    };
 
     private MetricsWindow () {
 
@@ -33,7 +45,7 @@ public class MetricsWindow extends JFrame {
         }
 
         setTitle("Software Metrics Graph");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1300, 800);
 
         Container contentPane = getContentPane();

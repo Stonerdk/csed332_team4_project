@@ -236,9 +236,9 @@ public class MetricMain {
             String commitString = commitInfoList.get(cIdx).get("cName");
             String branchName = commitInfoList.get(cIdx).get("bName");
 
-            Map<String, Double> attr = HistoryData.makeAttrMap(MetricCommit.getHalsteadVolume(), (double)MetricCommit.getCyclomaticComplexity(), MetricCommit.getMaintainabilityIndex());
+            //Map<String, Double> attr = HistoryData.makeAttrMap(MetricCommit.getHalsteadVolume(), (double)MetricCommit.getCyclomaticComplexity(), MetricCommit.getMaintainabilityIndex());
 
-            HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, attr);
+            HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, MetricCommit, null);
             historyDataList.add(historyDataCommit);
         }
     return historyDataList;
