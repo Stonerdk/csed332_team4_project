@@ -1,11 +1,12 @@
 package org.team4.team4_project.metric_calculation;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.util.*;
+
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
+import org.team4.team4_project.history.HistoryData;
 
 
 public class MetricMain {
@@ -170,58 +171,81 @@ public class MetricMain {
 
     }
 
-    public static void mmMain(String[] args) throws IOException {
-        // get the Directory name from the user
+    public List<HistoryData> mcMain() throws IOException, ParseException {
+        /**
+         * Option1. get the Directory name from the user
+         */
+        /*
         String DirName = null;
         Scanner user_input = new Scanner(System.in);
         System.out.print("Enter Directory Name: ");
         DirName = user_input.next();
         user_input.close();
         System.out.println("Directory Name is: " + DirName);
+        */
 
-        // retrieve all .java files in the directory and subdirectories.
-        List<String> JavaFiles = retrieveFiles(DirName);
+        /**
+         * Option 2. get from Git
+         */
+        List<Map<String, String>> commitInfoList = new ArrayList<Map<String, String>>();
 
-        // parse files in a directory to list of char array
-        List<char[]> FilesRead = ParseFilesInDir(JavaFiles);
+        // Get from git
+        for (int i = 0; i< 20; i++){
+            HashMap<String, String> commitElement = new HashMap<String, String>();
+            commitElement.put("cName", "commit "+ i);
+            commitElement.put("bName", "branch " + i);
+            commitElement.put("cHash", "0123456x" + i);
+            commitElement.put("cPlusStr", "bla bla +");
+            commitElement.put("cMinusStr", "bla bla -");
 
-        ASTVisitorSearch ASTVisitorFile;
-        int DistinctOperators=0;
-        int DistinctOperands=0;
-        int TotalOperators=0;
-        int TotalOperands=0;
-        int OperatorCount=0;
-        int OperandCount=0;
-
-        for(int i=0; i<FilesRead.size(); i++)
-        {
-
-            System.out.println("Now, AST parsing for : "+ JavaFiles.get(i));
-            ASTVisitorFile=parse(FilesRead.get(i), 2);
-            DistinctOperators+=ASTVisitorFile.oprt.size();
-            DistinctOperands+=ASTVisitorFile.names.size();
-
-            OperatorCount=0;
-            for (int f : ASTVisitorFile.oprt.values()) {
-                OperatorCount+= f;
-            }
-            TotalOperators+=OperatorCount;
-
-            OperandCount=0;
-            for (int f : ASTVisitorFile.names.values()) {
-                OperandCount += f;
-            }
-            TotalOperands+=OperandCount;
-
-            System.out.println("Distinct Operators in this .java file = "+ ASTVisitorFile.oprt.size());
-            System.out.println("Distinct Operands in this .java file = "+ ASTVisitorFile.names.size());
-            System.out.println("Total Operators in this .java file = "+ OperatorCount);
-            System.out.println("Total Operands in this .java file = "+ OperandCount);
-            System.out.println("Source Code Length in this .java file = "+ ASTVisitorFile.codeLen);
-            System.out.println("Comment Length in this .java file = "+ ASTVisitorFile.commentLen);
-            System.out.println("Cyclometic complexity in this .java file = "+ ASTVisitorFile.cycloComplexity);
-            System.out.println("\n");
+            commitInfoList.add(commitElement);
         }
+
+        // Calculate for each commit
+        List<HistoryData> historyDataList= new ArrayList<HistoryData>();
+
+        MetricInfo MetricCommit = new MetricInfo();
+        for (int cIdx = 0 ; cIdx<commitInfoList.size() ; cIdx++){
+
+            if (cIdx == 0){ //Calculate for the current directory
+                String DirName = System.getProperty("user.dir");
+
+                // retrieve all .java files in the directory and subdirectories.
+                List<String> JavaFiles = retrieveFiles(DirName);
+
+                // parse files in a directory to list of char array
+                List<char[]> FilesRead = ParseFilesInDir(JavaFiles);
+
+                ASTVisitorSearch ASTVisitorFile;
+
+                MetricInfo MetricFile = new MetricInfo();
+
+                for(int i=0; i<FilesRead.size(); i++)
+                {
+                    //System.out.println("Now, AST parsing for : "+ JavaFiles.get(i));
+                    ASTVisitorFile=parse(FilesRead.get(i), 1);
+                    MetricCommit.addByVisitor(ASTVisitorFile); //TODO : addByVisitor
+                }
+            }
+            else {
+                MetricCommit.addByString("hi");
+            }
+            //Arguments needed for History Data
+            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
+            String sDate = "2020-11-" ;
+            Date date = format.parse(sDate + cIdx);
+            String commitString = commitInfoList.get(cIdx).get("cName");
+            String branchName = commitInfoList.get(cIdx).get("bName");
+            Map<String, Double> attr = new HashMap<String, Double>();
+            attr.put("Halstead Complexity", MetricCommit.getHalsteadVolume());
+            attr.put("Cyclomatic Complexity", (double)MetricCommit.getCyclomaticComplexity());
+            attr.put("Maintainability", MetricCommit.getMaintainabilityIndex());
+
+            HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, attr);
+            historyDataList.add(historyDataCommit);
+        }
+    return historyDataList;
+
     }
 
 

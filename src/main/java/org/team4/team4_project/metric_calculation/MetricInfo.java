@@ -30,7 +30,7 @@ public class MetricInfo {
     private int commentLen = 0;
 
     //Maintainability Index
-    private double maintainabilityIndex;
+    private double maintainabilityIndex = 0;
 
 
     public void setByVisitor(ASTVisitorSearch visitor) {
@@ -116,5 +116,16 @@ public class MetricInfo {
 
     public double getMaintainabilityIndex(){
         return maintainabilityIndex;
+    }
+
+    public void addByVisitor(ASTVisitorSearch visitor){
+        return;
+    }
+
+    public void addByString(String str){
+        halSteadVolume +=10;
+        cyclomaticComplexity += 20;
+        maintainabilityIndex += 30;
+        return;
     }
 }
