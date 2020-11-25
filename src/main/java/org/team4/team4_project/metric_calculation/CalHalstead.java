@@ -11,7 +11,6 @@ public class CalHalstead {
     private double TimeReqProg=0;
     private double TimeDelBugs=0;
 
-
     // Initialize the variables in the constructor
     public CalHalstead() {
         DistOperators=0;
@@ -19,95 +18,59 @@ public class CalHalstead {
         TotOperators=0;
         TotOperands=0;
     }
-
-
-
     // set number of DistOperators, DistOperands, TotOperators, and TotOperands
-    public void setParameters(int DistOprt, int DistOper, int TotOprt, int TotOper)
-    {
+    public void setParameters(int DistOprt, int DistOper, int TotOprt, int TotOper){
         DistOperators=DistOprt;
         DistOperands=DistOper;
         TotOperators=TotOprt;
         TotOperands=TotOper;
     }
-
-
-
     // calculate the Program vocabulary
-    public int getVocabulary()
-    {
+    public int getVocabulary(){
         Vocabulary=DistOperators+DistOperands;
-        System.out.println("Vocabulary= "+ Vocabulary);
+        //System.out.println("Vocabulary= "+ Vocabulary);
         return Vocabulary;
     }
-
-
-
     // calculate the Program length
-    public int getProglen()
-    {
+    public int getProglen(){
         Proglen=TotOperators+TotOperands;
-        System.out.println("Program Length= "+ Proglen);
+        //System.out.println("Program Length= "+ Proglen);
         return Proglen;
     }
-
-
-
     // calculate the Calculated program length
-    public double getCalcProgLen()
-    {
+    public double getCalcProgLen(){
         CalcProgLen = DistOperators*(Math.log(DistOperators) / Math.log(2)) + DistOperands*(Math.log(DistOperands) / Math.log(2));
-        System.out.println("Calculated Program Length= "+ CalcProgLen);
+        //System.out.println("Calculated Program Length= "+ CalcProgLen);
         return CalcProgLen;
     }
-
-
-
     // calculate the Volume
-    public double getVolume()
-    {
+    public double getVolume(){
         Volume=(TotOperators+TotOperands)*(Math.log(DistOperators+DistOperands)/Math.log(2));
-        System.out.println("Volume= "+ Volume);
+        //System.out.println("Volume= "+ Volume);
         return Volume;
     }
-
-
-
     // calculate the Difficulty
-    public double getDifficulty()
-    {
+    public double getDifficulty(){
         Difficulty=(DistOperators/2)*(TotOperands/(double)DistOperands);//
-        System.out.println("Difficulty= "+ Difficulty);
+        //System.out.println("Difficulty= "+ Difficulty);
         return Difficulty;
     }
-
-
-
     // calculate the Effort
-    public double getEffort()
-    {
+    public double getEffort(){
         Effort=((DistOperators/2)*(TotOperands/(double)DistOperands)) * ((TotOperators+TotOperands)*(Math.log(DistOperators+DistOperands)/Math.log(2)));
-        System.out.println("Effort= "+ Effort);
+        //System.out.println("Effort= "+ Effort);
         return Effort;
     }
-
-
-
     // calculate the Time required to program
-    public double getTimeReqProg()
-    {
+    public double getTimeReqProg(){
         TimeReqProg=(((DistOperators/2)*(TotOperands/(double)DistOperands)) * ((TotOperators+TotOperands)*(Math.log(DistOperators+DistOperands)/Math.log(2)))) /18;
-        System.out.println("Time Required to Program= "+ TimeReqProg + " seconds");
+        //System.out.println("Time Required to Program= "+ TimeReqProg + " seconds");
         return TimeReqProg;
     }
-
-
-
     // calculate the Number of delivered bugs
-    public double getTimeDelBugs()
-    {
+    public double getTimeDelBugs(){
         TimeDelBugs = ((TotOperators+TotOperands)*(Math.log(DistOperators+DistOperands)/Math.log(2))) / 3000;
-        System.out.println("Number of delivered bugs= "+ TimeDelBugs);
+        //System.out.println("Number of delivered bugs= "+ TimeDelBugs);
         return TimeDelBugs;
     }
 }
