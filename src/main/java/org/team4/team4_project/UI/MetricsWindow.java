@@ -24,9 +24,10 @@ public class MetricsWindow extends JFrame {
     private String[] comboStrings = {"Halstead Complexity", "Cyclomatic Complexity", "Maintainability", "Code Churn +", "Code Churn -"};
 
     private MetricsWindow () {
+
         try {
             historyList = (ArrayList<HistoryData>) new MetricMain().mcMain();
-        } catch (ParseException | IOException e) {
+        } catch (ParseException | NullPointerException | IOException e) {
             e.printStackTrace();
             return;
         }
