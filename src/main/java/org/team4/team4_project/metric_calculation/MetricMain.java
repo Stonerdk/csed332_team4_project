@@ -207,8 +207,9 @@ public class MetricMain {
         MetricInfo MetricCommit = new MetricInfo();
         for (int cIdx = 0 ; cIdx<commitInfoList.size() ; cIdx++){
 
-            if (cIdx == 0){ //Calculate for the current directory
+            if (cIdx < 0){ //Calculate for the current directory //TODO : find the way to find out the current directory
                 String DirName = System.getProperty("user.dir");
+                System.out.println("Working Directory :" + DirName);
 
                 // retrieve all .java files in the directory and subdirectories.
                 List<String> JavaFiles = retrieveFiles(DirName);
@@ -228,18 +229,14 @@ public class MetricMain {
                 }
             }
             else {
-                MetricCommit.addByString("hi");
+                MetricCommit.addByString("hi"); //TODO : update with commit contests
             }
             //Arguments needed for History Data
-            java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String sDate = "2020-11-" ;
-            Date date = format.parse(sDate + cIdx);
+            Date date = new Date(2020110+cIdx);
             String commitString = commitInfoList.get(cIdx).get("cName");
             String branchName = commitInfoList.get(cIdx).get("bName");
-            Map<String, Double> attr = new HashMap<String, Double>();
-            attr.put("Halstead Complexity", MetricCommit.getHalsteadVolume());
-            attr.put("Cyclomatic Complexity", (double)MetricCommit.getCyclomaticComplexity());
-            attr.put("Maintainability", MetricCommit.getMaintainabilityIndex());
+
+            Map<String, Double> attr = HistoryData.makeAttrMap(MetricCommit.getHalsteadVolume(), (double)MetricCommit.getCyclomaticComplexity(), MetricCommit.getMaintainabilityIndex());
 
             HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, attr);
             historyDataList.add(historyDataCommit);
