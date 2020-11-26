@@ -73,6 +73,24 @@ public class HistoryData {
             this.codeChurnDeleted = churnResult.getLinesDeleted();
         }
     }
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("Date : ").append(date).append("\n");
+        b.append("Commit String : ").append(commitString).append("\n");
+        b.append("Branch Name : ").append("branchName").append("\n");
+        b.append("HalStead Vocabulary : ").append(halSteadVocabulary).append("\n");
+        b.append("HalStead ProgLength : ").append(halSteadProgLength).append("\n");
+        b.append("HalStead CalProgLength : ").append(halSteadCalProgLength).append("\n");
+        b.append("HalStead Volume : ").append(halSteadVolume).append("\n");
+        b.append("HalStead Difficulty : ").append(halSteadDifficulty).append("\n");
+        b.append("HalStead Effort : ").append(halSteadEffort).append("\n");
+        b.append("HalStead Time Required : ").append(halSteadTimeRequired).append("\n");
+        b.append("HalStead Num Del Bugs : ").append(halSteadNumDelBugs).append("\n");
+        b.append("Cyclomatic Complexity : ").append(cyclomaticComplexity).append("\n");
+        b.append("Maintainability Index : ").append(maintainabilityIndex).append("\n");
+        return b.toString();
+    }
 
     @Deprecated
     public static Map<String,Double> makeAttrMap(double... value) {
