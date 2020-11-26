@@ -22,7 +22,7 @@ public class MetricsWindow extends JFrame {
     private GraphPanel graphPanel;
     private JPanel topPanel;
     private JPanel statusPanel;
-    private JLabel statusLabel;
+    private JTextPane statusPane;
     private ComboBox<String> comboBox;
     private ArrayList<HistoryData> historyList;
     private String[] comboStrings = {
@@ -63,11 +63,13 @@ public class MetricsWindow extends JFrame {
         graphPanel.repaint();
 
         statusPanel = new JPanel();
-        statusLabel = new JLabel("AAA");
-        statusPanel.add(statusLabel);
+        statusPane = new JTextPane();
+        statusPane.setText("");
+        statusPane.setEditable(false);
+        statusPanel.add(statusPane);
 
-        graphStatusComposite.add(graphPanel, BorderLayout.WEST);
-        graphStatusComposite.add(statusPanel, BorderLayout.EAST);
+        //graphStatusComposite.add(graphPanel, BorderLayout.WEST);
+        //graphStatusComposite.add(statusPanel, BorderLayout.EAST);
 
         comboBox = new ComboBox<String>(comboStrings);
         comboBox.addActionListener(new ActionListener() {
@@ -86,14 +88,16 @@ public class MetricsWindow extends JFrame {
         topPanel.add(comboBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
-        contentPane.add(graphStatusComposite, BorderLayout.CENTER);
+        contentPane.add(graphPanel, BorderLayout.WEST);
+        contentPane.add(statusPanel, BorderLayout.EAST);
+        //contentPane.add(graphStatusComposite, BorderLayout.CENTER);
     }
 
     public void setStatusHistory(@Nullable HistoryData h) {
         if (h == null) {
-            statusLabel.setText("AAA");
+            statusPane.setText("");
         } else {
-            statusLabel.setText(h.toString());
+            statusPane.setText(h.toString());
         }
     }
 
