@@ -5,6 +5,7 @@ import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
 import org.team4.team4_project.metric_calculation.MetricMain;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,8 +18,11 @@ import java.util.Objects;
 public class MetricsWindow extends JFrame {
 
     private static MetricsWindow instance = null;
+    private JPanel graphStatusComposite;
     private GraphPanel graphPanel;
     private JPanel topPanel;
+    private JPanel statusPanel;
+    private JLabel statusLabel;
     private ComboBox<String> comboBox;
     private ArrayList<HistoryData> historyList;
     private String[] comboStrings = {
@@ -51,9 +55,19 @@ public class MetricsWindow extends JFrame {
         Container contentPane = getContentPane();
 
         topPanel = new JPanel();
-        graphPanel = new GraphPanel(historyList);
+
+        graphStatusComposite = new JPanel();
+
+        graphPanel = new GraphPanel(historyList, this);
         graphPanel.setType(comboStrings[0]);
         graphPanel.repaint();
+
+        statusPanel = new JPanel();
+        statusLabel = new JLabel("AAA");
+        statusPanel.add(statusLabel);
+
+        graphStatusComposite.add(graphPanel, BorderLayout.WEST);
+        graphStatusComposite.add(statusPanel, BorderLayout.EAST);
 
         comboBox = new ComboBox<String>(comboStrings);
         comboBox.addActionListener(new ActionListener() {
@@ -72,7 +86,15 @@ public class MetricsWindow extends JFrame {
         topPanel.add(comboBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
-        contentPane.add(graphPanel, BorderLayout.CENTER);
+        contentPane.add(graphStatusComposite, BorderLayout.CENTER);
+    }
+
+    public void setStatusHistory(@Nullable HistoryData h) {
+        if (h == null) {
+            statusLabel.setText("AAA");
+        } else {
+            statusLabel.setText(h.toString());
+        }
     }
 
     public static MetricsWindow getInstance() {
