@@ -1,6 +1,7 @@
 package org.team4.team4_project.UI;
 
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.util.ui.GridBag;
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
 import org.team4.team4_project.metric_calculation.MetricMain;
@@ -25,15 +26,9 @@ public class MetricsWindow extends JFrame {
     private JTextPane statusPane;
     private ComboBox<String> comboBox;
     private ArrayList<HistoryData> historyList;
-    private String[] comboStrings = {
+    private final String[] comboStrings = {
             "Halstead Vocabulary",
-            "Halstead Program Length",
-            "Halstead Cal Prog Length",
             "Halstead Volume",
-            "Halstead Difficulty",
-            "Halstead Effort",
-            "Halstead Time Required",
-            "Halstead Num Del Bugs",
             "Cyclomatic Complexity",
             "Maintainability",
             "Code Churn"
@@ -66,7 +61,7 @@ public class MetricsWindow extends JFrame {
         statusPane = new JTextPane();
         statusPane.setText("");
         statusPane.setEditable(false);
-        statusPanel.add(statusPane);
+        statusPanel.add(statusPane, BorderLayout.WEST);
 
         //graphStatusComposite.add(graphPanel, BorderLayout.WEST);
         //graphStatusComposite.add(statusPanel, BorderLayout.EAST);
@@ -88,9 +83,11 @@ public class MetricsWindow extends JFrame {
         topPanel.add(comboBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
-        contentPane.add(graphPanel, BorderLayout.WEST);
-        contentPane.add(statusPanel, BorderLayout.EAST);
-        //contentPane.add(graphStatusComposite, BorderLayout.CENTER);
+
+        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        jsp.setLeftComponent(graphPanel);
+        jsp.setRightComponent(statusPanel);
+        contentPane.add(jsp, BorderLayout.CENTER);
     }
 
     public void setStatusHistory(@Nullable HistoryData h) {
