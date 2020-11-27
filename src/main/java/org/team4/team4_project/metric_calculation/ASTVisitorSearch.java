@@ -158,32 +158,38 @@ public class ASTVisitorSearch extends ASTVisitor {
     /**
      * visit() for Cyclomatic Complexity
      */
+    @Override
     public boolean visit(IfStatement unit) {
         cycloComplexity++;
         //System.out.println("IFStatement");
         //System.out.println(unit.getElseStatement().toString());
         return true;
     }
+    @Override
     public boolean visit(ForStatement unit) {
         cycloComplexity++;
         //System.out.println("ForStatement");
         return true;
     }
+    @Override
     public boolean visit(WhileStatement unit) {
         cycloComplexity++;
         //System.out.println("WhileStatement");
         return true;
     }
+    @Override
     public boolean visit(AssertStatement unit) {
         cycloComplexity++;
         //System.out.println("AssertStatement");
         return true;
     }
+    @Override
     public boolean visit(TryStatement unit)	{
         cycloComplexity++;
         //System.out.println("TryStatement");
         return true;
     }
+    @Override
     public boolean visit(SwitchCase unit) {
         if(!unit.isDefault()) {
             cycloComplexity++;
@@ -191,6 +197,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         //System.out.println("SwitchCase");
         return true;
     }
+    @Override
     public boolean visit(ConditionalExpression unit){
         cycloComplexity++;
         //System.out.println("ConditionalExpression");

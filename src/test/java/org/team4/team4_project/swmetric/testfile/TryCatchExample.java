@@ -1,4 +1,4 @@
-package testfile;
+package org.team4.team4_project.swmetric.testfile;
 
 public class TryCatchExample {
     public static void main(String[] args) {
