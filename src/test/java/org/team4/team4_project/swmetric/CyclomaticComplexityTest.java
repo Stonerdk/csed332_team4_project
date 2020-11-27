@@ -159,4 +159,50 @@ public class CyclomaticComplexityTest {
         Assert.assertEquals(1, metricInfo.getCyclomaticComplexity());
     }
 
+    @Test
+    public void testSwitchCase() throws IOException {
+        String filename = null;
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\SwitchCaseExample.java";
+        char[] fileread = ReadFileToCharArray(filename);
+        ASTVisitorSearch ASTVisitorFile;
+        ASTVisitorFile = parse(fileread, 2);
+
+        MetricInfo metricInfo = new MetricInfo();
+        metricInfo.setByVisitor(ASTVisitorFile);
+
+        //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
+    }
+    @Test
+    public void testTryCatch() throws IOException {
+        String filename = null;
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\TryCatchExample.java";
+        char[] fileread = ReadFileToCharArray(filename);
+        ASTVisitorSearch ASTVisitorFile;
+        ASTVisitorFile = parse(fileread, 2);
+
+        MetricInfo metricInfo = new MetricInfo();
+        metricInfo.setByVisitor(ASTVisitorFile);
+
+        //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(2, metricInfo.getCyclomaticComplexity());
+    }
+
+    @Test
+    public void testConditionOperator() throws IOException {
+        String filename = null;
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ConditionOperatorExample.java";
+        char[] fileread = ReadFileToCharArray(filename);
+        ASTVisitorSearch ASTVisitorFile;
+        ASTVisitorFile = parse(fileread, 2);
+
+        MetricInfo metricInfo = new MetricInfo();
+        metricInfo.setByVisitor(ASTVisitorFile);
+
+        //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
+    }
+
+
+
 }

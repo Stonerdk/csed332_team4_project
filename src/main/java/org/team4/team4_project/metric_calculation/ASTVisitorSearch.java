@@ -176,7 +176,24 @@ public class ASTVisitorSearch extends ASTVisitor {
     }
     public boolean visit(AssertStatement unit) {
         cycloComplexity++;
-        System.out.println("AssertStatement");
+        //System.out.println("AssertStatement");
+        return true;
+    }
+    public boolean visit(TryStatement unit)	{
+        cycloComplexity++;
+        //System.out.println("TryStatement");
+        return true;
+    }
+    public boolean visit(SwitchCase unit) {
+        if(!unit.isDefault()) {
+            cycloComplexity++;
+        }
+        //System.out.println("SwitchCase");
+        return true;
+    }
+    public boolean visit(ConditionalExpression unit){
+        cycloComplexity++;
+        //System.out.println("ConditionalExpression");
         return true;
     }
 }
