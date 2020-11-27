@@ -18,7 +18,8 @@ public class GitCodeChurnTest {
         GitHandler gitHandler = new GitHandler(testFilePath);
         Repository repo = gitHandler.getRepository();
         List<ChurnResult> result = new CodeChurn(repo).addPath("README.md").calc();
-        assertEquals(5,result.get(result.size()-1).getLinesAdded());
+        assertEquals(2,result.get(result.size()-1).getLinesAdded());
+        assertEquals(3,result.get(0).getLinesAdded());
         //assertEquals(1,result.getLinesDeleted());
     }
 
