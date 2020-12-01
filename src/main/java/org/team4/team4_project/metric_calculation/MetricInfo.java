@@ -154,6 +154,21 @@ public class MetricInfo {
         return;
     }
 
+    public void setToCommitInfo(CommitInfo cInfo){
+        cInfo.halProgVocab = halSteadVocabulary;
+        cInfo.halProgLen = halSteadProgLength;
+        cInfo.halCalProgLen = halSteadCalProgLength;
+        cInfo.halVolume = halSteadVolume;
+        cInfo.halDifficulty = halSteadDifficulty;
+        cInfo.halEffort = halSteadEffort;
+        cInfo.halTime = halSteadTimeRequired;
+        cInfo.halNumBugs = halSteadNumDelBugs;
+        cInfo.cyclomaticComplexity = cyclomaticComplexity;
+        cInfo.maintainabilityIndex = maintainabilityIndex;
+
+        return;
+    }
+
     public void addByString(String str){
         halSteadVolume +=10;
         cyclomaticComplexity += 20;
