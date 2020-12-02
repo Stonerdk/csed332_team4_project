@@ -192,26 +192,134 @@ public class MetricMain {
         List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
 
 
+        /**
+         * Example File Info List
+         */
+        FileInfo file1 = new FileInfo();
+        CommitInfo commit1_1 = new CommitInfo();
+        commit1_1.commitHash = "011";
+        commit1_1.branchName = "master";
+        commit1_1.churn.setcode("interface Account {\n" +
+                "    /**\n" +
+                "     * Return the account number\n" +
+                "     *\n" +
+                "     * @return the account number\n" +
+                "     */\n" +
+                "    int getAccountNumber();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Return the current balance of the account\n" +
+                "     *\n" +
+                "     * @return the balance\n" +
+                "     */\n" +
+                "    double getBalance();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Return the name of the owner\n" +
+                "     *\n" +
+                "     * @return the owner name\n" +
+                "     */\n" +
+                "    String getOwner();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Update the balance according to the interest rate and elapsed date.\n" +
+                "     *\n" +
+                "     * @param elapsedDate\n" +
+                "     */\n" +
+                "    void updateBalance(int elapsedDate);\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Deposit a given amount of money\n" +
+                "     *\n" +
+                "     * @param amount of money\n" +
+                "     */\n" +
+                "    void deposit(double amount);\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Withdraw a given amount of money\n" +
+                "     *\n" +
+                "     * @param amount of money\n" +
+                "     * @throws IllegalOperationException if not possible\n" +
+                "     */\n" +
+                "    void withdraw(double amount) throws IllegalOperationException;\n" +
+                "}");
+
+        CommitInfo commit1_2 = new CommitInfo();
+        commit1_2.commitHash = "012";
+        commit1_2.branchName = "master";
+        commit1_2.churn.setcode(
+                "class LowInterestAccount implements Account {\n" +
+                        "    //TODO implement this\n" +
+                        "    private int accountNumber;\n" +
+                        "    private double balance;\n" +
+                        "    private String owner;\n" +
+                        "\n" +
+                        "    public LowInterestAccount(int aN, double bl, String ow){\n" +
+                        "        accountNumber = aN;\n" +
+                        "        balance = bl;\n" +
+                        "        owner = ow;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public int getAccountNumber() {\n" +
+                        "        //TODO implement this\n" +
+                        "        return accountNumber;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public double getBalance() {\n" +
+                        "        //TODO implement this\n" +
+                        "        return balance;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public String getOwner() {\n" +
+                        "        //TODO implement this\n" +
+                        "        return owner;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public void updateBalance(int elapsedDate) {\n" +
+                        "        //TODO implement this\n" +
+                        "        for (int i=0 ; i<elapsedDate ; i++)\n" +
+                        "            balance *= 1.005;\n" +
+                        "        return;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public void deposit(double amount) {\n" +
+                        "        //TODO implement this\n" +
+                        "        balance += amount;\n" +
+                        "        return;\n" +
+                        "    }\n" +
+                        "\n" +
+                        "    public void withdraw(double amount) throws IllegalOperationException {\n" +
+                        "        //TODO implement this\n" +
+                        "        balance -= amount;\n" +
+                        "        return;\n" +
+                        "    }\n" +
+                        "}"
+        );
+        file1.comInfoList.add(commit1_1);
+        file1.comInfoList.add(commit1_2);
+        file1.fileName = "file1";
+
+        fileInfoList.add(file1);
+
         // Calculate for each commit
         CommitInfo projectComInfo = new CommitInfo();
         MetricInfo projectMetricInfo = new MetricInfo();
 
-        for (FileInfo f : fileInfoList){
+        for (FileInfo f : fileInfoList) {
             MetricInfo comMetricInfo = new MetricInfo();
 
-            for(CommitInfo c : f.comInfoList){
-                ASTVisitorSearch comVisitor = parse(c.churn.code);
+            for (CommitInfo c : f.comInfoList) {
+                ASTVisitorSearch comVisitor = parse(c.churn.getcode().toCharArray(), 1);
                 comMetricInfo.setByVisitor(comVisitor);
                 comMetricInfo.setToCommitInfo(c);
 
-                if (c.equals(Iterables.getLast(f.comInfoList))){
+                if (c.equals(f.comInfoList.get(f.comInfoList.size() - 1))) {
                     projectMetricInfo.addByVisitor(comVisitor);
                 }
             }
 
 
         }
-
 
         return fileInfoList;
     }
