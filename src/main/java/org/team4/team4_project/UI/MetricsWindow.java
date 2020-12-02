@@ -8,6 +8,8 @@ import org.team4.team4_project.metric_calculation.MetricMain;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,9 +24,20 @@ public class MetricsWindow extends JFrame {
     private JPanel graphStatusComposite;
     private GraphPanel graphPanel;
     private JPanel topPanel;
-    private JPanel statusPanel;
+    private JTable statusPanel;
+    private JPanel GraStat;
     private JTextPane statusPane;
+    private JPanel treePanel;
+    private JPanel ScrollPanel;
+    private JSplitPane jsp;
+    private JSplitPane jsp2;
+    private JTable table;
+    private JSlider slider;
+    private JScrollPane scroll;
+    private JScrollBar scrollbar;
     private ComboBox<String> comboBox;
+    private ComboBox<String> comboBox_commit;
+    private String[] commitStrings;
     private ArrayList<HistoryData> historyList;
     private final String[] comboStrings = {
             "Halstead Vocabulary",
@@ -45,7 +58,7 @@ public class MetricsWindow extends JFrame {
 
         setTitle("Software Metrics Graph");
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1300, 800);
+        setSize(1600, 800);
 
         Container contentPane = getContentPane();
 
@@ -56,17 +69,22 @@ public class MetricsWindow extends JFrame {
         graphPanel = new GraphPanel(historyList, this);
         graphPanel.setType(comboStrings[0]);
         graphPanel.repaint();
+        //JScrollBar bar = new JScrollBar(graphPanel);
+        //bar.setBounds(0, 0, 569, 206);
 
-        statusPanel = new JPanel();
+        statusPanel = new JTable();
         statusPane = new JTextPane();
         statusPane.setText("");
         statusPane.setEditable(false);
-        statusPanel.add(statusPane, BorderLayout.WEST);
+        table = new JTable();
+        treePanel = new JPanel();
+        //statusPanel.add(statusPane, BorderLayout.WEST);
+        //statusPanel.add(table, BorderLayout.WEST);
 
         //graphStatusComposite.add(graphPanel, BorderLayout.WEST);
         //graphStatusComposite.add(statusPanel, BorderLayout.EAST);
 
-        comboBox = new ComboBox<String>(comboStrings);
+        comboBox = new ComboBox<String>(comboStrings);                              // ComboBox for Metrics
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,22 +98,68 @@ public class MetricsWindow extends JFrame {
                 }
             }
         });
+
         topPanel.add(comboBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
 
-        JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        jsp.setLeftComponent(graphPanel);
+        slider = new JSlider(0, 60, 60);                            // Slider to Zoom Graph
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                graphPanel.Zoom(slider.getValue() + 20);
+            }
+        });
+        scroll = new JScrollPane(graphPanel);
+
+        commitStrings = new String[historyList.size()];                             // ComboBox for Commit List
+        int i = 0;
+        for(HistoryData s : historyList){
+            commitStrings[i++] = s.getDate().getTime() + " : " + s.getCommitString(); }
+        comboBox_commit = new ComboBox<String>(commitStrings);
+        comboBox_commit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        comboBox_commit.setMinimumAndPreferredWidth(300);
+        treePanel.add(comboBox_commit);
+
+        topPanel.add(slider);
+        jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+
+        jsp.setLeftComponent(scroll);
         jsp.setRightComponent(statusPanel);
-        contentPane.add(jsp, BorderLayout.CENTER);
+        jsp.setResizeWeight(0.7);
+
+        jsp2.setLeftComponent(treePanel);
+        jsp2.setRightComponent(jsp);
+        contentPane.add(jsp2, BorderLayout.CENTER);
     }
 
     public void setStatusHistory(@Nullable HistoryData h) {
-        if (h == null) {
+        statusPanel.removeAll();
+        if(h != null){
+            String header[] = {"Metric", "Value"};
+            String contents[][] = {{"Date", h.getDate().toString()}, {"Commit String", h.getCommitString()}, {"Branch Name", h.getBranchName()},
+                    {"HalStead Vocabulary", String.valueOf(h.getHalsteadVocabulary())}, {"HalStead ProgLength", String.valueOf(h.getHalsteadProgLength())},
+                    {"HalStead CalProgLength", String.valueOf(h.getHalsteadCalProgLength())}, {"HalStead Volume", String.valueOf(h.getHalsteadVolume())},
+                    {"HalStead Difficulty", String.valueOf(h.getHalsteadDifficulty())}, {"HalStead Effort", String.valueOf(h.getHalsteadEffort())},
+                    {"HalStead Time Required", String.valueOf(h.getHalsteadTimeRequired())}, {"HalStead Num Del Bugs", String.valueOf(h.getHalsteadNumDelBugs())},
+                    {"Cyclomatic Complexity", String.valueOf(h.getCyclomaticComplexity())}, {"Maintainability Index", String.valueOf(h.getMaintainablityIndex())}};
+            statusPanel = new JTable(contents, header);
+            jsp.setRightComponent(statusPanel);
+
+            repaint();
+        }
+
+        /*if (h == null) {
             statusPane.setText("");
         } else {
             statusPane.setText(h.toString());
-        }
+        }*/
     }
 
     public static MetricsWindow getInstance() {
