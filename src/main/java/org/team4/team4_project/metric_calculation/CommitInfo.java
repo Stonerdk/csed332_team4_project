@@ -1,14 +1,16 @@
 package org.team4.team4_project.metric_calculation;
 
+import org.team4.team4_project.git.ChurnResult;
+
 import java.util.Date;
 
 public class CommitInfo {
     //Basic Information
     public String commitHash = null;
     public String branchName = null;
-    public String fileContent = null; //해당 commit 시점의 파일 내용
+    public ChurnResult churn;
     public Date date = null;
-    public int codeChurn;
+
 
     //Metric Information
     public double halProgVocab;
@@ -26,8 +28,6 @@ public class CommitInfo {
         if(commitHash == null )
             return false;
         if(branchName == null)
-            return false;
-        if(fileContent == null)
             return false;
         if(branchName == null)
             return false;
