@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
+import com.google.common.collect.Iterables;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
 import org.team4.team4_project.history.HistoryData;
@@ -171,7 +172,7 @@ public class MetricMain {
 
     }
 
-    public List<HistoryData> mcMain() throws IOException, ParseException {
+    public List<FileInfo> mcMain() throws IOException, ParseException {
         /**
          * Option1. get the Directory name from the user
          */
@@ -187,62 +188,32 @@ public class MetricMain {
         /**
          * Option 2. get from Git
          */
-        List<Map<String, String>> commitInfoList = new ArrayList<Map<String, String>>();
-
         // Get from git
-        for (int i = 0; i< 20; i++){
-            HashMap<String, String> commitElement = new HashMap<String, String>();
-            commitElement.put("cName", "commit "+ i);
-            commitElement.put("bName", "branch " + i);
-            commitElement.put("cHash", "0123456x" + i);
-            commitElement.put("cPlusStr", "bla bla +");
-            commitElement.put("cMinusStr", "bla bla -");
+        List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
 
-            commitInfoList.add(commitElement);
-        }
 
         // Calculate for each commit
-        List<HistoryData> historyDataList= new ArrayList<HistoryData>();
+        CommitInfo projectComInfo = new CommitInfo();
+        MetricInfo projectMetricInfo = new MetricInfo();
 
-        MetricInfo MetricCommit = new MetricInfo();
-        for (int cIdx = 0 ; cIdx<commitInfoList.size() ; cIdx++){
+        for (FileInfo f : fileInfoList){
+            MetricInfo comMetricInfo = new MetricInfo();
 
-            if (cIdx < 0){ //Calculate for the current directory //TODO : find the way to find out the current directory
-                String DirName = System.getProperty("user.dir");
-                System.out.println("Working Directory :" + DirName);
+            for(CommitInfo c : f.comInfoList){
+                ASTVisitorSearch comVisitor = parse(c.churn.code);
+                comMetricInfo.setByVisitor(comVisitor);
+                comMetricInfo.setToCommitInfo(c);
 
-                // retrieve all .java files in the directory and subdirectories.
-                List<String> JavaFiles = retrieveFiles(DirName);
-
-                // parse files in a directory to list of char array
-                List<char[]> FilesRead = ParseFilesInDir(JavaFiles);
-
-                ASTVisitorSearch ASTVisitorFile;
-
-                MetricInfo MetricFile = new MetricInfo();
-
-                for(int i=0; i<FilesRead.size(); i++)
-                {
-                    //System.out.println("Now, AST parsing for : "+ JavaFiles.get(i));
-                    ASTVisitorFile=parse(FilesRead.get(i), 1);
-                    MetricCommit.addByVisitor(ASTVisitorFile); //TODO : addByVisitor
+                if (c.equals(Iterables.getLast(f.comInfoList))){
+                    projectMetricInfo.addByVisitor(comVisitor);
                 }
             }
-            else {
-                MetricCommit.addByString("hi"); //TODO : update with commit contests
-            }
-            //Arguments needed for History Data
-            Date date = new Date(2020110+cIdx);
-            String commitString = commitInfoList.get(cIdx).get("cName");
-            String branchName = commitInfoList.get(cIdx).get("bName");
 
-            //Map<String, Double> attr = HistoryData.makeAttrMap(MetricCommit.getHalsteadVolume(), (double)MetricCommit.getCyclomaticComplexity(), MetricCommit.getMaintainabilityIndex());
 
-            HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, MetricCommit, null);
-            historyDataList.add(historyDataCommit);
         }
-    return historyDataList;
 
+
+        return fileInfoList;
     }
 
 
