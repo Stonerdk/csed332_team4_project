@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.util.*;
 
 import com.google.common.collect.Iterables;
+import com.intellij.codeInsight.completion.impl.CamelHumpMatcher;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
+import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.history.HistoryData;
 
 
@@ -197,9 +199,10 @@ public class MetricMain {
          */
         FileInfo file1 = new FileInfo();
         CommitInfo commit1_1 = new CommitInfo();
-        commit1_1.commitHash = "011";
-        commit1_1.branchName = "master";
-        commit1_1.churn.setcode("interface Account {\n" +
+        commit1_1.setCommitHash("011");
+        commit1_1.setBranchName("master");
+        ChurnResult tempCR = new ChurnResult();
+        tempCR.setcode("interface Account {\n" +
                 "    /**\n" +
                 "     * Return the account number\n" +
                 "     *\n" +
@@ -243,61 +246,64 @@ public class MetricMain {
                 "     */\n" +
                 "    void withdraw(double amount) throws IllegalOperationException;\n" +
                 "}");
+        commit1_1.setChurn(tempCR);
 
         CommitInfo commit1_2 = new CommitInfo();
-        commit1_2.commitHash = "012";
-        commit1_2.branchName = "master";
-        commit1_2.churn.setcode(
-                "class LowInterestAccount implements Account {\n" +
-                        "    //TODO implement this\n" +
-                        "    private int accountNumber;\n" +
-                        "    private double balance;\n" +
-                        "    private String owner;\n" +
-                        "\n" +
-                        "    public LowInterestAccount(int aN, double bl, String ow){\n" +
-                        "        accountNumber = aN;\n" +
-                        "        balance = bl;\n" +
-                        "        owner = ow;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public int getAccountNumber() {\n" +
-                        "        //TODO implement this\n" +
-                        "        return accountNumber;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public double getBalance() {\n" +
-                        "        //TODO implement this\n" +
-                        "        return balance;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public String getOwner() {\n" +
-                        "        //TODO implement this\n" +
-                        "        return owner;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public void updateBalance(int elapsedDate) {\n" +
-                        "        //TODO implement this\n" +
-                        "        for (int i=0 ; i<elapsedDate ; i++)\n" +
-                        "            balance *= 1.005;\n" +
-                        "        return;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public void deposit(double amount) {\n" +
-                        "        //TODO implement this\n" +
-                        "        balance += amount;\n" +
-                        "        return;\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    public void withdraw(double amount) throws IllegalOperationException {\n" +
-                        "        //TODO implement this\n" +
-                        "        balance -= amount;\n" +
-                        "        return;\n" +
-                        "    }\n" +
-                        "}"
-        );
-        file1.comInfoList.add(commit1_1);
-        file1.comInfoList.add(commit1_2);
-        file1.fileName = "file1";
+        commit1_2.setCommitHash("012");
+        commit1_2.setBranchName("master");
+        ChurnResult tempCR2 = new ChurnResult();
+        tempCR2.setcode("class LowInterestAccount implements Account {\n" +
+                "    //TODO implement this\n" +
+                "    private int accountNumber;\n" +
+                "    private double balance;\n" +
+                "    private String owner;\n" +
+                "\n" +
+                "    public LowInterestAccount(int aN, double bl, String ow){\n" +
+                "        accountNumber = aN;\n" +
+                "        balance = bl;\n" +
+                "        owner = ow;\n" +
+                "    }\n" +
+                "\n" +
+                "    public int getAccountNumber() {\n" +
+                "        //TODO implement this\n" +
+                "        return accountNumber;\n" +
+                "    }\n" +
+                "\n" +
+                "    public double getBalance() {\n" +
+                "        //TODO implement this\n" +
+                "        return balance;\n" +
+                "    }\n" +
+                "\n" +
+                "    public String getOwner() {\n" +
+                "        //TODO implement this\n" +
+                "        return owner;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void updateBalance(int elapsedDate) {\n" +
+                "        //TODO implement this\n" +
+                "        for (int i=0 ; i<elapsedDate ; i++)\n" +
+                "            balance *= 1.005;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void deposit(double amount) {\n" +
+                "        //TODO implement this\n" +
+                "        balance += amount;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void withdraw(double amount) throws IllegalOperationException {\n" +
+                "        //TODO implement this\n" +
+                "        balance -= amount;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "}");
+        commit1_2.setChurn(tempCR2);
+        List<CommitInfo> tempComList = new ArrayList<CommitInfo>();
+        tempComList.add(commit1_1);
+        tempComList.add(commit1_2);
+        file1.setComInfoList(tempComList);
+        file1.setFileName("file1");
 
         fileInfoList.add(file1);
 
@@ -308,12 +314,12 @@ public class MetricMain {
         for (FileInfo f : fileInfoList) {
             MetricInfo comMetricInfo = new MetricInfo();
 
-            for (CommitInfo c : f.comInfoList) {
-                ASTVisitorSearch comVisitor = parse(c.churn.getcode().toCharArray(), 1);
+            for (CommitInfo c : f.getComInfoList()) {
+                ASTVisitorSearch comVisitor = parse(c.getChurn().getcode().toCharArray(), 1);
                 comMetricInfo.setByVisitor(comVisitor);
                 comMetricInfo.setToCommitInfo(c);
 
-                if (c.equals(f.comInfoList.get(f.comInfoList.size() - 1))) {
+                if (c.equals(f.getComInfoList().get(f.getComInfoList().size() - 1))) {
                     projectMetricInfo.addByVisitor(comVisitor);
                 }
             }

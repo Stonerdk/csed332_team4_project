@@ -155,16 +155,16 @@ public class MetricInfo {
     }
 
     public void setToCommitInfo(CommitInfo cInfo){
-        cInfo.halProgVocab = halSteadVocabulary;
-        cInfo.halProgLen = halSteadProgLength;
-        cInfo.halCalProgLen = halSteadCalProgLength;
-        cInfo.halVolume = halSteadVolume;
-        cInfo.halDifficulty = halSteadDifficulty;
-        cInfo.halEffort = halSteadEffort;
-        cInfo.halTime = halSteadTimeRequired;
-        cInfo.halNumBugs = halSteadNumDelBugs;
-        cInfo.cyclomaticComplexity = cyclomaticComplexity;
-        cInfo.maintainabilityIndex = maintainabilityIndex;
+        cInfo.setHalProgVocab(halSteadVocabulary);
+        cInfo.setHalProgLen(halSteadProgLength);
+        cInfo.setHalCalProgLen(halSteadCalProgLength);
+        cInfo.setHalVolume(halSteadVolume);
+        cInfo.setHalDifficulty(halSteadDifficulty);
+        cInfo.setHalEffort(halSteadEffort);
+        cInfo.setHalTime(halSteadTimeRequired);
+        cInfo.setHalNumBugs(halSteadNumDelBugs);
+        cInfo.setCyclomaticComplexity(cyclomaticComplexity);
+        cInfo.setMaintainabilityIndex(maintainabilityIndex);
 
         return;
     }
