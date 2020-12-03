@@ -1,12 +1,11 @@
 package org.team4.team4_project.UI;
 
 import com.intellij.ui.JBColor;
-import org.team4.team4_project.history.HistoryData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
 public class GraphPanel extends JPanel implements MouseMotionListener, MouseListener, ComponentListener {
@@ -22,14 +21,20 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     private int yPartition = 8;
     private int hoverJ = -1;
     private int zoom = 80;
-    private HistoryData hoverHistory = null;
+    //private CommitInfo hoverHistory = null;
     MetricsWindow parentFrame;
-    ArrayList<HistoryData> historyList;
     String type;
 
-    GraphPanel(ArrayList<HistoryData> historyList, MetricsWindow parentFrame) {
-        this.historyList = historyList;
-        setPreferredSize(new Dimension(this.historyList.size() * 80 + 200, 480));
+    List<Double> valueList;
+    int commitSize;
+    GUIController guiC;
+    int hoverIndex;
+
+    GraphPanel(MetricsWindow parentFrame) {
+        guiC = GUIController.getInstance();
+        commitSize = guiC.getSize();
+
+        setPreferredSize(new Dimension(commitSize * 80 + 200, 480));
         this.parentFrame = parentFrame;
         addMouseMotionListener(this);
         addMouseListener(this);
@@ -70,12 +75,16 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
 
     private void paintDefaultGraph(Graphics2D g) {
         //nodeCnt = Math.min(historyList.size(), xCount);
-        nodeCnt = historyList.size();
+        nodeCnt = commitSize;
         //setSize(Math.min(800, nodeCnt * 80), 480);
         maxValue = 0;
-        for (HistoryData h : historyList) {
-            maxValue = Math.max(maxValue, (int)getValue(h, type));
+
+
+        valueList = guiC.getValueList(type);
+        for (double d : valueList) {
+            maxValue = Math.max(maxValue, (int)Math.round(d));
         }
+
         maxValue = Math.max(5, (int)(maxValue * 1.2));
         for(int i = 0; i < 8; i++) {
             int y = yOffset + height - height * i / 8;
@@ -91,7 +100,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
 
         int j = 0, postX = 0, postY = 0;
         for(int i = nodeCnt - 1; i >= 0; i--) {
-            int value = Integer.parseInt(String.valueOf(Math.round(getValue(historyList.get(i), type))));
+            int value = Integer.parseInt(String.valueOf(Math.round(valueList.get(i))));
             //int x = width - j * (width / xCount);
             int x = i * zoom + 40;
             int y = height - height * value / maxValue;
@@ -106,7 +115,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
                 g.drawLine(xOffset + x, yOffset + y, xOffset + postX, yOffset + postY);
 
             g.setColor(JBColor.black);
-            String dat = String.valueOf(historyList.get(i).getDate().getTime());
+            String dat = guiC.getCommitDate(i);
             g.drawString(dat, xOffset + x - 18, yOffset + height + 30);
             postX = x;
             postY = y;
@@ -114,7 +123,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
 
-    private double getValue(HistoryData h, String type) {
+    /*private double getValue(HistoryData h, String type) {
         switch(type) {
             case "Halstead Vocabulary": return h.getHalsteadVocabulary();
             case "Halstead Program Length": return h.getHalsteadProgLength();
@@ -130,7 +139,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
         System.out.println("Wrong type name : " + type);
         return 0;
-    }
+    }*/
 
     private void paintCodeChurn(Graphics g) {
 
@@ -157,17 +166,19 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         //  System.out.println(e.getX() + ", " + e.getY());
         int j = 0;
         hoverJ = -1;
-        hoverHistory = null;
+        //hoverHistory = null;
+        hoverIndex = -1;
 
         for(int i = nodeCnt - 1; i >= 0; i--) {
-            int value = Integer.parseInt(String.valueOf(Math.round(getValue(historyList.get(i), type))));
+            int value = Integer.parseInt(String.valueOf(Math.round(valueList.get(i))));
             //int x = width - j * (width / xCount);
             int x = i * zoom + 20;
             int y = height - height * value / maxValue;
             Rectangle rect = new Rectangle(xOffset + x - 5, yOffset + y - 20, 40, 40);
             if (rect.contains(mouseX, mouseY)) {
                 hoverJ = j;
-                hoverHistory = historyList.get(i);
+                //hoverHistory = File.comInfoList.get(i);
+                hoverIndex = i;
             }
             j++;
         } //TODO : optimize this (without using for loop)
@@ -177,8 +188,8 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     @Override
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Mouse CLicked");
-        if (hoverHistory != null)
-            parentFrame.setStatusHistory(hoverHistory);
+        if (hoverIndex != -1)
+            parentFrame.setStatusHistory(hoverIndex);
         parentFrame.repaint();
     }
 

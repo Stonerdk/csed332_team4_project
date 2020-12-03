@@ -4,6 +4,8 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.util.ui.GridBag;
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
+import org.team4.team4_project.metric_calculation.CommitInfo;
+import org.team4.team4_project.metric_calculation.FileInfo;
 import org.team4.team4_project.metric_calculation.MetricMain;
 
 import javax.annotation.Nullable;
@@ -15,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MetricsWindow extends JFrame {
@@ -38,7 +40,9 @@ public class MetricsWindow extends JFrame {
     private ComboBox<String> comboBox;
     private ComboBox<String> comboBox_commit;
     private String[] commitStrings;
-    private ArrayList<HistoryData> historyList;
+
+    private GUIController guiC;
+
     private final String[] comboStrings = {
             "Halstead Vocabulary",
             "Halstead Volume",
@@ -49,12 +53,8 @@ public class MetricsWindow extends JFrame {
 
     private MetricsWindow () {
 
-        try {
-            historyList = (ArrayList<HistoryData>) new MetricMain().mcMain();
-        } catch (ParseException | NullPointerException | IOException e) {
-            e.printStackTrace();
-            return;
-        }
+        guiC = GUIController.getInstance();
+        guiC.refreshController();
 
         setTitle("Software Metrics Graph");
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +66,7 @@ public class MetricsWindow extends JFrame {
 
         graphStatusComposite = new JPanel();
 
-        graphPanel = new GraphPanel(historyList, this);
+        graphPanel = new GraphPanel(this);
         graphPanel.setType(comboStrings[0]);
         graphPanel.repaint();
         //JScrollBar bar = new JScrollBar(graphPanel);
@@ -112,7 +112,7 @@ public class MetricsWindow extends JFrame {
         });
         scroll = new JScrollPane(graphPanel);
 
-        commitStrings = new String[historyList.size()];                             // ComboBox for Commit List
+        /*commitStrings = new String[historyList.size()];                             // ComboBox for Commit List
         int i = 0;
         for(HistoryData s : historyList){
             commitStrings[i++] = s.getDate().getTime() + " : " + s.getCommitString(); }
@@ -124,7 +124,7 @@ public class MetricsWindow extends JFrame {
             }
         });
         comboBox_commit.setMinimumAndPreferredWidth(300);
-        treePanel.add(comboBox_commit);
+        treePanel.add(comboBox_commit);*/
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -139,16 +139,18 @@ public class MetricsWindow extends JFrame {
         contentPane.add(jsp2, BorderLayout.CENTER);
     }
 
-    public void setStatusHistory(@Nullable HistoryData h) {
+    public void setStatusHistory(@Nullable int idx) {
         statusPanel.removeAll();
-        if(h != null){
+        List<String> ValueList = guiC.getAllValue(idx);
+
+        if(ValueList.size() == 13){
             String header[] = {"Metric", "Value"};
-            String contents[][] = {{"Date", h.getDate().toString()}, {"Commit String", h.getCommitString()}, {"Branch Name", h.getBranchName()},
-                    {"HalStead Vocabulary", String.valueOf(h.getHalsteadVocabulary())}, {"HalStead ProgLength", String.valueOf(h.getHalsteadProgLength())},
-                    {"HalStead CalProgLength", String.valueOf(h.getHalsteadCalProgLength())}, {"HalStead Volume", String.valueOf(h.getHalsteadVolume())},
-                    {"HalStead Difficulty", String.valueOf(h.getHalsteadDifficulty())}, {"HalStead Effort", String.valueOf(h.getHalsteadEffort())},
-                    {"HalStead Time Required", String.valueOf(h.getHalsteadTimeRequired())}, {"HalStead Num Del Bugs", String.valueOf(h.getHalsteadNumDelBugs())},
-                    {"Cyclomatic Complexity", String.valueOf(h.getCyclomaticComplexity())}, {"Maintainability Index", String.valueOf(h.getMaintainablityIndex())}};
+            String contents[][] = {{"Date", ValueList.get(0)}, {"Commit String", ValueList.get(1)}, {"Branch Name", ValueList.get(2)},
+                    {"HalStead Vocabulary", ValueList.get(3)}, {"HalStead ProgLength", ValueList.get(4)},
+                    {"HalStead CalProgLength", ValueList.get(5)}, {"HalStead Volume", ValueList.get(6)},
+                    {"HalStead Difficulty", ValueList.get(7)}, {"HalStead Effort", ValueList.get(8)},
+                    {"HalStead Time Required", ValueList.get(9)}, {"HalStead Num Del Bugs", ValueList.get(10)},
+                    {"Cyclomatic Complexity", ValueList.get(11)}, {"Maintainability Index", ValueList.get(12)}};
             statusPanel = new JTable(contents, header);
             jsp.setRightComponent(statusPanel);
 
