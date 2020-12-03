@@ -8,7 +8,7 @@ public class CommitInfo {
     //Basic Information
     public String commitHash = null;
     public String branchName = null;
-    public ChurnResult churn;
+    public ChurnResult churn = new ChurnResult();
     public Date date = null;
 
 
