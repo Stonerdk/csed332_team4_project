@@ -33,10 +33,8 @@ public class MetricsWindow extends JFrame {
     private JPanel ScrollPanel;
     private JSplitPane jsp;
     private JSplitPane jsp2;
-    private JTable table;
     private JSlider slider;
     private JScrollPane scroll;
-    private JScrollBar scrollbar;
     private ComboBox<String> comboBox;
     private ComboBox<String> comboBox_commit;
     private String[] commitStrings;
@@ -76,7 +74,6 @@ public class MetricsWindow extends JFrame {
         statusPane = new JTextPane();
         statusPane.setText("");
         statusPane.setEditable(false);
-        table = new JTable();
         treePanel = new JPanel();
         //statusPanel.add(statusPane, BorderLayout.WEST);
         //statusPanel.add(table, BorderLayout.WEST);
