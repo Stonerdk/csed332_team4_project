@@ -1,5 +1,6 @@
 package org.team4.team4_project.UI;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.util.ui.GridBag;
 import org.team4.team4_project.history.HistoryData;
@@ -12,6 +13,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +38,8 @@ public class MetricsWindow extends JFrame {
     private JSlider slider;
     private JScrollPane scroll;
     private ComboBox<String> comboBox;
-    private ComboBox<String> comboBox_commit;
+
+    private JTree projectTree;
     private String[] commitStrings;
 
     private GUIController guiC;
@@ -48,6 +51,8 @@ public class MetricsWindow extends JFrame {
             "Maintainability",
             "Code Churn"
     };
+
+    private Project project;
 
     private MetricsWindow () {
 
@@ -109,19 +114,8 @@ public class MetricsWindow extends JFrame {
         });
         scroll = new JScrollPane(graphPanel);
 
-        /*commitStrings = new String[historyList.size()];                             // ComboBox for Commit List
-        int i = 0;
-        for(HistoryData s : historyList){
-            commitStrings[i++] = s.getDate().getTime() + " : " + s.getCommitString(); }
-        comboBox_commit = new ComboBox<String>(commitStrings);
-        comboBox_commit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        comboBox_commit.setMinimumAndPreferredWidth(300);
-        treePanel.add(comboBox_commit);*/
+        projectTree = new StructureTree(this);
+        treePanel.add(projectTree, BorderLayout.WEST);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -165,5 +159,9 @@ public class MetricsWindow extends JFrame {
         if (instance == null)
             instance = new MetricsWindow();
         return instance;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
