@@ -6,10 +6,10 @@ import java.util.Date;
 
 public class CommitInfo {
     //Basic Information
-    public String commitHash = null;
-    public String branchName = null;
+    public String commitHash = "arb commit hash";
+    public String branchName = "arb branch name";
     public ChurnResult churn = new ChurnResult();
-    public Date date = null;
+    public Date date = new Date(20201203);
 
 
     //Metric Information
