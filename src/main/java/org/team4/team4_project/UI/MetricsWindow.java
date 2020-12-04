@@ -13,10 +13,14 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -37,6 +41,8 @@ public class MetricsWindow extends JFrame {
     private JSplitPane jsp2;
     private JSlider slider;
     private JScrollPane scroll;
+    private JButton projButton;
+
     private ComboBox<String> comboBox;
 
     private JTree projectTree;
@@ -114,8 +120,28 @@ public class MetricsWindow extends JFrame {
         });
         scroll = new JScrollPane(graphPanel);
 
-        projectTree = new StructureTree(this);
-        treePanel.add(projectTree, BorderLayout.WEST);
+        projButton = new JButton("Entire Project");
+        projButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guiC.selectFile(0);
+            }
+        });
+
+
+
+        projectTree = new StructureTree();
+        projectTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                String path = projectTree.getSelectionPath().toString();
+                path = path.substring(1, path.length()-1);
+                path = path.replaceAll(", ", "/");
+                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
+            }
+        });
+
+        treePanel.add(projectTree, BorderLayout.NORTH);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

@@ -304,6 +304,7 @@ public class MetricMain {
         tempComList.add(commit1_2);
         file1.setComInfoList(tempComList);
         file1.setFileName("file1");
+        file1.setFilePath("project/main/csed/java/file1");
 
         fileInfoList.add(file1);
 

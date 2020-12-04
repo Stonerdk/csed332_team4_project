@@ -60,6 +60,14 @@ public class GUIController {
         return temp;
     }
 
+    public List<String> getAllPath(){
+        List<String> temp = new ArrayList<String>();
+        for(FileInfo f : FileList){
+            temp.add(f.getFilePath());
+        }
+        return temp;
+    }
+
     public void selectFile(String FileName, String Path){
         for(FileInfo f : FileList){
             if(f.getFileName().equals(FileName)){
@@ -68,6 +76,18 @@ public class GUIController {
                 }
             }
         }
+    }
+
+    public void selectFile(int idx){
+        File = FileList.get(idx);
+    }
+
+    public String getFileName(int idx){
+        return FileList.get(idx).getFileName();
+    }
+
+    public String getFilePath(int idx){
+        return FileList.get(idx).getFilePath();
     }
 
     public List<Double> getValueList(String Type){
@@ -115,6 +135,7 @@ public class GUIController {
                 break; // Implement code churn own way without using getValue
             default:
                 System.out.println("Wrong type name : " + Type);
+                break;
         }
         return temp;
     }
