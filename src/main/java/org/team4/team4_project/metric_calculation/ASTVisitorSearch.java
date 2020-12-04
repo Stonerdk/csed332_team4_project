@@ -98,6 +98,9 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(node.getIdentifier(), this.names.get(node.getIdentifier()) + 1);
         }
+        if (node.getIdentifier().equals("assert")) {
+            cycloComplexity++;
+        }
         return true;
     }
     // Override visit the null nodes.
@@ -201,6 +204,12 @@ public class ASTVisitorSearch extends ASTVisitor {
     public boolean visit(ConditionalExpression unit){
         cycloComplexity++;
         //System.out.println("ConditionalExpression");
+        return true;
+    }
+    @Override
+    public boolean visit(DoStatement unit){
+        cycloComplexity++;
+        //System.out.println("DoStatement");
         return true;
     }
 }
