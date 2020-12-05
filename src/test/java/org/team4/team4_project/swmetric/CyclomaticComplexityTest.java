@@ -34,7 +34,6 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(7, metricInfo.getCyclomaticComplexity());
     }
-
     @Test
     public void testForLoop() throws IOException {
         String filename = null;
@@ -49,7 +48,6 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
     }
-
     @Test
     public void testWhileLoop() throws IOException {
         String filename = null;
@@ -64,7 +62,6 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
     }
-
     @Test
     public void testAssert() throws IOException {
         String filename = null;
@@ -79,7 +76,6 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
     }
-
     @Test
     public void testSwitchCase() throws IOException {
         String filename = null;
@@ -108,7 +104,6 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(2, metricInfo.getCyclomaticComplexity());
     }
-
     @Test
     public void testConditionOperator() throws IOException {
         String filename = null;
@@ -123,7 +118,34 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
     }
+    @Test
+    public void testComplex1() throws IOException {
+        String filename = null;
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ComplexExample1.java";
+        char[] fileread = metricMain.ReadFileToCharArray(filename);
+        ASTVisitorSearch ASTVisitorFile;
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
+        MetricInfo metricInfo = new MetricInfo();
+        metricInfo.setByVisitor(ASTVisitorFile);
+
+        //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(4, metricInfo.getCyclomaticComplexity());
+    }
+    @Test
+    public void testComprehension() throws IOException {
+        String filename = null;
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ComprehensionExample.java";
+        char[] fileread = metricMain.ReadFileToCharArray(filename);
+        ASTVisitorSearch ASTVisitorFile;
+        ASTVisitorFile = metricMain.parse(fileread, 1);
+
+        MetricInfo metricInfo = new MetricInfo();
+        metricInfo.setByVisitor(ASTVisitorFile);
+
+        //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(4, metricInfo.getCyclomaticComplexity());
+    }
 
 
 }
