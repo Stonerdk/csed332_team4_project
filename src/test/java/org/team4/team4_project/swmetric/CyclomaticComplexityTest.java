@@ -26,7 +26,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\IfElseExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -40,7 +40,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ForLoopExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -54,7 +54,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\WhileLoopExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -68,7 +68,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\AssertExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -82,7 +82,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\SwitchCaseExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -96,7 +96,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\TryCatchExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -110,7 +110,7 @@ public class CyclomaticComplexityTest {
         filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ConditionOperatorExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
-        ASTVisitorFile = metricMain.parse(fileread, 2);
+        ASTVisitorFile = metricMain.parse(fileread, 1);
 
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
@@ -130,7 +130,7 @@ public class CyclomaticComplexityTest {
         metricInfo.setByVisitor(ASTVisitorFile);
 
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
-        Assert.assertEquals(4, metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(5, metricInfo.getCyclomaticComplexity());
     }
     @Test
     public void testComprehension() throws IOException {
@@ -144,7 +144,7 @@ public class CyclomaticComplexityTest {
         metricInfo.setByVisitor(ASTVisitorFile);
 
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
-        Assert.assertEquals(4, metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(6, metricInfo.getCyclomaticComplexity());
     }
 
 

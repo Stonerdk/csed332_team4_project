@@ -4,16 +4,17 @@ import java.util.*;
 
 public class ComprehensionExample {
     public static void main(String[] args) {
-        List<Integer> arr;
-        Set<Integer> arr2 = new HashSet<>();
+        List<Integer> list1 = new ArrayList<>();
+        Set<Integer> set1 = new HashSet<>();
+        Map<Integer, String> map1 = new HashMap<>();
         //System.out.println(arr.size());
-        arr2.add(1);
-        System.out.println(arr2.size());
+        list1.add(1);
+        set1.add(1);
+        map1.put(1, "string");
 
-        if(1 == 1)
+        if (1 == 1)
             System.out.println(1);
 
         assert true;
     }
-    //
 }

@@ -104,7 +104,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(node.getIdentifier(), this.names.get(node.getIdentifier()) + 1);
         }
-        if (node.getIdentifier().equals("assert")) {
+        if (node.getIdentifier().equals("assert") || node.getIdentifier().equals("List") || node.getIdentifier().equals("Set") || node.getIdentifier().equals("Map")) {
             cycloComplexity++;
         }
         System.out.println("SimpleName");

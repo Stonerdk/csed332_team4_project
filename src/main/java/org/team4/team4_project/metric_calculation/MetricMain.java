@@ -112,6 +112,14 @@ public class MetricMain {
                     continue;
                 else if (problem.getID() == 1610613328) // 1610613328 = Syntax error, 'for each' statements are only available if source level is 5.0
                     continue;
+                else if (problem.getID() == 1610612969) // Syntax error on tokens, delete these tokens 	    /Problem ID=1610612969
+                    continue;
+                else if (problem.getID() == 1610612967) // Syntax error on token "assert", AssignmentOperator expected after this token 	 /Problem ID=1610612967
+                    continue;
+                else if (problem.getID() == 536871352) // 'assert' should not be used as an identifier, since it is a reserved keyword from source level 1.4	 /Problem ID=536871352
+                    continue;
+                else if (problem.getID() == 1610612940) //Syntax error on token "=", != expected 	 /Problem ID=1610612940
+                    continue;
                 else
                 {
                     // quit compilation if
