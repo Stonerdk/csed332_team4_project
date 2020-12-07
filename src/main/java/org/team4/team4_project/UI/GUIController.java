@@ -27,7 +27,6 @@ public class GUIController {
             File = FileList.get(0);
         } catch (ParseException | NullPointerException | IOException e) {
             e.printStackTrace();
-            return;
         }
     }
 
@@ -36,7 +35,11 @@ public class GUIController {
     }
 
     public String getCommitDate(int i){
-        return String.valueOf(File.getComInfoList().get(i).getDate().getTime());
+
+        String sb = File.getComInfoList().get(i).getDate().getMonth() +
+                "." +
+                File.getComInfoList().get(i).getDate().getDay();
+        return sb;
     }
 
     public List<String> getAllValue(int idx){

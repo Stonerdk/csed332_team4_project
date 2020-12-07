@@ -19,9 +19,8 @@ public class StructureTree extends JTree {
         this.setShowsRootHandles(true);
         DefaultTreeModel model = (DefaultTreeModel)getModel();
 
-
         for(String dir : guiC.getAllPath()){
-            List<String> dirList = new ArrayList<String>();
+            List<String> dirList = new ArrayList<>();
             String cur, rest, fileName;
             int idx;
 
@@ -45,7 +44,7 @@ public class StructureTree extends JTree {
             for(int i = 1; i < dirList.size(); i++){
                 boolean isChild = false;
                 for(int j = 0; j < temp.getChildCount(); j++){
-                    if(((DefaultMutableTreeNode)(temp.getChildAt(j))).toString().equals(dirList.get(i))){
+                    if(((temp.getChildAt(j))).toString().equals(dirList.get(i))){
                         isChild = true;
                         temp = (DefaultMutableTreeNode)temp.getChildAt(j);
                         break;
