@@ -12,6 +12,7 @@ public class MyToolWindowAction extends AnAction {
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project proj = e.getProject();
         assert proj != null;
+        ProjectHandler.setProject(proj);
         System.out.println(proj.getBasePath());
 
         ToolWindow win = ToolWindowManager.getInstance(proj).getToolWindow("Software Metrics");
