@@ -6,7 +6,6 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
-import org.team4.team4_project.UI.ProjectHandler;
 
 public class MyToolWindowFactory implements ToolWindowFactory {
     /**
@@ -17,7 +16,6 @@ public class MyToolWindowFactory implements ToolWindowFactory {
      */
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         System.out.println(project.getBasePath());
-        ProjectHandler.project = project;
         MyToolWindow myToolWindow = new MyToolWindow(toolWindow);
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(myToolWindow.getContent(), "", false);
