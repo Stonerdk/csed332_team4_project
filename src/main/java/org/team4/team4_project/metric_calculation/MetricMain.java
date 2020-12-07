@@ -4,8 +4,11 @@ import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
+import com.google.common.collect.Iterables;
+import com.intellij.codeInsight.completion.impl.CamelHumpMatcher;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
+import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.history.HistoryData;
 
 
@@ -109,6 +112,14 @@ public class MetricMain {
                     continue;
                 else if (problem.getID() == 1610613328) // 1610613328 = Syntax error, 'for each' statements are only available if source level is 5.0
                     continue;
+                else if (problem.getID() == 1610612969) // Syntax error on tokens, delete these tokens 	    /Problem ID=1610612969
+                    continue;
+                else if (problem.getID() == 1610612967) // Syntax error on token "assert", AssignmentOperator expected after this token 	 /Problem ID=1610612967
+                    continue;
+                else if (problem.getID() == 536871352) // 'assert' should not be used as an identifier, since it is a reserved keyword from source level 1.4	 /Problem ID=536871352
+                    continue;
+                else if (problem.getID() == 1610612940) //Syntax error on token "=", != expected 	 /Problem ID=1610612940
+                    continue;
                 else
                 {
                     // quit compilation if
@@ -171,7 +182,7 @@ public class MetricMain {
 
     }
 
-    public List<HistoryData> mcMain() throws IOException, ParseException {
+    public List<FileInfo> mcMain() throws IOException, ParseException {
         /**
          * Option1. get the Directory name from the user
          */
@@ -187,62 +198,145 @@ public class MetricMain {
         /**
          * Option 2. get from Git
          */
-        List<Map<String, String>> commitInfoList = new ArrayList<Map<String, String>>();
-
         // Get from git
-        for (int i = 0; i< 20; i++){
-            HashMap<String, String> commitElement = new HashMap<String, String>();
-            commitElement.put("cName", "commit "+ i);
-            commitElement.put("bName", "branch " + i);
-            commitElement.put("cHash", "0123456x" + i);
-            commitElement.put("cPlusStr", "bla bla +");
-            commitElement.put("cMinusStr", "bla bla -");
+        List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
 
-            commitInfoList.add(commitElement);
-        }
+
+        /**
+         * Example File Info List
+         */
+        FileInfo file1 = new FileInfo();
+        CommitInfo commit1_1 = new CommitInfo();
+        commit1_1.setCommitHash("011");
+        commit1_1.setBranchName("master");
+        ChurnResult tempCR = new ChurnResult();
+        tempCR.setcode("interface Account {\n" +
+                "    /**\n" +
+                "     * Return the account number\n" +
+                "     *\n" +
+                "     * @return the account number\n" +
+                "     */\n" +
+                "    int getAccountNumber();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Return the current balance of the account\n" +
+                "     *\n" +
+                "     * @return the balance\n" +
+                "     */\n" +
+                "    double getBalance();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Return the name of the owner\n" +
+                "     *\n" +
+                "     * @return the owner name\n" +
+                "     */\n" +
+                "    String getOwner();\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Update the balance according to the interest rate and elapsed date.\n" +
+                "     *\n" +
+                "     * @param elapsedDate\n" +
+                "     */\n" +
+                "    void updateBalance(int elapsedDate);\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Deposit a given amount of money\n" +
+                "     *\n" +
+                "     * @param amount of money\n" +
+                "     */\n" +
+                "    void deposit(double amount);\n" +
+                "\n" +
+                "    /**\n" +
+                "     * Withdraw a given amount of money\n" +
+                "     *\n" +
+                "     * @param amount of money\n" +
+                "     * @throws IllegalOperationException if not possible\n" +
+                "     */\n" +
+                "    void withdraw(double amount) throws IllegalOperationException;\n" +
+                "}");
+        commit1_1.setChurn(tempCR);
+
+        CommitInfo commit1_2 = new CommitInfo();
+        commit1_2.setCommitHash("012");
+        commit1_2.setBranchName("master");
+        ChurnResult tempCR2 = new ChurnResult();
+        tempCR2.setcode("class LowInterestAccount implements Account {\n" +
+                "    //TODO implement this\n" +
+                "    private int accountNumber;\n" +
+                "    private double balance;\n" +
+                "    private String owner;\n" +
+                "\n" +
+                "    public LowInterestAccount(int aN, double bl, String ow){\n" +
+                "        accountNumber = aN;\n" +
+                "        balance = bl;\n" +
+                "        owner = ow;\n" +
+                "    }\n" +
+                "\n" +
+                "    public int getAccountNumber() {\n" +
+                "        //TODO implement this\n" +
+                "        return accountNumber;\n" +
+                "    }\n" +
+                "\n" +
+                "    public double getBalance() {\n" +
+                "        //TODO implement this\n" +
+                "        return balance;\n" +
+                "    }\n" +
+                "\n" +
+                "    public String getOwner() {\n" +
+                "        //TODO implement this\n" +
+                "        return owner;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void updateBalance(int elapsedDate) {\n" +
+                "        //TODO implement this\n" +
+                "        for (int i=0 ; i<elapsedDate ; i++)\n" +
+                "            balance *= 1.005;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void deposit(double amount) {\n" +
+                "        //TODO implement this\n" +
+                "        balance += amount;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "\n" +
+                "    public void withdraw(double amount) throws IllegalOperationException {\n" +
+                "        //TODO implement this\n" +
+                "        balance -= amount;\n" +
+                "        return;\n" +
+                "    }\n" +
+                "}");
+        commit1_2.setChurn(tempCR2);
+        List<CommitInfo> tempComList = new ArrayList<CommitInfo>();
+        tempComList.add(commit1_1);
+        tempComList.add(commit1_2);
+        file1.setComInfoList(tempComList);
+        file1.setFileName("file1");
+        file1.setFilePath("project/main/csed/java/file1");
+
+        fileInfoList.add(file1);
 
         // Calculate for each commit
-        List<HistoryData> historyDataList= new ArrayList<HistoryData>();
+        CommitInfo projectComInfo = new CommitInfo();
+        MetricInfo projectMetricInfo = new MetricInfo();
 
-        MetricInfo MetricCommit = new MetricInfo();
-        for (int cIdx = 0 ; cIdx<commitInfoList.size() ; cIdx++){
+        for (FileInfo f : fileInfoList) {
+            MetricInfo comMetricInfo = new MetricInfo();
 
-            if (cIdx < 0){ //Calculate for the current directory //TODO : find the way to find out the current directory
-                String DirName = System.getProperty("user.dir");
-                System.out.println("Working Directory :" + DirName);
+            for (CommitInfo c : f.getComInfoList()) {
+                ASTVisitorSearch comVisitor = parse(c.getChurn().getcode().toCharArray(), 1);
+                comMetricInfo.setByVisitor(comVisitor);
+                comMetricInfo.setToCommitInfo(c);
 
-                // retrieve all .java files in the directory and subdirectories.
-                List<String> JavaFiles = retrieveFiles(DirName);
-
-                // parse files in a directory to list of char array
-                List<char[]> FilesRead = ParseFilesInDir(JavaFiles);
-
-                ASTVisitorSearch ASTVisitorFile;
-
-                MetricInfo MetricFile = new MetricInfo();
-
-                for(int i=0; i<FilesRead.size(); i++)
-                {
-                    //System.out.println("Now, AST parsing for : "+ JavaFiles.get(i));
-                    ASTVisitorFile=parse(FilesRead.get(i), 1);
-                    MetricCommit.addByVisitor(ASTVisitorFile); //TODO : addByVisitor
+                if (c.equals(f.getComInfoList().get(f.getComInfoList().size() - 1))) {
+                    projectMetricInfo.addByVisitor(comVisitor);
                 }
             }
-            else {
-                MetricCommit.addByString("hi"); //TODO : update with commit contests
-            }
-            //Arguments needed for History Data
-            Date date = new Date(2020110+cIdx);
-            String commitString = commitInfoList.get(cIdx).get("cName");
-            String branchName = commitInfoList.get(cIdx).get("bName");
 
-            //Map<String, Double> attr = HistoryData.makeAttrMap(MetricCommit.getHalsteadVolume(), (double)MetricCommit.getCyclomaticComplexity(), MetricCommit.getMaintainabilityIndex());
 
-            HistoryData historyDataCommit = new HistoryData(date, commitString, branchName, MetricCommit, null);
-            historyDataList.add(historyDataCommit);
         }
-    return historyDataList;
 
+        return fileInfoList;
     }
 
 

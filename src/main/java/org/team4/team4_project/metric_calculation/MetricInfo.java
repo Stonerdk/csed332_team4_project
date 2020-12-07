@@ -119,6 +119,53 @@ public class MetricInfo {
     }
 
     public void addByVisitor(ASTVisitorSearch visitor){
+        visitor.oprt.forEach((k, v) -> operators.merge(k, v, Integer::sum));
+        visitor.names.forEach((k, v) -> operands.merge(k, v, Integer::sum));
+        codeLen += visitor.codeLen;
+        commentLen += visitor.commentLen;
+        cyclomaticComplexity += visitor.cycloComplexity;
+
+        //Do the same things in setByVisitor with updated operators, operand, codeLen, commentLen
+        dist_operators = operators.size();
+        dist_operands = operands.size();
+        total_operators = operators.values().stream().reduce(0, Integer::sum);
+        total_operands = operands.values().stream().reduce(0, Integer::sum);
+
+        CalHalstead calHalstead = new CalHalstead();
+        calHalstead.setParameters(dist_operators, dist_operands, total_operators, total_operands);
+
+        halSteadVocabulary = calHalstead.getVocabulary();
+        halSteadProgLength = calHalstead.getProglen();
+        halSteadCalProgLength = calHalstead.getCalcProgLen();
+        halSteadVolume = calHalstead.getVolume();
+        halSteadDifficulty = calHalstead.getDifficulty();
+        halSteadEffort = calHalstead.getEffort();
+        halSteadTimeRequired = calHalstead.getTimeReqProg();
+        halSteadNumDelBugs = calHalstead.getTimeDelBugs();
+
+
+        cyclomaticComplexity = visitor.cycloComplexity;
+
+        codeLen = visitor.codeLen;
+        commentLen = visitor.commentLen;
+
+        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/codeLen), 0.5))) / 171.0);
+
+        return;
+    }
+
+    public void setToCommitInfo(CommitInfo cInfo){
+        cInfo.setHalProgVocab(halSteadVocabulary);
+        cInfo.setHalProgLen(halSteadProgLength);
+        cInfo.setHalCalProgLen(halSteadCalProgLength);
+        cInfo.setHalVolume(halSteadVolume);
+        cInfo.setHalDifficulty(halSteadDifficulty);
+        cInfo.setHalEffort(halSteadEffort);
+        cInfo.setHalTime(halSteadTimeRequired);
+        cInfo.setHalNumBugs(halSteadNumDelBugs);
+        cInfo.setCyclomaticComplexity(cyclomaticComplexity);
+        cInfo.setMaintainabilityIndex(maintainabilityIndex);
+
         return;
     }
 
