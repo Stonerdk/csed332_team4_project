@@ -85,7 +85,7 @@ public class MetricsWindow extends JFrame {
         statusPane = new JTextPane();
         statusPane.setText("");
         statusPane.setEditable(false);
-        treePanel = new JPanel();
+        treePanel = new JPanel(new BorderLayout());
         //statusPanel.add(statusPane, BorderLayout.WEST);
         //statusPanel.add(table, BorderLayout.WEST);
 
@@ -140,8 +140,12 @@ public class MetricsWindow extends JFrame {
                 guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
             }
         });
+        JPanel treeGridContainer = new JPanel(new GridLayout());
+        treeGridContainer.add(projectTree);
+        treePanel.add(projButton, BorderLayout.NORTH);
+        treePanel.add(treeGridContainer, BorderLayout.CENTER);
+        //treePanel.setPreferredSize(new Dimension(130, 300));
 
-        treePanel.add(projectTree, BorderLayout.NORTH);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -153,6 +157,7 @@ public class MetricsWindow extends JFrame {
 
         jsp2.setLeftComponent(treePanel);
         jsp2.setRightComponent(jsp);
+        jsp2.setResizeWeight(0.2);
         contentPane.add(jsp2, BorderLayout.CENTER);
     }
 

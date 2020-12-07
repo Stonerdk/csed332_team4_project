@@ -18,11 +18,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.eclipse.jdt/core
     compile group: 'org.eclipse.jdt', name: 'core', version: '3.3.0-v_771'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '2.2.0.201212191850-r'
+
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version '2020.2.3'
+    plugins 'java'
 }
 patchPluginXml {
     changeNotes """
@@ -32,3 +34,4 @@ patchPluginXml {
 
 sourceCompatibility = 11
 targetCompatibility = 11
+apply plugin: 'java'
