@@ -102,7 +102,7 @@ public class CyclomaticComplexityTest {
         metricInfo.setByVisitor(ASTVisitorFile);
 
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
-        Assert.assertEquals(2, metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(5, metricInfo.getCyclomaticComplexity());
     }
     @Test
     public void testConditionOperator() throws IOException {
@@ -146,6 +146,5 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(6, metricInfo.getCyclomaticComplexity());
     }
-
 
 }
