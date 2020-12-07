@@ -201,8 +201,11 @@ public class ASTVisitorSearch extends ASTVisitor {
         return true;
     }
     @Override
-    public boolean visit(TryStatement unit)	{
-        cycloComplexity++;
+    public boolean visit(TryStatement unit) {
+        if (unit.getFinally() != null)
+            cycloComplexity++;
+
+        cycloComplexity += unit.catchClauses().size();
         System.out.println("TryStatement");
         return true;
     }
