@@ -1,4 +1,5 @@
-package org.team4.team4_project.swmetric.testfile;
+package org.team4.team4_project.swmetric.testfile.cyclomatic_testfile;
+
 
 public class ForLoopExample {
     public static void main(String[] args) {

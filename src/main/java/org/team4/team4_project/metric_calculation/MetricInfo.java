@@ -42,18 +42,16 @@ public class MetricInfo {
         total_operators = operators.values().stream().reduce(0, Integer::sum);
         total_operands = operands.values().stream().reduce(0, Integer::sum);
 
-        CalHalstead calHalstead = new CalHalstead();
-        calHalstead.setParameters(dist_operators, dist_operands, total_operators, total_operands);
+        HalsteadMetric halsteadMetric = new HalsteadMetric(dist_operators, dist_operands, total_operators, total_operands);
 
-        halSteadVocabulary = calHalstead.getVocabulary();
-        halSteadProgLength = calHalstead.getProglen();
-        halSteadCalProgLength = calHalstead.getCalcProgLen();
-        halSteadVolume = calHalstead.getVolume();
-        halSteadDifficulty = calHalstead.getDifficulty();
-        halSteadEffort = calHalstead.getEffort();
-        halSteadTimeRequired = calHalstead.getTimeReqProg();
-        halSteadNumDelBugs = calHalstead.getTimeDelBugs();
-
+        halSteadVocabulary = halsteadMetric.getVocabulary();
+        halSteadProgLength = halsteadMetric.getProglen();
+        halSteadCalProgLength = halsteadMetric.getCalcProgLen();
+        halSteadVolume = halsteadMetric.getVolume();
+        halSteadDifficulty = halsteadMetric.getDifficulty();
+        halSteadEffort = halsteadMetric.getEffort();
+        halSteadTimeRequired = halsteadMetric.getTimeReqProg();
+        halSteadNumDelBugs = halsteadMetric.getTimeDelBugs();
 
         cyclomaticComplexity = visitor.cycloComplexity;
 
@@ -131,18 +129,16 @@ public class MetricInfo {
         total_operators = operators.values().stream().reduce(0, Integer::sum);
         total_operands = operands.values().stream().reduce(0, Integer::sum);
 
-        CalHalstead calHalstead = new CalHalstead();
-        calHalstead.setParameters(dist_operators, dist_operands, total_operators, total_operands);
+        HalsteadMetric halsteadMetric = new HalsteadMetric(dist_operators, dist_operands, total_operators, total_operands);
 
-        halSteadVocabulary = calHalstead.getVocabulary();
-        halSteadProgLength = calHalstead.getProglen();
-        halSteadCalProgLength = calHalstead.getCalcProgLen();
-        halSteadVolume = calHalstead.getVolume();
-        halSteadDifficulty = calHalstead.getDifficulty();
-        halSteadEffort = calHalstead.getEffort();
-        halSteadTimeRequired = calHalstead.getTimeReqProg();
-        halSteadNumDelBugs = calHalstead.getTimeDelBugs();
-
+        halSteadVocabulary = halsteadMetric.getVocabulary();
+        halSteadProgLength = halsteadMetric.getProglen();
+        halSteadCalProgLength = halsteadMetric.getCalcProgLen();
+        halSteadVolume = halsteadMetric.getVolume();
+        halSteadDifficulty = halsteadMetric.getDifficulty();
+        halSteadEffort = halsteadMetric.getEffort();
+        halSteadTimeRequired = halsteadMetric.getTimeReqProg();
+        halSteadNumDelBugs = halsteadMetric.getTimeDelBugs();
 
         cyclomaticComplexity = visitor.cycloComplexity;
 
