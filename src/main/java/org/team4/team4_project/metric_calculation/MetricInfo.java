@@ -127,7 +127,7 @@ public class MetricInfo {
             mergedOperands.put(entry.getKey(), entry.getValue());
 
         visitor.oprt.forEach((k, v) -> mergedOperators.merge(k, v, Integer::sum));
-        visitor.names.forEach((k, v) -> mergedOperators.merge(k, v, Integer::sum));
+        visitor.names.forEach((k, v) -> mergedOperands.merge(k, v, Integer::sum));
 
         operators = mergedOperators;
         operands = mergedOperands;

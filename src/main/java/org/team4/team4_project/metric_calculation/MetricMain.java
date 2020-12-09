@@ -317,7 +317,10 @@ public class MetricMain {
         fileInfoList.add(file1);
 
         // Calculate for each commit
+        FileInfo projectFileInfo = new FileInfo();
+        projectFileInfo.setIsProject();
         CommitInfo projectComInfo = new CommitInfo();
+        List<CommitInfo> projectComInfoList = new ArrayList<CommitInfo>();
         MetricInfo projectMetricInfo = new MetricInfo();
 
         for (FileInfo f : fileInfoList) {
@@ -328,13 +331,38 @@ public class MetricMain {
                 comMetricInfo.setByVisitor(comVisitor);
                 comMetricInfo.setToCommitInfo(c);
 
-                if (c.equals(f.getComInfoList().get(f.getComInfoList().size() - 1))) {
-                    projectMetricInfo.addByVisitor(comVisitor);
+                // Find a proper index to put this commit in ProjectFileInfo's CommitInfoList (by Date)
+                for(int i=0 ; i < projectComInfoList.size() ; i++){
+                    projectComInfo = projectComInfoList.get(i);
+                    if(projectComInfo.getDate().after(c.getDate())){
+                        projectComInfoList.add(i, c); //
+                        break;
+                    }
+                    else if (projectComInfo.getDate().equals(c.getDate())){
+                        projectMetricInfo.setByCommitInfo(projectComInfo);
+                        projectMetricInfo.addByVisitor(comVisitor);
+                        CommitInfo mergedComInfo = new CommitInfo();
+                        projectMetricInfo.setToCommitInfo(mergedComInfo);
+                        projectComInfoList.remove(i);
+                        projectComInfoList.add(i, mergedComInfo);
+                        break;
+
+                    }
+                    else{
+                        if (i == projectComInfoList.size()-1) {
+                            projectComInfoList.add(c);
+                            break;
+                        }
+                    }
+                }
+                if(projectComInfoList.isEmpty()) {
+                    projectComInfoList.add(c);
                 }
             }
 
-
         }
+        projectFileInfo.setComInfoList(projectComInfoList);
+        fileInfoList.add(0, projectFileInfo);
 
         return fileInfoList;
     }
