@@ -23,7 +23,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testIfElse() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\IfElseExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\IfElseExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -37,7 +37,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testForLoop() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ForLoopExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\ForLoopExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -51,7 +51,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testWhileLoop() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\WhileLoopExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\WhileLoopExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -65,7 +65,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testAssert() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\AssertExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\AssertExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -79,7 +79,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testSwitchCase() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\SwitchCaseExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\SwitchCaseExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -93,7 +93,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testTryCatch() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\TryCatchExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\TryCatchExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -107,7 +107,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testConditionOperator() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ConditionOperatorExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\ConditionOperatorExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -121,7 +121,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testComplex1() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ComplexExample1.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\ComplexExample1.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -135,7 +135,7 @@ public class CyclomaticComplexityTest {
     @Test
     public void testComprehension() throws IOException {
         String filename = null;
-        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\ComprehensionExample.java";
+        filename = "src\\test\\java\\org\\team4\\team4_project\\swmetric\\testfile\\cyclomatic_testfile\\ComprehensionExample.java";
         char[] fileread = metricMain.ReadFileToCharArray(filename);
         ASTVisitorSearch ASTVisitorFile;
         ASTVisitorFile = metricMain.parse(fileread, 1);
@@ -146,5 +146,4 @@ public class CyclomaticComplexityTest {
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
         Assert.assertEquals(6, metricInfo.getCyclomaticComplexity());
     }
-
 }
