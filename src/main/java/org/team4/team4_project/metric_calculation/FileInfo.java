@@ -10,11 +10,11 @@ public class FileInfo {
 
     static Boolean thisIsProject = false;
 
-    Boolean isProject(){
+    public Boolean isProject(){
         return thisIsProject;
     }
 
-    void setIsProject(){
+    public void setIsProject(){
         thisIsProject = true;
     }
 

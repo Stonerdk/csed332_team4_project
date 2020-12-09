@@ -3,6 +3,7 @@ package org.team4.team4_project.metric_calculation;
 import org.team4.team4_project.git.ChurnResult;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class CommitInfo {
     //Basic Information
@@ -13,6 +14,8 @@ public class CommitInfo {
 
 
     //Metric Information
+    private HashMap<String, Integer> operands = new HashMap<String, Integer>();
+    private HashMap<String, Integer> operators = new HashMap<String, Integer>();
     private double halProgVocab;
     private double halProgLen;
     private double halCalProgLen;
@@ -23,6 +26,8 @@ public class CommitInfo {
     private double halNumBugs;
     private double cyclomaticComplexity;
     private double maintainabilityIndex;
+    private int codeLen;
+    private int commentLen;
 
     public Boolean isBasicInfoFilled(){
         if(commitHash == null )
@@ -39,6 +44,13 @@ public class CommitInfo {
 
 
     //methods to set, get
+    //methods to set, get
+    public HashMap<String, Integer> getOperands() {return operands;}
+    public void setOperands(HashMap<String, Integer> oprd){operands = oprd;}
+
+    public HashMap<String, Integer> getOperators() {return operators;}
+    public void setOperators(HashMap<String, Integer> oprt){operators = oprt;}
+
     public String getCommitHash(){return commitHash;}
     public void setCommitHash(String str){commitHash = str;};
 
@@ -80,4 +92,10 @@ public class CommitInfo {
 
     public double getMaintainabilityIndex(){return maintainabilityIndex;}
     public void setMaintainabilityIndex(double d){maintainabilityIndex = d;}
+
+    public int getCodeLen(){return codeLen;}
+    public void setCodeLen(int cl){codeLen = cl;}
+
+    public int getCommentLen(){return commentLen;}
+    public void setCommentLen(int cl){commentLen = cl;}
 }
