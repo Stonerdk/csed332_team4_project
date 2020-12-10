@@ -5,10 +5,13 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.TreeWalk;
+import org.team4.team4_project.metric_calculation.CommitInfo;
+import org.team4.team4_project.metric_calculation.FileInfo;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GitHandler {
@@ -36,7 +39,7 @@ public class GitHandler {
         return repository;
     }
 
-    public void getAllFiles() throws IOException, GitAPIException {
+    public List<String> getAllFiles() throws IOException, GitAPIException {
         List<String> fileList = new ArrayList<String>();
 
         List<Ref> branches = git.branchList().call();
@@ -62,5 +65,37 @@ public class GitHandler {
                 }
             }
         }
+
+        return fileList;
+    }
+
+    public List<FileInfo> getFileInfo() throws IOException, GitAPIException {
+        List<String> files = getAllFiles();
+        List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
+        List<CommitInfo> commitInfoList = new ArrayList<CommitInfo>();
+        CommitInfo commitInfo = new CommitInfo();
+
+        for (String file: files) {
+            commitInfoList = new ArrayList<CommitInfo>();
+            FileInfo fileInfo = new FileInfo();
+
+            String fileName = file.substring(file.lastIndexOf('/') + 1);
+            fileInfo.setFileName(fileName);
+            fileInfo.setFilePath(file);
+
+            List<ChurnResult> churnResults = new CodeChurn(repository).addPath(file).calc();
+            for (ChurnResult churnResult: churnResults) {
+                commitInfo = new CommitInfo();
+                commitInfo.setCommitHash(churnResult.getCommmitHash());
+                commitInfo.setDate(new Date(churnResult.getCommitDate()));
+                commitInfo.setChurn(churnResult);
+                commitInfoList.add(commitInfo);
+            }
+            fileInfo.setComInfoList(commitInfoList);
+            fileInfoList.add(fileInfo);
+        }
+
+        System.out.println(fileInfoList);
+        return fileInfoList;
     }
 }
