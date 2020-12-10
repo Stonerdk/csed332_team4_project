@@ -72,26 +72,16 @@ public class GitHandler {
     public List<FileInfo> getFileInfo() throws IOException, GitAPIException {
         List<String> files = getAllFiles();
         List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
-        List<CommitInfo> commitInfoList = new ArrayList<CommitInfo>();
-        CommitInfo commitInfo = new CommitInfo();
 
         for (String file: files) {
-            commitInfoList = new ArrayList<CommitInfo>();
             FileInfo fileInfo = new FileInfo();
 
             String fileName = file.substring(file.lastIndexOf('/') + 1);
             fileInfo.setFileName(fileName);
             fileInfo.setFilePath(file);
 
-            List<ChurnResult> churnResults = new CodeChurn(repository).addPath(file).calc();
-            for (ChurnResult churnResult: churnResults) {
-                commitInfo = new CommitInfo();
-                commitInfo.setCommitHash(churnResult.getCommmitHash());
-                commitInfo.setDate(new Date(churnResult.getCommitDate()));
-                commitInfo.setChurn(churnResult);
-                commitInfoList.add(commitInfo);
-            }
-            fileInfo.setComInfoList(commitInfoList);
+            List<CommitInfo> commitInfos = new CodeChurn(repository).addPath(file).calc();
+            fileInfo.setComInfoList(commitInfos);
             fileInfoList.add(fileInfo);
         }
 

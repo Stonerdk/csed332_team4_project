@@ -18,10 +18,12 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
+import org.team4.team4_project.metric_calculation.CommitInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,16 +50,16 @@ public class CodeChurn {
         return this;
     }
 
-    public List<ChurnResult> calc() throws GitAPIException, IOException {
-        List<ChurnResult> results = new ArrayList<ChurnResult>();
+    public List<CommitInfo> calc() throws GitAPIException, IOException {
+        List<CommitInfo> results = new ArrayList<CommitInfo>();
         List<String> differences = new ArrayList<String>();
-        Iterable<RevCommit> commits = log.all().call();
+        Iterable<RevCommit> commits = log.call();
         for (RevCommit commit : commits) {
-            ChurnResult result = new ChurnResult();
+            CommitInfo result = new CommitInfo();
             Integer date = commit.getCommitTime();
             String hash = commit.getName();
-            result.setCommmitHash(hash);
-            result.setCommitDate(date);
+            result.setCommitHash(hash);
+            result.setDate(new Date(date));
             RevCommit[] parents = commit.getParents();
             for (RevCommit parent : parents) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -72,9 +74,9 @@ public class CodeChurn {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.startsWith("+") && !line.startsWith("+++")) {
-                        result.plusLinesAdded();
+                        result.getChurn().plusLinesAdded();
                     } else if (line.startsWith("-") && !line.startsWith("---")) {
-                        result.plusLinesDeleted();
+                        result.getChurn().plusLinesDeleted();
                     }
                 }
             }
@@ -100,9 +102,9 @@ public class CodeChurn {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.startsWith("+") && !line.startsWith("+++")) {
-                        result.plusLinesAdded();
+                        result.getChurn().plusLinesAdded();
                     } else if (line.startsWith("-") && !line.startsWith("---")) {
-                        result.plusLinesDeleted();
+                        result.getChurn().plusLinesDeleted();
                     }
                 }
             }
@@ -113,69 +115,68 @@ public class CodeChurn {
         return results;
     }
 
-    public List<ChurnResult> completeCode(List<ChurnResult> results, List<String> differences) {
+    public List<CommitInfo> completeCode(List<CommitInfo> results, List<String> differences) {
         List<String> codes = new ArrayList<String>();
         Integer pre = 1;
         for (int i=0; i<differences.size(); i++){
-                if (i>0) {
-                    codes = results.get(results.size() - i).getcodelist();
-                    String difference = differences.get(differences.size() - 1 - i);
-                    Scanner scanner = new Scanner(difference);
-                    int deletenumlines = 0;
-                    int deletestartline = 1;
-                    while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        if (line.startsWith("-") && !line.startsWith("---")) {
-                            codes.remove(deletestartline - deletenumlines);
-                            deletestartline++;
-                        } else if (line.startsWith("@@")) {
-                            String[] split = line.split(" ");
-                            String[] split3 = split[1].split(",");
-                            if (split3.length > 1) {
-                                deletenumlines = deletenumlines + Integer.valueOf(split3[1]);
-                            }
-                            else {
-                                deletenumlines++;
-                            }
-                            deletestartline = Integer.valueOf(split3[0]) * -1;
+            if (i>0) {
+                codes = results.get(results.size() - i).getChurn().getcodelist();
+                String difference = differences.get(differences.size() - 1 - i);
+                Scanner scanner = new Scanner(difference);
+                int deletenumlines = 0;
+                int deletestartline = 1;
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    if (line.startsWith("-") && !line.startsWith("---")) {
+                        codes.remove(deletestartline - deletenumlines);
+                        deletestartline++;
+                    } else if (line.startsWith("@@")) {
+                        String[] split = line.split(" ");
+                        String[] split3 = split[1].split(",");
+                        if (split3.length > 1) {
+                            deletenumlines = deletenumlines + Integer.valueOf(split3[1]);
                         }
-                    }
-
-
-                    Scanner scanner2 = new Scanner(difference);
-                    int addnumLines = 1;
-                    int addstartLine = 1;
-                    while (scanner2.hasNextLine()) {
-                        String line = scanner2.nextLine();
-                        if (line.startsWith("+") && !line.startsWith("+++")) {
-                            String code = line.substring(1, line.length());
-                            codes.set(addstartLine - 1, code);
-                            addstartLine++;
+                        else {
+                            deletenumlines++;
                         }
-                        else if (line.startsWith("@@")) {
-                            String[] split = line.split(" ");
-                            String[] split2 = split[2].split(",");
-                            if (split2.length > 1) {
-                                addnumLines = Integer.valueOf(split2[1]);
-                            }
-                            addstartLine = Integer.valueOf(split2[0]);
-                            codes = pushString(codes, addnumLines, addstartLine);
-                            System.out.println("dsatadt");
-                        }
+                        deletestartline = Integer.valueOf(split3[0]) * -1;
                     }
                 }
 
-                else {
-                    String difference = differences.get(differences.size() - 1 - i);
-                    Scanner scanner = new Scanner(difference);
-                    while (scanner.hasNextLine()) {
-                        String line = scanner.nextLine();
-                        if (line.startsWith("+") && !line.startsWith("+++")) {
-                            String code = line.substring(1, line.length());
-                            codes.add(code);
+
+                Scanner scanner2 = new Scanner(difference);
+                int addnumLines = 1;
+                int addstartLine = 1;
+                while (scanner2.hasNextLine()) {
+                    String line = scanner2.nextLine();
+                    if (line.startsWith("+") && !line.startsWith("+++")) {
+                        String code = line.substring(1, line.length());
+                        codes.set(addstartLine - 1, code);
+                        addstartLine++;
+                    }
+                    else if (line.startsWith("@@")) {
+                        String[] split = line.split(" ");
+                        String[] split2 = split[2].split(",");
+                        if (split2.length > 1) {
+                            addnumLines = Integer.valueOf(split2[1]);
                         }
+                        addstartLine = Integer.valueOf(split2[0]);
+                        codes = pushString(codes, addnumLines, addstartLine);
                     }
                 }
+            }
+
+            else {
+                String difference = differences.get(differences.size() - 1 - i);
+                Scanner scanner = new Scanner(difference);
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    if (line.startsWith("+") && !line.startsWith("+++")) {
+                        String code = line.substring(1, line.length());
+                        codes.add(code);
+                    }
+                }
+            }
 
             String code = "";
             for (int j=0; j<codes.size(); j++){
@@ -184,8 +185,8 @@ public class CodeChurn {
                 else
                     code = code + codes.get(j) + "\n";
             }
-            results.get(results.size()-1-i).setcode(code);
-            results.get(results.size()-1-i).setcodelist(codes);
+            results.get(results.size()-1-i).getChurn().setcode(code);
+            results.get(results.size()-1-i).getChurn().setcodelist(codes);
         }
 
 
