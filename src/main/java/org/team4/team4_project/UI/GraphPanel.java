@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Date;
 
 public class GraphPanel extends JPanel implements MouseMotionListener, MouseListener, ComponentListener {
-    private int xCount = 10;
-    private int nodeCnt = 0;
+    //private int xCount = 10;
+    //private int nodeCnt = 0;
     private int maxValue = 10;
     private int width = 500;
     private int height = 400;
@@ -25,7 +25,6 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     MetricsWindow parentFrame;
     String type;
 
-    List<Double> valueList;
     int commitSize;
     GUIController guiC;
     int hoverIndex;
@@ -75,13 +74,10 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
 
     private void paintDefaultGraph(Graphics2D g) {
         //nodeCnt = Math.min(historyList.size(), xCount);
-        nodeCnt = commitSize;
         //setSize(Math.min(800, nodeCnt * 80), 480);
         maxValue = 0;
 
-
-        valueList = guiC.getValueList(type);
-        for (double d : valueList) {
+        for (double d : guiC.getValueList(type)) {
             maxValue = Math.max(maxValue, (int)Math.round(d));
         }
 
@@ -90,17 +86,17 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             int y = yOffset + height - height * i / 8;
             g.setColor(JBColor.BLACK);
             g.drawString(Integer.toString(maxValue * i / 8), xOffset - 60, y);
-            g.drawString(Integer.toString(maxValue * i / 8), xOffset + (nodeCnt-1) * zoom + 80 + 30, y);
+            g.drawString(Integer.toString(maxValue * i / 8), xOffset + (guiC.getSize()-1) * zoom + 80 + 30, y);
             if (i != 0)
                 g.setColor(JBColor.GRAY);
-            g.drawLine(xOffset, y, xOffset + (nodeCnt-1) * zoom + 80, y);
+            g.drawLine(xOffset, y, xOffset + (guiC.getSize()-1) * zoom + 80, y);
         }
         g.drawLine(xOffset, yOffset, xOffset, yOffset + height);
-        g.drawLine(xOffset + (nodeCnt-1) * zoom + 80, yOffset, xOffset + (nodeCnt-1) * zoom + 80, yOffset + height);
+        g.drawLine(xOffset + (guiC.getSize()-1) * zoom + 80, yOffset, xOffset + (guiC.getSize()-1) * zoom + 80, yOffset + height);
 
         int j = 0, postX = 0, postY = 0;
-        for(int i = nodeCnt - 1; i >= 0; i--) {
-            int value = Integer.parseInt(String.valueOf(Math.round(valueList.get(i))));
+        for(int i = guiC.getSize() - 1; i >= 0; i--) {
+            int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
             //int x = width - j * (width / xCount);
             int x = i * zoom + 40;
             int y = height - height * value / maxValue;
@@ -169,8 +165,8 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         //hoverHistory = null;
         hoverIndex = -1;
 
-        for(int i = nodeCnt - 1; i >= 0; i--) {
-            int value = Integer.parseInt(String.valueOf(Math.round(valueList.get(i))));
+        for(int i = guiC.getSize() - 1; i >= 0; i--) {
+            int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
             //int x = width - j * (width / xCount);
             int x = i * zoom + 20;
             int y = height - height * value / maxValue;
