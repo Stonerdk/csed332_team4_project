@@ -54,6 +54,10 @@ public class CodeChurn {
         Iterable<RevCommit> commits = log.all().call();
         for (RevCommit commit : commits) {
             ChurnResult result = new ChurnResult();
+            Integer date = commit.getCommitTime();
+            String hash = commit.getName();
+            result.setCommmitHash(hash);
+            result.setCommitDate(date);
             RevCommit[] parents = commit.getParents();
             for (RevCommit parent : parents) {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
