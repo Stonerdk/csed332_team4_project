@@ -8,7 +8,10 @@ import com.google.common.collect.Iterables;
 import com.intellij.codeInsight.completion.impl.CamelHumpMatcher;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.team4.team4_project.ProjectHandler;
 import org.team4.team4_project.git.ChurnResult;
+import org.team4.team4_project.git.GitHandler;
 import org.team4.team4_project.history.HistoryData;
 
 
@@ -182,7 +185,7 @@ public class MetricMain {
 
     }
 
-    public List<FileInfo> mcMain() throws IOException, ParseException {
+    public List<FileInfo> mcMain() throws IOException, ParseException, GitAPIException {
         /**
          * Option1. get the Directory name from the user
          */
@@ -199,8 +202,8 @@ public class MetricMain {
          * Option 2. get from Git
          */
         // Get from git
-        List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
-
+        GitHandler gitHandler = new GitHandler(ProjectHandler.getProjectPath());
+        List<FileInfo> fileInfoList = gitHandler.getFileInfo();
 
         /**
          * Example File Info List

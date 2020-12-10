@@ -1,5 +1,6 @@
 package org.team4.team4_project.UI;
 
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.DepthWalk;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.FileInfo;
@@ -25,7 +26,7 @@ public class GUIController {
         try {
             FileList = new MetricMain().mcMain();
             File = FileList.get(0);
-        } catch (ParseException | NullPointerException | IOException e) {
+        } catch (ParseException | NullPointerException | IOException | GitAPIException e) {
             e.printStackTrace();
         }
     }
