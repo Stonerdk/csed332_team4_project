@@ -13,6 +13,7 @@ import java.util.List;
 public class GUIController {
     private List<FileInfo> FileList;
     private FileInfo File;
+    private FileInfo Proj;
     private CommitInfo Commit;
 
     private static GUIController guiC = new GUIController();
@@ -24,7 +25,14 @@ public class GUIController {
     public void refreshController(){
         try {
             FileList = new MetricMain().mcMain();
-            File = FileList.get(0);
+            for(FileInfo f : FileList){
+                if(f.isProject()) {
+                    Proj = f;
+                    FileList.remove(f);
+                    break;
+                }
+            }
+            File = Proj;
         } catch (ParseException | NullPointerException | IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +43,6 @@ public class GUIController {
     }
 
     public String getCommitDate(int i){
-
         String sb = File.getComInfoList().get(i).getDate().getMonth() +
                 "." +
                 File.getComInfoList().get(i).getDate().getDay();
@@ -71,6 +78,10 @@ public class GUIController {
         return temp;
     }
 
+    public String getName(){
+        return File.getFileName();
+    }
+
     public void selectFile(String FileName, String Path){
         for(FileInfo f : FileList){
             if(f.getFileName().equals(FileName)){
@@ -81,8 +92,8 @@ public class GUIController {
         }
     }
 
-    public void selectFile(int idx){
-        File = FileList.get(idx);
+    public void selectProj(){
+        File = Proj;
     }
 
     public String getFileName(int idx){
