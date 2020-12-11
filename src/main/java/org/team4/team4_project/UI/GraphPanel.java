@@ -25,15 +25,13 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     MetricsWindow parentFrame;
     String type;
 
-    int commitSize;
     GUIController guiC;
     int hoverIndex;
 
     GraphPanel(MetricsWindow parentFrame) {
         guiC = GUIController.getInstance();
-        commitSize = guiC.getSize();
 
-        setPreferredSize(new Dimension(commitSize * 80 + 200, 480));
+        setPreferredSize(new Dimension(guiC.getSize() * 80 + 200, 480));
         this.parentFrame = parentFrame;
         addMouseMotionListener(this);
         addMouseListener(this);

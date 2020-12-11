@@ -26,7 +26,6 @@ public class GUIController {
     public void refreshController(){
         try {
             FileList = new MetricMain().mcMain();
-<<<<<<< HEAD
             for(FileInfo f : FileList){
                 if(f.isProject()) {
                     Proj = f;
@@ -35,11 +34,7 @@ public class GUIController {
                 }
             }
             File = Proj;
-        } catch (ParseException | NullPointerException | IOException e) {
-=======
-            File = FileList.get(0);
         } catch (ParseException | NullPointerException | IOException | GitAPIException e) {
->>>>>>> 0f14f627c873bc7309994b584923d0560407c75a
             e.printStackTrace();
         }
     }

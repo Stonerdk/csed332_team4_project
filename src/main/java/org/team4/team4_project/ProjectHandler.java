@@ -18,6 +18,6 @@ public class ProjectHandler {
 
     public static String getProjectPath()
     {
-        return getProjectPath();
+        return projectPath;
     }
 }
