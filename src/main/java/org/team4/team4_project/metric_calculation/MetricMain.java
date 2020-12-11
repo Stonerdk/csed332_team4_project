@@ -106,7 +106,7 @@ public class MetricMain {
             final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
             // Check for compilationUnits problems in the provided file
-            IProblem[] problems = cu.getProblems();
+            /*IProblem[] problems = cu.getProblems();
             for(IProblem problem : problems) {
                 // Ignore some error because of the different versions.
                 if (problem.getID() == 1610613332) 		 // 1610613332 = Syntax error, annotations are only available if source level is 5.0
@@ -135,10 +135,10 @@ public class MetricMain {
                      * We are not considering trouble making files!!!!!!!!!!!!!!!!!!!!!!!
                      */
                     //System.exit(1);
-                    ASTVisitorSearch tempVisitor = new ASTVisitorSearch();
+                    /*ASTVisitorSearch tempVisitor = new ASTVisitorSearch();
                     return tempVisitor;
                 }
-            }
+            }*/
             // visit nodes of the constructed AST
             ASTVisitorSearch visitor= new ASTVisitorSearch();
             cu.accept(visitor);
