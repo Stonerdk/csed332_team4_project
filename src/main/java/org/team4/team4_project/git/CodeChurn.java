@@ -9,6 +9,7 @@ import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -22,10 +23,7 @@ import org.team4.team4_project.metric_calculation.CommitInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CodeChurn {
     private final Repository repo;
@@ -56,9 +54,11 @@ public class CodeChurn {
         Iterable<RevCommit> commits = log.call();
         for (RevCommit commit : commits) {
             CommitInfo result = new CommitInfo();
-            Integer date = commit.getCommitTime();
+            int date1 = commit.getCommitTime();
+            long date = Long.valueOf(date1);
             String hash = commit.getName();
             result.setCommitHash(hash);
+            date = date * 1000;
             result.setDate(new Date(date));
             RevCommit[] parents = commit.getParents();
             for (RevCommit parent : parents) {
