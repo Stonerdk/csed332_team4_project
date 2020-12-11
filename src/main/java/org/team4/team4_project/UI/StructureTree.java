@@ -20,6 +20,9 @@ public class StructureTree extends JTree {
         DefaultTreeModel model = (DefaultTreeModel)getModel();
 
         for(String dir : guiC.getAllPath()){
+            if(!dir.contains("/")) {
+                continue;
+            }
             List<String> dirList = new ArrayList<>();
             String cur, rest, fileName;
             int idx;

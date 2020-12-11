@@ -124,11 +124,9 @@ public class MetricsWindow extends JFrame {
         projButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guiC.selectFile(0);
+                guiC.selectProj();
             }
         });
-
-
 
         projectTree = new StructureTree();
         projectTree.addTreeSelectionListener(new TreeSelectionListener() {

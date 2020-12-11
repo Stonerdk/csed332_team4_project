@@ -8,7 +8,7 @@ public class FileInfo {
     private String filePath = null;
     private List<CommitInfo> comInfoList = new ArrayList<CommitInfo> ();
 
-    static Boolean thisIsProject = false;
+    private Boolean thisIsProject = false;
 
     public Boolean isProject(){
         return thisIsProject;
