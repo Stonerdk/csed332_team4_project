@@ -161,6 +161,9 @@ public class CodeChurn {
                         if (split2.length > 1) {
                             addnumLines = Integer.valueOf(split2[1]);
                         }
+                        else {
+                            addnumLines = 1;
+                        }
                         addstartLine = Integer.valueOf(split2[0]);
                         codes = pushString(codes, addnumLines, addstartLine);
                     }
