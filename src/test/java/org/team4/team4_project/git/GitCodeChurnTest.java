@@ -8,19 +8,24 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.Test;
+import org.team4.team4_project.metric_calculation.CommitInfo;
 
 public class GitCodeChurnTest {
 
-
+//    @Test
+//    public void Test() throws Exception {
+//        GitHandler gitHandler = new GitHandler();
+//        gitHandler.getFileInfo();
+//    }
 
     @Test
     public void CodeChurnTest() throws Exception{
         String testFilePath = "datatest/homework0";
         GitHandler gitHandler = new GitHandler(testFilePath);
         Repository repo = gitHandler.getRepository();
-        List<ChurnResult> result = new CodeChurn(repo).addPath("README.md").calc();
-        assertEquals(5,result.get(result.size()-1).getLinesAdded());
-        assertEquals(1,result.get(0).getLinesAdded());
+        List<CommitInfo> result = new CodeChurn(repo).addPath("README.md").calc();
+        assertEquals(5,result.get(result.size()-1).getChurn().getLinesAdded());
+        assertEquals(1,result.get(0).getChurn().getLinesAdded());
         //assertEquals(1,result.getLinesDeleted());
     }
 
@@ -29,7 +34,7 @@ public class GitCodeChurnTest {
         String testFilePath = "datatest/homework2";
         GitHandler gitHandler = new GitHandler(testFilePath);
         Repository repo = gitHandler.getRepository();
-        List<ChurnResult> result = new CodeChurn(repo).addPath("problem1/src/main/java/edu/postech/csed332/homework2/Book.java").calc();
+        List<CommitInfo> result = new CodeChurn(repo).addPath("problem1/src/main/java/edu/postech/csed332/homework2/Book.java").calc();
         String tempResult = "package edu.postech.csed332.homework2;\n" +
                 "\n" +
                 "import java.util.List;\n" +
@@ -148,7 +153,7 @@ public class GitCodeChurnTest {
                 "        return authors;\n" +
                 "    }\n" +
                 "}";
-            assertEquals(tempResult,result.get(0).getcode());
+            assertEquals(tempResult,result.get(0).getChurn().getcode());
     }
 
 }
