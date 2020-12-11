@@ -79,6 +79,7 @@ public class CodeChurn {
                         result.getChurn().plusLinesDeleted();
                     }
                 }
+                break;
             }
             if (parents.length == 0){
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -204,12 +205,13 @@ public class CodeChurn {
 
     public List<String> pushString (List<String> codes, int addnumLines, int addstartLine){
         int codessize = codes.size();
-        for (int i =0; i<addnumLines; i++){
-            codes.add("");
-        }
-
-        for (int i = codessize-1; i >= addstartLine - 1 ; i--){
-            codes.set(i + addnumLines, codes.get(i));
+        if (codessize > 0) {
+            for (int i = 0; i < addnumLines; i++) {
+                codes.add("");
+            }
+            for (int i = codessize - 1; i >= addstartLine - 1; i--) {
+                codes.set(i + addnumLines, codes.get(i));
+            }
         }
 
         return codes;

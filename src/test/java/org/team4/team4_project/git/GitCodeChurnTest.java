@@ -29,4 +29,5 @@ public class GitCodeChurnTest {
         assertEquals(5,result.get(0).getChurn().getLinesAdded());
         //assertEquals(1,result.getLinesDeleted());
     }
+
 }
