@@ -38,6 +38,10 @@ public class GUIController {
         }
     }
 
+    public boolean isProj(){
+        return File.isProject();
+    }
+
     public int getSize(){
         return File.getComInfoList().size();
     }
