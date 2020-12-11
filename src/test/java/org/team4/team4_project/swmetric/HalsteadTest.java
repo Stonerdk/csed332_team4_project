@@ -29,9 +29,9 @@ public class HalsteadTest {
         MetricInfo metricInfo = new MetricInfo();
         metricInfo.setByVisitor(ASTVisitorFile);
 
-        Assert.assertEquals(4, metricInfo.getTotalOperands());
+        Assert.assertEquals(14, metricInfo.getTotalOperands());
         Assert.assertEquals(2, metricInfo.getTotalOperators());
-        Assert.assertEquals(3, metricInfo.getDistOperands());
+        Assert.assertEquals(13, metricInfo.getDistOperands());
         Assert.assertEquals(1, metricInfo.getDistOperators());
 
         System.out.println("TotalOperands : " + metricInfo.getTotalOperands());

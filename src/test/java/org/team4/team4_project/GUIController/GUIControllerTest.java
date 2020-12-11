@@ -18,7 +18,8 @@ import java.util.List;
 
 
 public class GUIControllerTest {
-    GUIController guiC = GUIController.getInstance();
+
+    /*GUIController guiC = GUIController.getInstance();
     @Before
     public void init(){
         guiC.refreshController();
@@ -69,5 +70,6 @@ public class GUIControllerTest {
     @Test
     public void getFilePathTest(){
         assertEquals("project/main/csed/java/file1", guiC.getFilePath(0));
-    }
+    }*/
+
 }

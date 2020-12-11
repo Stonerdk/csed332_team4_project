@@ -48,10 +48,9 @@ public class GUIController {
     }
 
     public String getCommitDate(int i){
-        String sb = File.getComInfoList().get(i).getDate().getMonth() +
-                "." +
-                File.getComInfoList().get(i).getDate().getDay();
-        return sb;
+        String aa = File.getComInfoList().get(i).getDate().toString();
+        String rtn = aa.substring(4,7) + " " + aa.substring(8,10);
+        return rtn;
     }
 
     public List<String> getAllValue(int idx){

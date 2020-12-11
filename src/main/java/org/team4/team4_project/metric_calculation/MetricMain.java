@@ -351,6 +351,9 @@ public class MetricMain {
                         projectMetricInfo.addByVisitor(comVisitor);
                         CommitInfo mergedComInfo = new CommitInfo();
                         projectMetricInfo.setToCommitInfo(mergedComInfo);
+                        mergedComInfo.setCommitHash(projectComInfo.getCommitHash());
+                        mergedComInfo.setDate(projectComInfo.getDate());
+                        mergedComInfo.setChurn(projectComInfo.getChurn());
                         projectComInfoList.remove(i);
                         projectComInfoList.add(i, mergedComInfo);
                         break;
