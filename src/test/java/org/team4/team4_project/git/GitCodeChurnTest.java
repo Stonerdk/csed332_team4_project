@@ -9,14 +9,16 @@ import org.eclipse.jgit.storage.file.FileRepository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.Test;
 import org.team4.team4_project.metric_calculation.CommitInfo;
+import org.team4.team4_project.metric_calculation.FileInfo;
 
 public class GitCodeChurnTest {
 
-//    @Test
-//    public void Test() throws Exception {
-//        GitHandler gitHandler = new GitHandler();
-//        gitHandler.getFileInfo();
-//    }
+    @Test
+    public void Test() throws Exception {
+        GitHandler gitHandler = new GitHandler("datatest/homework6");
+        List<FileInfo> result = gitHandler.getFileInfo();
+        System.out.println("Success");
+    }
 
     @Test
     public void CodeChurnTest() throws Exception{

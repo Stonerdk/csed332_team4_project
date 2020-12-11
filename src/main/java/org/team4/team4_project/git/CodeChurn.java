@@ -108,11 +108,16 @@ public class CodeChurn {
                     }
                 }
             }
+
             results.add(result);
         }
 
         results = completeCode(results, differences);
-        return results;
+        List<CommitInfo> temp = new ArrayList<CommitInfo>();
+        for (int i=0; i<results.size(); i++){
+            temp.add(results.get(results.size()-1-i));
+        }
+        return temp;
     }
 
     public List<CommitInfo> completeCode(List<CommitInfo> results, List<String> differences) {
@@ -128,16 +133,18 @@ public class CodeChurn {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.startsWith("-") && !line.startsWith("---")) {
-                        codes.remove(deletestartline);
+                        codes.remove(deletestartline - 1 - deletenumlines);
+                        deletenumlines++;
+                        deletestartline++;
                     } else if (line.startsWith("@@")) {
                         String[] split = line.split(" ");
                         String[] split3 = split[1].split(",");
-                        if (split3.length > 1) {
+                        /*if (split3.length > 1) {
                             deletenumlines = deletenumlines + Integer.valueOf(split3[1]);
                         }
                         else {
                             deletenumlines++;
-                        }
+                        }*/
                         deletestartline = Integer.valueOf(split3[0]) * -1;
                     }
                 }
@@ -158,6 +165,9 @@ public class CodeChurn {
                         String[] split2 = split[2].split(",");
                         if (split2.length > 1) {
                             addnumLines = Integer.valueOf(split2[1]);
+                        }
+                        else {
+                            addnumLines = 1;
                         }
                         addstartLine = Integer.valueOf(split2[0]);
                         codes = pushString(codes, addnumLines, addstartLine);
