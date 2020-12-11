@@ -125,6 +125,7 @@ public class MetricsWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guiC.selectProj();
+                graphPanel.repaint();
             }
         });
 
@@ -136,6 +137,7 @@ public class MetricsWindow extends JFrame {
                 path = path.substring(1, path.length()-1);
                 path = path.replaceAll(", ", "/");
                 guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
+                graphPanel.repaint();
             }
         });
         JPanel treeGridContainer = new JPanel(new GridLayout());
