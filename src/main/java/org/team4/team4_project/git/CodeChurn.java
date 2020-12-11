@@ -108,11 +108,16 @@ public class CodeChurn {
                     }
                 }
             }
+
             results.add(result);
         }
 
         results = completeCode(results, differences);
-        return results;
+        List<CommitInfo> temp = new ArrayList<CommitInfo>();
+        for (int i=0; i<results.size(); i++){
+            temp.add(results.get(results.size()-1-i));
+        }
+        return temp;
     }
 
     public List<CommitInfo> completeCode(List<CommitInfo> results, List<String> differences) {
