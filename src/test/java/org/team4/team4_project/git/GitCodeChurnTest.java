@@ -15,7 +15,7 @@ public class GitCodeChurnTest {
 
     @Test
     public void Test() throws Exception {
-        GitHandler gitHandler = new GitHandler("datatest/homework6");
+        GitHandler gitHandler = new GitHandler("C:\\Users\\admin\\Documents\\GitHub\\team4_project\\datatest\\homework6");
         List<FileInfo> result = gitHandler.getFileInfo();
         System.out.println("Success");
     }

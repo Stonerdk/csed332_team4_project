@@ -202,8 +202,13 @@ public class MetricMain {
          * Option 2. get from Git
          */
         // Get from git
-        GitHandler gitHandler = new GitHandler(ProjectHandler.getProjectPath());
+        String temp = ProjectHandler.getProject().getBasePath();
+        GitHandler gitHandler = new GitHandler(temp);
         List<FileInfo> fileInfoList = gitHandler.getFileInfo();
+        String name = ProjectHandler.getProject().getName();
+        for(FileInfo f : fileInfoList){
+            f.setFilePath(name+"/"+f.getFilePath());
+        }
 
         /**
          * Example File Info List
@@ -317,7 +322,7 @@ public class MetricMain {
         file1.setFileName("file1");
         file1.setFilePath("project/main/csed/java/file1");
 
-        fileInfoList.add(file1);
+        //fileInfoList.add(file1);
 
         // Calculate for each commit
         FileInfo projectFileInfo = new FileInfo();
