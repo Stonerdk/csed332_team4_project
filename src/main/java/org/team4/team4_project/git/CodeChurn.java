@@ -128,16 +128,18 @@ public class CodeChurn {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.startsWith("-") && !line.startsWith("---")) {
-                        codes.remove(deletestartline);
+                        codes.remove(deletestartline - 1 - deletenumlines);
+                        deletenumlines++;
+                        deletestartline++;
                     } else if (line.startsWith("@@")) {
                         String[] split = line.split(" ");
                         String[] split3 = split[1].split(",");
-                        if (split3.length > 1) {
+                        /*if (split3.length > 1) {
                             deletenumlines = deletenumlines + Integer.valueOf(split3[1]);
                         }
                         else {
                             deletenumlines++;
-                        }
+                        }*/
                         deletestartline = Integer.valueOf(split3[0]) * -1;
                     }
                 }
