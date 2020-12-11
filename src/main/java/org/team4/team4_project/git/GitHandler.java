@@ -4,6 +4,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.FileInfo;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class GitHandler {
     private Git git;
@@ -41,6 +43,7 @@ public class GitHandler {
 
     public List<String> getAllFiles() throws IOException, GitAPIException {
         List<String> fileList = new ArrayList<String>();
+        RevWalk walk = new RevWalk(repository);
 
         List<Ref> branches = git.branchList().call();
 
@@ -49,16 +52,35 @@ public class GitHandler {
                 Iterable<RevCommit> commits = git.log().call();
 
                 for (RevCommit commit : commits) {
-                    ObjectId treeId = commit.getTree();
-                    TreeWalk treeWalk = new TreeWalk(repository);
-                    treeWalk.reset(treeId);
-                    while (treeWalk.next()) {
-                        if (treeWalk.isSubtree()) {
-                            treeWalk.enterSubtree();
-                        } else {
-                            String file = treeWalk.getPathString();
-                            if (file.endsWith(".java") && !fileList.contains(file)) {
-                                fileList.add(file);
+                    boolean foundInThisBranch = false;
+
+                    RevCommit targetCommit = walk.parseCommit(repository.resolve(
+                            commit.getName()));
+                    for (Map.Entry<String, Ref> e : repository.getAllRefs().entrySet()) {
+                        if (e.getKey().startsWith(Constants.R_HEADS)) {
+                            if (walk.isMergedInto(targetCommit, walk.parseCommit(
+                                    e.getValue().getObjectId()))) {
+                                String foundInBranch = e.getValue().getName();
+                                if (branch.getName().equals(foundInBranch)) {
+                                    foundInThisBranch = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (foundInThisBranch) {
+                        ObjectId treeId = commit.getTree();
+                        TreeWalk treeWalk = new TreeWalk(repository);
+                        treeWalk.reset(treeId);
+                        while (treeWalk.next()) {
+                            if (treeWalk.isSubtree()) {
+                                treeWalk.enterSubtree();
+                            } else {
+                                String file = treeWalk.getPathString();
+                                if (file.endsWith(".java") && !fileList.contains(file)) {
+                                    fileList.add(file);
+                                }
                             }
                         }
                     }
