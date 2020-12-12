@@ -214,6 +214,12 @@ public class CodeChurn {
             }
         }
 
+        if (codessize == 0){
+            for (int i = 0; i < addnumLines; i++){
+                codes.add("");
+            }
+        }
+
         return codes;
     }
 }
