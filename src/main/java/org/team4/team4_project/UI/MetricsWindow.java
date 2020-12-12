@@ -2,6 +2,7 @@ package org.team4.team4_project.UI;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.util.io.IntToIntBtree;
 import com.intellij.util.ui.GridBag;
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
@@ -42,6 +43,7 @@ public class MetricsWindow extends JFrame {
     private JSlider slider;
     private JScrollPane scroll;
     private JButton projButton;
+    private JButton resetButton;
 
     private ComboBox<String> comboBox;
 
@@ -125,24 +127,35 @@ public class MetricsWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guiC.selectProj();
+                projectTree.clearSelection();
                 graphPanel.repaint();
             }
         });
 
-        projectTree = new StructureTree();
-        projectTree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                String path = projectTree.getSelectionPath().toString();
-                path = path.substring(1, path.length()-1);
-                path = path.replaceAll(", ", "/");
-                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
-                graphPanel.repaint();
-            }
-        });
+        setTree();
+
         JPanel treeGridContainer = new JPanel(new GridLayout());
         treeGridContainer.add(projectTree);
+
+        resetButton = new JButton("Reset Project");
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guiC.refreshController();
+                graphPanel.repaint();
+                scroll.repaint();
+                treeGridContainer.removeAll();
+
+                setTree();
+
+                treeGridContainer.add(projectTree);
+                projectTree.repaint();
+            }
+        });
+
         treePanel.add(projButton, BorderLayout.NORTH);
+        treePanel.add(resetButton, BorderLayout.SOUTH);
+
         treePanel.add(treeGridContainer, BorderLayout.CENTER);
         //treePanel.setPreferredSize(new Dimension(130, 300));
 
@@ -190,6 +203,20 @@ public class MetricsWindow extends JFrame {
         if (instance == null)
             instance = new MetricsWindow();
         return instance;
+    }
+
+    public void setTree(){
+        projectTree = new StructureTree();
+        projectTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                String path = projectTree.getSelectionPath().toString();
+                path = path.substring(1, path.length()-1);
+                path = path.replaceAll(", ", "/");
+                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
+                graphPanel.repaint();
+            }
+        });
     }
 
     public void setProject(Project project) {
