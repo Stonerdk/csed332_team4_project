@@ -27,18 +27,18 @@ public class StructureTree extends JTree {
             String cur, rest, fileName;
             int idx;
 
-            idx = dir.indexOf("/");
-            cur = dir.substring(0, idx);
-            rest = dir.substring(idx+1);
-            dirList.add(cur);
+            //idx = dir.indexOf("/");
+            //cur = dir.substring(0, idx);
+            //rest = dir.substring(idx+1);
+            //dirList.add(cur);
 
+            rest = dir;
             while(true){
                 idx = rest.indexOf("/");
                 cur = rest.substring(0, idx);
                 rest = rest.substring(idx+1);
                 dirList.add(cur);
-                if(rest.contains("/")) idx = rest.indexOf("/");
-                else {
+                if( !rest.contains("/")) {
                     fileName = rest;
                     break;
                 }
