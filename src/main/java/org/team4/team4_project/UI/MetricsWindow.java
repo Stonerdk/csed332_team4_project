@@ -42,6 +42,7 @@ public class MetricsWindow extends JFrame {
     private JSplitPane jsp2;
     private JSlider slider;
     private JScrollPane scroll;
+    private JScrollPane scroll2;
     private JButton projButton;
     private JButton resetButton;
 
@@ -159,6 +160,7 @@ public class MetricsWindow extends JFrame {
         treePanel.add(treeGridContainer, BorderLayout.CENTER);
         //treePanel.setPreferredSize(new Dimension(130, 300));
 
+        scroll2 = new JScrollPane(treePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -168,7 +170,7 @@ public class MetricsWindow extends JFrame {
         jsp.setRightComponent(statusPanel);
         jsp.setResizeWeight(0.7);
 
-        jsp2.setLeftComponent(treePanel);
+        jsp2.setLeftComponent(scroll2);
         jsp2.setRightComponent(jsp);
         jsp2.setResizeWeight(0.2);
         contentPane.add(jsp2, BorderLayout.CENTER);
