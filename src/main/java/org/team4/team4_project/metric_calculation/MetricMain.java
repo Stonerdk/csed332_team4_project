@@ -434,6 +434,7 @@ public class MetricMain {
         //Combine metrics stored in each date's list
         for(int dIdx = 0 ; dIdx < dateListList.size(); dIdx++){
             MetricInfo mergedMetricInfo = new MetricInfo();
+            CommitInfo mergedComInfo = new CommitInfo();
             for(int cIdx = 0 ; cIdx < dateListList.get(dIdx).getValue().size() ; cIdx++){
                 CommitInfo curCom = dateListList.get(dIdx).getValue().get(cIdx);
                 if(cIdx == 0)
@@ -441,8 +442,14 @@ public class MetricMain {
                 else{
                     mergedMetricInfo.addByCommitInfo(curCom);
                 }
+
+                //Set date, commitHash
+                if(curCom.getDate().equals(dateListList.get(dIdx).getKey())){
+                    mergedComInfo.setDate(curCom.getDate());
+                    mergedComInfo.setCommitHash(curCom.getCommitHash());
+                }
             }
-            CommitInfo mergedComInfo = new CommitInfo();
+
             mergedMetricInfo.setToCommitInfo(mergedComInfo);
             projectComInfoList.add(mergedComInfo);
         }
