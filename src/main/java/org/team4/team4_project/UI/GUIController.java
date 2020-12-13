@@ -71,6 +71,9 @@ public class GUIController {
         temp.add(String.valueOf(Commit.getHalNumBugs()));
         temp.add(String.valueOf(Commit.getCyclomaticComplexity()));
         temp.add(String.valueOf(Commit.getMaintainabilityIndex()));
+        temp.add(String.valueOf(Commit.getChurn().getLinesAdded()));
+        temp.add(String.valueOf(Commit.getChurn().getLinesDeleted()));
+
 
         return temp;
     }
@@ -161,6 +164,7 @@ public class GUIController {
                     temp.add((double)c.getChurn().getLinesAdded());
                     temp.add((double)c.getChurn().getLinesDeleted());
                 }
+
                 break; // Implement code churn own way without using getValue
             default:
                 System.out.println("Wrong type name : " + Type);

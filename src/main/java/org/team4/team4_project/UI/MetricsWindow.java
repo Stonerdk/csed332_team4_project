@@ -30,45 +30,18 @@ import java.util.Objects;
 public class MetricsWindow extends JFrame {
 
     private static MetricsWindow instance = null;
-    private JPanel graphStatusComposite;
-    private GraphPanel graphPanel;
-    private JPanel topPanel;
+    private final GraphPanel graphPanel;
     private JTable statusPanel;
-    private JPanel GraStat;
-    private JTextPane statusPane;
-    private JPanel treePanel;
-    private JPanel ScrollPanel;
-    private JSplitPane jsp;
-    private JSplitPane jsp2;
-    private JSlider slider;
-    private JScrollPane scroll;
-    private JScrollPane scroll2;
-    private JButton projButton;
-    private JButton resetButton;
+    private final JSplitPane jsp;
+    private final JSlider slider;
+    private final JScrollPane scroll;
+    private final JScrollPane scroll2;
 
     private ComboBox<String> comboBox;
 
     private JTree projectTree;
-    private String[] commitStrings;
 
-    private GUIController guiC;
-
-    private final String[] comboStrings = {
-            "Code Length",
-            "Halstead Vocabulary",
-            "Halstead Program Length",
-            "Halstead Cal Prog Length",
-            "Halstead Volume",
-            "Halstead Difficulty",
-            "Halstead Effort",
-            "Halstead Time Required",
-            "Halstead Num Del Bugs",
-            "Cyclomatic Complexity",
-            "Maintainability",
-            "Code Churn"
-    };
-
-    private Project project;
+    private final GUIController guiC;
 
     private MetricsWindow () {
 
@@ -81,26 +54,31 @@ public class MetricsWindow extends JFrame {
 
         Container contentPane = getContentPane();
 
-        topPanel = new JPanel();
-
-        graphStatusComposite = new JPanel();
+        JPanel topPanel = new JPanel();
 
         graphPanel = new GraphPanel(this);
+        String[] comboStrings = {
+                "Code Length",
+                "Halstead Vocabulary",
+                "Halstead Program Length",
+                "Halstead Cal Prog Length",
+                "Halstead Volume",
+                "Halstead Difficulty",
+                "Halstead Effort",
+                "Halstead Time Required",
+                "Halstead Num Del Bugs",
+                "Cyclomatic Complexity",
+                "Maintainability",
+                "Code Churn"
+        };
         graphPanel.setType(comboStrings[0]);
         graphPanel.repaint();
-        //JScrollBar bar = new JScrollBar(graphPanel);
-        //bar.setBounds(0, 0, 569, 206);
 
         statusPanel = new JTable();
-        statusPane = new JTextPane();
+        JTextPane statusPane = new JTextPane();
         statusPane.setText("");
         statusPane.setEditable(false);
-        treePanel = new JPanel(new BorderLayout());
-        //statusPanel.add(statusPane, BorderLayout.WEST);
-        //statusPanel.add(table, BorderLayout.WEST);
-
-        //graphStatusComposite.add(graphPanel, BorderLayout.WEST);
-        //graphStatusComposite.add(statusPanel, BorderLayout.EAST);
+        JPanel treePanel = new JPanel(new BorderLayout());
 
         comboBox = new ComboBox<String>(comboStrings);                              // ComboBox for Metrics
         comboBox.addActionListener(new ActionListener() {
@@ -131,7 +109,7 @@ public class MetricsWindow extends JFrame {
         });
         scroll = new JScrollPane(graphPanel);
 
-        projButton = new JButton("Entire Project");
+        JButton projButton = new JButton("Entire Project");
         projButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,7 +124,7 @@ public class MetricsWindow extends JFrame {
         JPanel treeGridContainer = new JPanel(new GridLayout());
         treeGridContainer.add(projectTree);
 
-        resetButton = new JButton("Reset Project");
+        JButton resetButton = new JButton("Reset Project");
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -175,7 +153,7 @@ public class MetricsWindow extends JFrame {
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        JSplitPane jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         jsp.setLeftComponent(scroll);
         jsp.setRightComponent(statusPanel);
@@ -187,19 +165,28 @@ public class MetricsWindow extends JFrame {
         contentPane.add(jsp2, BorderLayout.CENTER);
     }
 
-    public void setStatusHistory(@Nullable int idx) {
+    public void setStatusHistory(int idx) {
         statusPanel.removeAll();
         List<String> ValueList = guiC.getAllValue(idx);
 
-        if(ValueList.size() == 14){
-            String header[] = {"Metric", "Value"};
-            String contents[][] = {{"Date", ValueList.get(0)}, {"Commit String", ValueList.get(1)}, {"Branch Name", ValueList.get(2)},
+        if(ValueList.size() == 16){
+            String[] header = {"Metric", "Value"};
+            String[][] contents = {{"Date", ValueList.get(0)},
+                    {"Commit String", ValueList.get(1)},
+                    {"Branch Name", ValueList.get(2)},
                     {"Code Length", ValueList.get(3)},
-                    {"HalStead Vocabulary", ValueList.get(4)}, {"HalStead ProgLength", ValueList.get(5)},
-                    {"HalStead CalProgLength", ValueList.get(6)}, {"HalStead Volume", ValueList.get(7)},
-                    {"HalStead Difficulty", ValueList.get(8)}, {"HalStead Effort", ValueList.get(9)},
-                    {"HalStead Time Required", ValueList.get(10)}, {"HalStead Num Del Bugs", ValueList.get(11)},
-                    {"Cyclomatic Complexity", ValueList.get(12)}, {"Maintainability Index", ValueList.get(13)}};
+                    {"HalStead Vocabulary", ValueList.get(4)},
+                    {"HalStead ProgLength", ValueList.get(5)},
+                    {"HalStead CalProgLength", ValueList.get(6)},
+                    {"HalStead Volume", ValueList.get(7)},
+                    {"HalStead Difficulty", ValueList.get(8)},
+                    {"HalStead Effort", ValueList.get(9)},
+                    {"HalStead Time Required", ValueList.get(10)},
+                    {"HalStead Num Del Bugs", ValueList.get(11)},
+                    {"Cyclomatic Complexity", ValueList.get(12)},
+                    {"Maintainability Index", ValueList.get(13)},
+                    {"Code Churn Added", ValueList.get(14)},
+                    {"Code Churn Deleted", ValueList.get(15)}};
             statusPanel = new JTable(contents, header);
             jsp.setRightComponent(statusPanel);
 
@@ -234,6 +221,5 @@ public class MetricsWindow extends JFrame {
     }
 
     public void setProject(Project project) {
-        this.project = project;
     }
 }

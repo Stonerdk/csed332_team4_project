@@ -47,32 +47,14 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         super.paintComponent(g2d);
         g2d.setColor(JBColor.white);
         g2d.fillRect(0,0,getWidth(),getHeight());
-        paintDefaultGraph(g2d);
-//        for(int cnt = 1; cnt < 11; cnt++)
-//        {
-//            g.drawString(cnt *10 +"",50,510-40*cnt);
-//            g.drawLine(100, 500-40*cnt, 100 + 100*historyList.size(),500-40*cnt);
-//        }
-//        g.drawLine(100,40,100,500);
-//
-//        int i = 1;
-//        int postX = 100;
-//        int postY = 500;
-//        for(HistoryData h : historyList){
-//            g.setColor(JBColor.BLACK);
-//            g.drawString(Long.toString(h.getDate().getTime()), 100 * i + 15, 540);
-//            g.setColor(JBColor.BLUE);
-//            int value = Integer.parseInt(String.valueOf(Math.round(getValue(h, type))));
-//            g.drawLine(postX, postY, 100*i + 45,500 -value*4);
-//            postX = 100*i + 45;
-//            postY = 500 -value*4;
-//            i++;
-//        }
+        if (!type.equals("Code Churn"))
+            paintDefaultGraph(g2d);
+        else
+            paintChurnGraph(g2d);
+
     }
 
     private void paintDefaultGraph(Graphics2D g) {
-        //nodeCnt = Math.min(historyList.size(), xCount);
-        //setSize(Math.min(800, nodeCnt * 80), 480);
         maxValue = 0;
         setPreferredSize(new Dimension(guiC.getSize() * zoom + 200, 480));
 
@@ -81,32 +63,33 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
 
         maxValue = Math.max(5, (int)(maxValue * 1.2));
+        int xRightOffset = xOffset + (guiC.getSize() - 1) * zoom + 80;
         for(int i = 0; i < 8; i++) {
-            int y = yOffset + height - height * i / 8;
             g.setColor(JBColor.BLACK);
+            int y = yOffset + height - height * i / 8;
             g.drawString(Integer.toString(maxValue * i / 8), xOffset - 60, y);
-            g.drawString(Integer.toString(maxValue * i / 8), xOffset + (guiC.getSize()-1) * zoom + 80 + 30, y);
+            g.drawString(Integer.toString(maxValue * i / 8), xRightOffset + 30, y);
             if (i != 0)
                 g.setColor(JBColor.GRAY);
-            g.drawLine(xOffset, y, xOffset + (guiC.getSize()-1) * zoom + 80, y);
+            g.drawLine(xOffset, y, xRightOffset, y);
         }
         g.drawLine(xOffset, yOffset, xOffset, yOffset + height);
-        g.drawLine(xOffset + (guiC.getSize()-1) * zoom + 80, yOffset, xOffset + (guiC.getSize()-1) * zoom + 80, yOffset + height);
+        g.drawLine(xRightOffset, yOffset, xRightOffset, yOffset + height);
 
-        int j = 0, postX = 0, postY = 0;
+        int postX = 0, postY = 0;
         for(int i = guiC.getSize() - 1; i >= 0; i--) {
             int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
-            //int x = width - j * (width / xCount);
+
             int x = i * zoom + 40;
             int y = height - height * value / maxValue;
 
-            int radius = (hoverJ == j) ? 10 : 5;
+            int radius = (hoverJ == guiC.getSize() - 1 - i) ? 10 : 5;
             g.setColor(JBColor.ORANGE);
             g.setColor(JBColor.LIGHT_GRAY);
             g.drawLine(xOffset + x, yOffset + height, xOffset + x, yOffset + y);
 
             g.fillOval(xOffset + x - radius, yOffset + y - radius, radius * 2, radius * 2);
-            if (j != 0)
+            if (i != guiC.getSize() - 1)
                 g.drawLine(xOffset + x, yOffset + y, xOffset + postX, yOffset + postY);
 
             g.setColor(JBColor.black);
@@ -114,11 +97,70 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             g.drawString(dat, xOffset + x - 18, yOffset + height + 30);
             postX = x;
             postY = y;
-            j++;
+
         }
     }
 
+    private void paintChurnGraph(Graphics2D g) {
+        maxValue = 0;
+        setPreferredSize(new Dimension(guiC.getSize() * zoom + 200, 480));
+        for (double d : guiC.getValueList(type)) {
+            maxValue = Math.max(maxValue, (int)Math.round(d));
+        }
 
+        maxValue = Math.max(5, (int)(maxValue * 1.2));
+
+        int xRightOffset = xOffset + (guiC.getSize() - 1) * zoom + 80;
+        int y1, y2;
+        for (int i = 0; i < 4; i++) {
+            g.setColor(JBColor.BLACK);
+            y1 = yOffset + height / 2 - height * i / 8;
+            y2 = yOffset + height / 2 + height * i / 8;
+            g.drawString(Integer.toString(maxValue * i / 4), xOffset - 60, y1);
+            g.drawString(Integer.toString(maxValue * i / 4), xRightOffset + 30, y1);
+            g.drawString( Integer.toString(-maxValue * i / 4), xOffset - 60, y2);
+            g.drawString(Integer.toString(-maxValue * i / 4), xRightOffset + 30, y2);
+            if (i != 0)
+                g.setColor(JBColor.GRAY);
+            g.drawLine(xOffset, y1, xRightOffset, y1);
+            g.drawLine(xOffset, y2, xRightOffset, y2);
+        }
+
+        g.drawLine(xOffset, yOffset, xOffset, yOffset + height);
+        g.drawLine(xRightOffset, yOffset, xRightOffset, yOffset + height);
+        int x;
+
+        int postX = 0, postY1 = 0, postY2 = 0;
+        for(int i = guiC.getSize() - 1; i >= 0; i--) {
+            int added = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2))));
+            int deleted = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2 + 1))));
+
+            x = xOffset + i * zoom + 40;
+            y1 = yOffset + height / 2 - (height / 2) * added / maxValue;
+            y2 = yOffset + height / 2 + (height / 2) * deleted / maxValue;
+
+            int radius = (hoverJ == guiC.getSize() - 1 - i) ? 10 : 5;
+            g.setColor(JBColor.BLUE);
+            g.drawLine(x, yOffset + height / 2, x, y1);
+            g.fillOval(x - radius, y1 - radius, radius * 2, radius * 2);
+            if (i != guiC.getSize() - 1)
+                g.drawLine(x, y1, postX, postY1);
+
+            g.setColor(JBColor.ORANGE);
+            g.drawLine(x, yOffset + height / 2, x, y2);
+            g.fillOval(x - radius, y2 - radius, radius * 2, radius * 2);
+            if (i != guiC.getSize() - 1)
+                g.drawLine(x, y2, postX, postY2);
+
+            g.setColor(JBColor.black);
+            String dat = guiC.getCommitDate(i);
+            g.drawString(dat, x - 18, yOffset + height + 30);
+
+            postX = x;
+            postY1 = y1;
+            postY2 = y2;
+        }
+    }
 
     /*private double getValue(HistoryData h, String type) {
         switch(type) {
@@ -162,20 +204,34 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         hoverJ = -1;
         //hoverHistory = null;
         hoverIndex = -1;
-
-        for(int i = guiC.getSize() - 1; i >= 0; i--) {
-            int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
-            //int x = width - j * (width / xCount);
-            int x = i * zoom + 20;
-            int y = height - height * value / maxValue;
-            Rectangle rect = new Rectangle(xOffset + x - 5, yOffset + y - 20, 40, 40);
-            if (rect.contains(mouseX, mouseY)) {
-                hoverJ = j;
-                //hoverHistory = File.comInfoList.get(i);
-                hoverIndex = i;
+        if (!type.equals("Code Churn")) {
+            for (int i = guiC.getSize() - 1; i >= 0; i--) {
+                int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
+                int x = i * zoom + 20;
+                int y = height - height * value / maxValue;
+                Rectangle rect = new Rectangle(xOffset + x - 5, yOffset + y - 20, 40, 40);
+                if (rect.contains(mouseX, mouseY)) {
+                    hoverJ = j;
+                    hoverIndex = i;
+                }
+                j++;
             }
-            j++;
-        } //TODO : optimize this (without using for loop)
+        } else {
+            for (int i = guiC.getSize() - 1; i >= 0; i--) {
+                int added = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2))));
+                int deleted = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2 + 1))));
+                int x = i * zoom + 20;
+                int y1 = height / 2 - (height / 2) * added / maxValue;
+                int y2 = height / 2 + (height / 2) * deleted / maxValue;
+                Rectangle rect1 = new Rectangle(xOffset + x - 5, yOffset + y1 - 20, 40, 40);
+                Rectangle rect2 = new Rectangle(xOffset + x - 5, yOffset + y2 - 20, 40, 40);
+                if (rect1.contains(mouseX, mouseY) || rect2.contains(mouseX, mouseY)) {
+                    hoverJ = j;
+                    hoverIndex = i;
+                }
+                j++;
+            }
+        }
         repaint();
     }
 

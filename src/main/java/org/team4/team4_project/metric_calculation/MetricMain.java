@@ -341,6 +341,7 @@ public class MetricMain {
             for (int cIdx = 0; cIdx < f.getComInfoList().size(); cIdx++) {
                 CommitInfo c = f.getComInfoList().get(cIdx);
                 ASTVisitorSearch comVisitor = parse(c.getChurn().getcode().toCharArray(), 1);
+                comMetricInfo.setByCommitInfo(c);
                 comMetricInfo.setByVisitor(comVisitor);
                 comMetricInfo.setToCommitInfo(c);
 
