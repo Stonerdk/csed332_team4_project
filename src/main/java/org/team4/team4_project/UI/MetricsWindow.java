@@ -51,8 +51,15 @@ public class MetricsWindow extends JFrame {
     private GUIController guiC;
 
     private final String[] comboStrings = {
+            "Code Length",
             "Halstead Vocabulary",
+            "HalStead ProgLength",
+            "HalStead CalProgLength",
             "Halstead Volume",
+            "HalStead Difficulty",
+            "HalStead Effort",
+            "HalStead Time Required",
+            "HalStead Num Del Bugs",
             "Cyclomatic Complexity",
             "Maintainability",
             "Code Churn"
@@ -165,14 +172,15 @@ public class MetricsWindow extends JFrame {
         statusPanel.removeAll();
         List<String> ValueList = guiC.getAllValue(idx);
 
-        if(ValueList.size() == 13){
+        if(ValueList.size() == 14){
             String header[] = {"Metric", "Value"};
             String contents[][] = {{"Date", ValueList.get(0)}, {"Commit String", ValueList.get(1)}, {"Branch Name", ValueList.get(2)},
-                    {"HalStead Vocabulary", ValueList.get(3)}, {"HalStead ProgLength", ValueList.get(4)},
-                    {"HalStead CalProgLength", ValueList.get(5)}, {"HalStead Volume", ValueList.get(6)},
-                    {"HalStead Difficulty", ValueList.get(7)}, {"HalStead Effort", ValueList.get(8)},
-                    {"HalStead Time Required", ValueList.get(9)}, {"HalStead Num Del Bugs", ValueList.get(10)},
-                    {"Cyclomatic Complexity", ValueList.get(11)}, {"Maintainability Index", ValueList.get(12)}};
+                    {"Code Length", ValueList.get(3)},
+                    {"HalStead Vocabulary", ValueList.get(4)}, {"HalStead ProgLength", ValueList.get(5)},
+                    {"HalStead CalProgLength", ValueList.get(6)}, {"HalStead Volume", ValueList.get(7)},
+                    {"HalStead Difficulty", ValueList.get(8)}, {"HalStead Effort", ValueList.get(9)},
+                    {"HalStead Time Required", ValueList.get(10)}, {"HalStead Num Del Bugs", ValueList.get(11)},
+                    {"Cyclomatic Complexity", ValueList.get(12)}, {"Maintainability Index", ValueList.get(13)}};
             statusPanel = new JTable(contents, header);
             jsp.setRightComponent(statusPanel);
 

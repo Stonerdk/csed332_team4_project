@@ -60,6 +60,7 @@ public class GUIController {
         temp.add(Commit.getDate().toString());
         temp.add(Commit.getCommitHash());
         temp.add(Commit.getBranchName());
+        temp.add(String.valueOf(Commit.getCodeLen()));
         temp.add(String.valueOf(Commit.getHalProgVocab()));
         temp.add(String.valueOf(Commit.getHalProgLen()));
         temp.add(String.valueOf(Commit.getHalCalProgLen()));
@@ -111,6 +112,10 @@ public class GUIController {
     public List<Double> getValueList(String Type){
         List<Double> temp = new ArrayList<Double>();
         switch(Type) {
+            case "Code Length":
+                for(CommitInfo c : File.getComInfoList()){
+                    temp.add((double)c.getCodeLen()); }
+                break;
             case "Halstead Vocabulary":
                 for(CommitInfo c : File.getComInfoList()){
                     temp.add(c.getHalProgVocab()); }

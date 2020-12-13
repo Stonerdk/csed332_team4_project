@@ -1,5 +1,8 @@
 package org.team4.team4_project.metric_calculation;
 
+import org.team4.team4_project.git.ChurnResult;
+import org.team4.team4_project.git.CodeChurn;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +35,9 @@ public class MetricInfo {
 
     //Maintainability Index
     private double maintainabilityIndex = 0;
+
+    // Code churn
+    private ChurnResult churn = new ChurnResult();
 
 
     public void setByVisitor(ASTVisitorSearch visitor) {
@@ -158,6 +164,51 @@ public class MetricInfo {
         return;
     }
 
+    public void addByCommitInfo(CommitInfo cInfo){
+        HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
+        HashMap<String, Integer> mergedOperands = new HashMap<String,Integer>();
+
+        for(Map.Entry<String, Integer> entry: operators.entrySet())
+            mergedOperators.put(entry.getKey(), entry.getValue());
+        for(Map.Entry<String, Integer> entry: operands.entrySet())
+            mergedOperands.put(entry.getKey(), entry.getValue());
+
+        cInfo.getOperators().forEach((k, v) -> mergedOperators.merge(k, v, Integer::sum));
+        cInfo.getOperands().forEach((k, v) -> mergedOperands.merge(k, v, Integer::sum));
+
+        operators = mergedOperators;
+        operands = mergedOperands;
+
+        dist_operators = operators.size();
+        dist_operands = operands.size();
+        total_operators = operators.values().stream().reduce(0, Integer::sum);
+        total_operands = operands.values().stream().reduce(0, Integer::sum);
+
+        HalsteadMetric halsteadMetric = new HalsteadMetric(dist_operators, dist_operands, total_operators, total_operands);
+
+        halSteadVocabulary = halsteadMetric.getVocabulary();
+        halSteadProgLength = halsteadMetric.getProglen();
+        halSteadCalProgLength = halsteadMetric.getCalcProgLen();
+        halSteadVolume = halsteadMetric.getVolume();
+        halSteadDifficulty = halsteadMetric.getDifficulty();
+        halSteadEffort = halsteadMetric.getEffort();
+        halSteadTimeRequired = halsteadMetric.getTimeReqProg();
+        halSteadNumDelBugs = halsteadMetric.getTimeDelBugs();
+
+        codeLen += cInfo.getCodeLen();
+        commentLen += cInfo.getCommentLen();
+        cyclomaticComplexity += cInfo.getCyclomaticComplexity();
+
+        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+
+        churn = churn.clone();
+        churn.setLinesAdded(churn.getLinesAdded() + cInfo.getChurn().getLinesAdded());
+        churn.setLinesDeleted(churn.getLinesDeleted() + cInfo.getChurn().getLinesDeleted());
+
+        return;
+
+    }
+
     public void setToCommitInfo(CommitInfo cInfo){
         cInfo.setHalProgVocab(halSteadVocabulary);
         cInfo.setHalProgLen(halSteadProgLength);
@@ -173,6 +224,7 @@ public class MetricInfo {
         cInfo.setOperators(operators);
         cInfo.setCodeLen(codeLen);
         cInfo.setCommentLen(commentLen);
+        cInfo.setChurn(churn);
 
         return;
     }
@@ -193,24 +245,23 @@ public class MetricInfo {
         total_operators = operators.values().stream().reduce(0, Integer::sum);
         total_operands = operands.values().stream().reduce(0, Integer::sum);
 
-        HalsteadMetric halsteadMetric = new HalsteadMetric(dist_operators, dist_operands, total_operators, total_operands);
-
-        halSteadVocabulary = halsteadMetric.getVocabulary();
-        halSteadProgLength = halsteadMetric.getProglen();
-        halSteadCalProgLength = halsteadMetric.getCalcProgLen();
-        halSteadVolume = halsteadMetric.getVolume();
-        halSteadDifficulty = halsteadMetric.getDifficulty();
-        halSteadEffort = halsteadMetric.getEffort();
-        halSteadTimeRequired = halsteadMetric.getTimeReqProg();
-        halSteadNumDelBugs = halsteadMetric.getTimeDelBugs();
+        halSteadVocabulary = (int)cInfo.getHalProgVocab();
+        halSteadProgLength = (int)cInfo.getHalProgLen();
+        halSteadCalProgLength = cInfo.getHalCalProgLen();
+        halSteadVolume = cInfo.getHalVolume();
+        halSteadDifficulty = cInfo.getHalDifficulty();
+        halSteadEffort = cInfo.getHalEffort();
+        halSteadTimeRequired = cInfo.getHalTime();
+        halSteadNumDelBugs = cInfo.getHalTime();
 
         cyclomaticComplexity = (int)cInfo.getCyclomaticComplexity();
 
         codeLen = cInfo.getCodeLen();
         commentLen = cInfo.getCommentLen();
 
-        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+        maintainabilityIndex = cInfo.getMaintainabilityIndex();
 
+        churn = cInfo.getChurn();
         return;
 
     }
