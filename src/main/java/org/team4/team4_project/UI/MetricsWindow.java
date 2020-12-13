@@ -2,6 +2,7 @@ package org.team4.team4_project.UI;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
+import com.intellij.util.io.IntToIntBtree;
 import com.intellij.util.ui.GridBag;
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
@@ -41,7 +42,9 @@ public class MetricsWindow extends JFrame {
     private JSplitPane jsp2;
     private JSlider slider;
     private JScrollPane scroll;
+    private JScrollPane scroll2;
     private JButton projButton;
+    private JButton resetButton;
 
     private ComboBox<String> comboBox;
 
@@ -132,27 +135,42 @@ public class MetricsWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guiC.selectProj();
+                projectTree.clearSelection();
                 graphPanel.repaint();
             }
         });
 
-        projectTree = new StructureTree();
-        projectTree.addTreeSelectionListener(new TreeSelectionListener() {
-            @Override
-            public void valueChanged(TreeSelectionEvent e) {
-                String path = projectTree.getSelectionPath().toString();
-                path = path.substring(1, path.length()-1);
-                path = path.replaceAll(", ", "/");
-                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
-                graphPanel.repaint();
-            }
-        });
+        setTree();
+
         JPanel treeGridContainer = new JPanel(new GridLayout());
         treeGridContainer.add(projectTree);
+
+        resetButton = new JButton("Reset Project");
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                guiC.refreshController();
+                treeGridContainer.removeAll();
+
+                setTree();
+
+                treeGridContainer.add(projectTree);
+
+                scroll2.revalidate();
+                scroll2.repaint();
+
+                scroll.revalidate();
+                scroll.repaint();
+            }
+        });
+
         treePanel.add(projButton, BorderLayout.NORTH);
+        treePanel.add(resetButton, BorderLayout.SOUTH);
+
         treePanel.add(treeGridContainer, BorderLayout.CENTER);
         //treePanel.setPreferredSize(new Dimension(130, 300));
 
+        scroll2 = new JScrollPane(treePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -162,7 +180,7 @@ public class MetricsWindow extends JFrame {
         jsp.setRightComponent(statusPanel);
         jsp.setResizeWeight(0.7);
 
-        jsp2.setLeftComponent(treePanel);
+        jsp2.setLeftComponent(scroll2);
         jsp2.setRightComponent(jsp);
         jsp2.setResizeWeight(0.2);
         contentPane.add(jsp2, BorderLayout.CENTER);
@@ -198,6 +216,20 @@ public class MetricsWindow extends JFrame {
         if (instance == null)
             instance = new MetricsWindow();
         return instance;
+    }
+
+    public void setTree(){
+        projectTree = new StructureTree();
+        projectTree.addTreeSelectionListener(new TreeSelectionListener() {
+            @Override
+            public void valueChanged(TreeSelectionEvent e) {
+                String path = projectTree.getSelectionPath().toString();
+                path = path.substring(1, path.length()-1);
+                path = path.replaceAll(", ", "/");
+                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
+                graphPanel.repaint();
+            }
+        });
     }
 
     public void setProject(Project project) {

@@ -74,6 +74,7 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         //nodeCnt = Math.min(historyList.size(), xCount);
         //setSize(Math.min(800, nodeCnt * 80), 480);
         maxValue = 0;
+        setPreferredSize(new Dimension(guiC.getSize() * 80 + 200, 480));
 
         for (double d : guiC.getValueList(type)) {
             maxValue = Math.max(maxValue, (int)Math.round(d));
