@@ -143,14 +143,17 @@ public class MetricsWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guiC.refreshController();
-                graphPanel.repaint();
-                scroll.repaint();
                 treeGridContainer.removeAll();
 
                 setTree();
 
                 treeGridContainer.add(projectTree);
-                projectTree.repaint();
+
+                scroll2.revalidate();
+                scroll2.repaint();
+
+                scroll.revalidate();
+                scroll.repaint();
             }
         });
 
