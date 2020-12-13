@@ -123,7 +123,11 @@ public class GUIController {
             case "Halstead Program Length":
                 for(CommitInfo c : File.getComInfoList()){
                     temp.add(c.getHalProgLen()); }
-                break;            case "Halstead Cal Prog Length":
+                break;
+            case "Halstead Cal Prog Length":
+                for(CommitInfo c : File.getComInfoList()){
+                    temp.add(c.getHalCalProgLen()); }
+                break;
             case "Halstead Volume":
                 for(CommitInfo c : File.getComInfoList()){
                     temp.add(c.getHalVolume()); }

@@ -56,13 +56,13 @@ public class MetricsWindow extends JFrame {
     private final String[] comboStrings = {
             "Code Length",
             "Halstead Vocabulary",
-            "HalStead ProgLength",
-            "HalStead CalProgLength",
+            "Halstead Program Length",
+            "Halstead Cal Prog Length",
             "Halstead Volume",
-            "HalStead Difficulty",
-            "HalStead Effort",
-            "HalStead Time Required",
-            "HalStead Num Del Bugs",
+            "Halstead Difficulty",
+            "Halstead Effort",
+            "Halstead Time Required",
+            "Halstead Num Del Bugs",
             "Cyclomatic Complexity",
             "Maintainability",
             "Code Churn"
@@ -121,7 +121,7 @@ public class MetricsWindow extends JFrame {
 
         contentPane.add(topPanel, BorderLayout.NORTH);
 
-        slider = new JSlider(0, 60, 60);                            // Slider to Zoom Graph
+        slider = new JSlider(20, 100, 60);                            // Slider to Zoom Graph
         slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
