@@ -20,7 +20,7 @@ public class ASTVisitorSearch extends ASTVisitor {
     }
 
     public boolean visit(InfixExpression node) {
-        System.out.println("InfixExpression");
+        //System.out.println("InfixExpression");
 
         if (!this.oprt.containsKey(node.getOperator().toString())) {
             this.oprt.put(node.getOperator().toString(), 1);
@@ -39,8 +39,8 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(node.getRightOperand().toString(), this.names.get(node.getRightOperand().toString()) + 1);
         }
-        System.out.println("Infix Left Operand  : " + node.getLeftOperand().toString());
-        System.out.println("Infix Right Operand : " + node.getRightOperand().toString());
+        //System.out.println("Infix Left Operand  : " + node.getLeftOperand().toString());
+        //System.out.println("Infix Right Operand : " + node.getRightOperand().toString());
 
         //For cyclomatic complexity (AND, OR)
         if (node.getOperator().toString().equals("&&")) {
@@ -61,20 +61,20 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.oprt.put(node.getOperator().toString(), this.oprt.get(node.getOperator().toString()) + 1);
         }
-        System.out.println("PostfixExpression");
+        //System.out.println("PostfixExpression");
 
         if (!this.names.containsKey(node.getOperand().toString())) {
             this.names.put(node.getOperand().toString(), 1);
         } else {
             this.names.put(node.getOperand().toString(), this.names.get(node.getOperand().toString()) + 1);
         }
-        System.out.println("Postfix Operand  : " + node.getOperand().toString());
+        //System.out.println("Postfix Operand  : " + node.getOperand().toString());
 
         return true;
     }
 
     public boolean visit(PrefixExpression node) {
-        System.out.println("PrefixExpression");
+        //System.out.println("PrefixExpression");
 
         if (!this.oprt.containsKey(node.getOperator().toString())) {
             this.oprt.put(node.getOperator().toString(), 1);
@@ -87,7 +87,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(node.getOperand().toString(), this.names.get(node.getOperand().toString()) + 1);
         }
-        System.out.println("Prefix Operand  : " + node.getOperand().toString());
+        //System.out.println("Prefix Operand  : " + node.getOperand().toString());
 
         return true;
     }
@@ -109,10 +109,10 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(node.getRightHandSide().toString(), this.names.get(node.getRightHandSide().toString()) + 1);
         }
-        System.out.println(node.getLeftHandSide().toString());
-        System.out.println(node.getRightHandSide().toString());
+        //System.out.println(node.getLeftHandSide().toString());
+        //out.println(node.getRightHandSide().toString());
 
-        System.out.println("Assignment");
+        //System.out.println("Assignment");
         return true;
     }
 
@@ -136,7 +136,7 @@ public class ASTVisitorSearch extends ASTVisitor {
                 this.names.put(templist.get(1), this.names.get(templist.get(1)) + 1);
             }
         }
-        System.out.println("SingleVariableDeclaration");
+        //System.out.println("SingleVariableDeclaration");
         return true;
     }
 
@@ -160,7 +160,7 @@ public class ASTVisitorSearch extends ASTVisitor {
                 this.names.put(templist.get(1), this.names.get(templist.get(1)) + 1);
             }
         }
-        System.out.println("VariableDeclarationFragment");
+        //System.out.println("VariableDeclarationFragment");
         return true;
     }
 
@@ -175,8 +175,8 @@ public class ASTVisitorSearch extends ASTVisitor {
         if (node.getIdentifier().equals("assert") || node.getIdentifier().equals("List") || node.getIdentifier().equals("Set") || node.getIdentifier().equals("Map")) {
             cycloComplexity++;
         }
-        System.out.println("SimpleName");
-        System.out.println(node.getIdentifier());
+        //System.out.println("SimpleName");
+        //System.out.println(node.getIdentifier());
         return true;
     }
     // Override visit the null nodes.
@@ -249,26 +249,26 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(IfStatement unit) {
         cycloComplexity++;
-        System.out.println("IFStatement");
+        //System.out.println("IFStatement");
         //System.out.println(unit.getElseStatement().toString());
         return true;
     }
     @Override
     public boolean visit(ForStatement unit) {
         cycloComplexity++;
-        System.out.println("ForStatement");
+        //System.out.println("ForStatement");
         return true;
     }
     @Override
     public boolean visit(WhileStatement unit) {
         cycloComplexity++;
-        System.out.println("WhileStatement");
+        //System.out.println("WhileStatement");
         return true;
     }
     @Override
     public boolean visit(AssertStatement unit) {
         cycloComplexity++;
-        System.out.println("AssertStatement");
+        //System.out.println("AssertStatement");
         return true;
     }
     @Override
@@ -277,7 +277,7 @@ public class ASTVisitorSearch extends ASTVisitor {
             cycloComplexity++;
 
         cycloComplexity += unit.catchClauses().size();
-        System.out.println("TryStatement");
+        //System.out.println("TryStatement");
         return true;
     }
     @Override
@@ -285,13 +285,13 @@ public class ASTVisitorSearch extends ASTVisitor {
         if(!unit.isDefault()) {
             cycloComplexity++;
         }
-        System.out.println("SwitchCase");
+        //System.out.println("SwitchCase");
         return true;
     }
     @Override
     public boolean visit(ConditionalExpression unit){
         cycloComplexity++;
-        System.out.println("ConditionalExpression");
+        //System.out.println("ConditionalExpression");
         if (!this.oprt.containsKey("?")) {
             this.oprt.put("?", 1);
         } else {
@@ -308,14 +308,14 @@ public class ASTVisitorSearch extends ASTVisitor {
         } else {
             this.names.put(unit.getThenExpression().toString(), this.names.get(unit.getThenExpression().toString()) + 1);
         }
-        System.out.println("Condition Else : " + unit.getElseExpression().toString());
-        System.out.println("Condition Then : " + unit.getThenExpression().toString());
+        //System.out.println("Condition Else : " + unit.getElseExpression().toString());
+        //System.out.println("Condition Then : " + unit.getThenExpression().toString());
         return true;
     }
     @Override
     public boolean visit(DoStatement unit){
         cycloComplexity++;
-        System.out.println("DoStatement");
+        //System.out.println("DoStatement");
         return true;
     }
 }
