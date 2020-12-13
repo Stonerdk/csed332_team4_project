@@ -126,6 +126,7 @@ public class MetricsWindow extends JFrame {
             @Override
             public void stateChanged(ChangeEvent e) {
                 graphPanel.Zoom(slider.getValue() + 20);
+                scroll.revalidate();
             }
         });
         scroll = new JScrollPane(graphPanel);

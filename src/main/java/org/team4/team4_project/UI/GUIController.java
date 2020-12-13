@@ -158,7 +158,9 @@ public class GUIController {
                 break;
             case "Code Churn":
                 for(CommitInfo c : File.getComInfoList()){
-                    temp.add(0.0); }
+                    temp.add((double)c.getChurn().getLinesAdded());
+                    temp.add((double)c.getChurn().getLinesDeleted());
+                }
                 break; // Implement code churn own way without using getValue
             default:
                 System.out.println("Wrong type name : " + Type);
