@@ -348,12 +348,13 @@ public class MetricMain {
                     }
                     else if (projectComInfo.getDate().equals(c.getDate())){
                         projectMetricInfo.setByCommitInfo(projectComInfo);
-                        projectMetricInfo.addByVisitor(comVisitor);
-                        CommitInfo mergedComInfo = new CommitInfo();
+                        projectMetricInfo.addByCommitInfo(c);
+
+                        CommitInfo mergedComInfo = projectComInfo.clone();
                         projectMetricInfo.setToCommitInfo(mergedComInfo);
-                        mergedComInfo.setCommitHash(projectComInfo.getCommitHash());
-                        mergedComInfo.setDate(projectComInfo.getDate());
-                        mergedComInfo.setChurn(projectComInfo.getChurn());
+                        //mergedComInfo.setCommitHash(projectComInfo.getCommitHash());
+                        //mergedComInfo.setDate(projectComInfo.getDate());
+                        //mergedComInfo.setChurn(projectComInfo.getChurn());
                         projectComInfoList.remove(i);
                         projectComInfoList.add(i, mergedComInfo);
                         break;

@@ -5,10 +5,10 @@ import org.team4.team4_project.git.ChurnResult;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CommitInfo {
+public class CommitInfo implements Cloneable {
     //Basic Information
     private String commitHash = "arb commit hash";
-    private String branchName = "arb branch name";
+    private String branchName = "master";
     private ChurnResult churn = new ChurnResult();
     private Date date = new Date(20201203);
 
@@ -98,4 +98,15 @@ public class CommitInfo {
 
     public int getCommentLen(){return commentLen;}
     public void setCommentLen(int cl){commentLen = cl;}
+
+    public CommitInfo clone(){
+        CommitInfo vo = null;
+        try {
+            vo = (CommitInfo) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return vo;
+    }
+
 }
