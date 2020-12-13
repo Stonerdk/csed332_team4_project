@@ -55,8 +55,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         return true;
     }
 
-    // Override visit the postfix expressions nodes.
-    // if the expression's operator doesn't exist in the operator hashmap, insert it, otherwise, increment the count field.
     public boolean visit(PostfixExpression node) {
         if (!this.oprt.containsKey(node.getOperator().toString())) {
             this.oprt.put(node.getOperator().toString(), 1);
@@ -74,8 +72,7 @@ public class ASTVisitorSearch extends ASTVisitor {
 
         return true;
     }
-    // Override visit the prefix expressions nodes.
-    // if the expression's operator doesn't exist in the operator hashmap, insert it, otherwise, increment the count field.
+
     public boolean visit(PrefixExpression node) {
         System.out.println("PrefixExpression");
 
@@ -94,8 +91,7 @@ public class ASTVisitorSearch extends ASTVisitor {
 
         return true;
     }
-    // Override visit the Assignment statements nodes.
-    // if the assignment's operator doesn't exist in the operator hashmap, insert it, otherwise, increment the count field.
+
     public boolean visit(Assignment node) {
         if (!this.oprt.containsKey(node.getOperator().toString())) {
             this.oprt.put(node.getOperator().toString(), 1);
@@ -119,8 +115,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         System.out.println("Assignment");
         return true;
     }
-    // Override visit the Single Variable Declaration nodes.
-    // add the "=" operators to the hashmap of operators if the variable is initialized
+
     public boolean visit(SingleVariableDeclaration node) {
         if (node.getInitializer() != null) {
             if (!this.oprt.containsKey("=")) {
@@ -144,8 +139,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         System.out.println("SingleVariableDeclaration");
         return true;
     }
-    // Override visit the Variable Declaration Fragment nodes.
-    // add the "=" operators to the hashmap of operators if the variable is initialized
+
     public boolean visit(VariableDeclarationFragment node) {
         if (node.getInitializer() != null) {
             if (!this.oprt.containsKey("=")) {
@@ -169,8 +163,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         System.out.println("VariableDeclarationFragment");
         return true;
     }
-    // Override visit the SimpleNames nodes.
-    // if the SimpleName doesn't exist in the names hashmap, insert it, otherwise, increment the count field.
+
     public boolean visit(SimpleName node) {
         /*
         if (!this.names.containsKey(node.getIdentifier())) {
@@ -199,8 +192,7 @@ public class ASTVisitorSearch extends ASTVisitor {
         return true;
     }
      */
-    // Override visit the string literal nodes.
-    // if the string literal doesn't exist in the names hashmap, insert it, otherwise, increment the count field.
+
     /*
     public boolean visit(StringLiteral node) {
         if (!this.names.containsKey(node.getLiteralValue())) {
@@ -300,6 +292,24 @@ public class ASTVisitorSearch extends ASTVisitor {
     public boolean visit(ConditionalExpression unit){
         cycloComplexity++;
         System.out.println("ConditionalExpression");
+        if (!this.oprt.containsKey("?")) {
+            this.oprt.put("?", 1);
+        } else {
+            this.oprt.put("?", this.oprt.get("?") + 1);
+        }
+
+        if (!this.names.containsKey(unit.getElseExpression().toString())) {
+            this.names.put(unit.getElseExpression().toString(), 1);
+        } else {
+            this.names.put(unit.getElseExpression().toString(), this.names.get(unit.getElseExpression().toString()) + 1);
+        }
+        if (!this.names.containsKey(unit.getThenExpression().toString())) {
+            this.names.put(unit.getThenExpression().toString(), 1);
+        } else {
+            this.names.put(unit.getThenExpression().toString(), this.names.get(unit.getThenExpression().toString()) + 1);
+        }
+        System.out.println("Condition Else : " + unit.getElseExpression().toString());
+        System.out.println("Condition Then : " + unit.getThenExpression().toString());
         return true;
     }
     @Override
