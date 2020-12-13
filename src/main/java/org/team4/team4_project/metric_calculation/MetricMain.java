@@ -206,8 +206,8 @@ public class MetricMain {
         GitHandler gitHandler = new GitHandler(temp);
         List<FileInfo> fileInfoList = gitHandler.getFileInfo();
         String name = ProjectHandler.getProject().getName();
-        for(FileInfo f : fileInfoList){
-            f.setFilePath(name+"/"+f.getFilePath());
+        for (FileInfo f : fileInfoList) {
+            f.setFilePath(name + "/" + f.getFilePath());
         }
 
         /**
@@ -327,26 +327,34 @@ public class MetricMain {
         // Calculate for each commit
         FileInfo projectFileInfo = new FileInfo();
         projectFileInfo.setIsProject();
-        CommitInfo projectComInfo = new CommitInfo();
+        //CommitInfo projectComInfo = new CommitInfo();
         List<CommitInfo> projectComInfoList = new ArrayList<CommitInfo>();
-        MetricInfo projectMetricInfo = new MetricInfo();
+        //MetricInfo projectMetricInfo = new MetricInfo();
+
+        Map<Date, List<CommitInfo>> dateListMap = new HashMap<Date, List<CommitInfo>>();
+        List<Map.Entry<Date, List<CommitInfo>>> dateListList;
+
 
         for (FileInfo f : fileInfoList) {
             MetricInfo comMetricInfo = new MetricInfo();
 
-            for (CommitInfo c : f.getComInfoList()) {
+            for (int cIdx = 0; cIdx < f.getComInfoList().size(); cIdx++) {
+                CommitInfo c = f.getComInfoList().get(cIdx);
                 ASTVisitorSearch comVisitor = parse(c.getChurn().getcode().toCharArray(), 1);
                 comMetricInfo.setByVisitor(comVisitor);
                 comMetricInfo.setToCommitInfo(c);
 
+                //Put into dateListMap
+                dateListMap.put(c.getDate(), new ArrayList<CommitInfo>());
+
                 // Find a proper index to put this commit in ProjectFileInfo's CommitInfoList (by Date)
-                for(int i=0 ; i < projectComInfoList.size() ; i++){
+                /*
+                for (int i = 0; i < projectComInfoList.size(); i++) {
                     projectComInfo = projectComInfoList.get(i);
-                    if(projectComInfo.getDate().after(c.getDate())){
+                    if (projectComInfo.getDate().after(c.getDate())) {
                         projectComInfoList.add(i, c); //
                         break;
-                    }
-                    else if (projectComInfo.getDate().equals(c.getDate())){
+                    } else if (projectComInfo.getDate().equals(c.getDate())) {
                         projectMetricInfo.setByCommitInfo(projectComInfo);
                         projectMetricInfo.addByCommitInfo(c);
 
@@ -359,22 +367,88 @@ public class MetricMain {
                         projectComInfoList.add(i, mergedComInfo);
                         break;
 
-                    }
-                    else{
-                        if (i == projectComInfoList.size()-1) {
+                    } else {
+                        if (i == projectComInfoList.size() - 1) {
                             projectComInfoList.add(c);
                             break;
                         }
                     }
+
                 }
-                if(projectComInfoList.isEmpty()) {
+                if (projectComInfoList.isEmpty()) {
                     projectComInfoList.add(c);
                 }
+                */
             }
-
         }
+
+        //Sort dateListMap to List
+        dateListList = new ArrayList<Map.Entry<Date, List<CommitInfo>>>(dateListMap.entrySet());
+        Collections.sort(
+                dateListList
+                ,   new Comparator<Map.Entry<Date, List<CommitInfo>>>() {
+                    public int compare(Map.Entry<Date, List<CommitInfo>> a, Map.Entry<Date, List<CommitInfo>> b) {
+                        return a.getKey().compareTo(b.getKey());
+                    }
+                }
+        );
+
+        //put each CommitInfo to all proper date's list
+        for(FileInfo f : fileInfoList){
+            int dIdx = 0;
+            for (int cIdx = 0; cIdx < f.getComInfoList().size(); cIdx++){
+
+                CommitInfo curCom = f.getComInfoList().get(cIdx);
+
+                //last element
+                if(cIdx == f.getComInfoList().size()-1){
+                    Date curDate = f.getComInfoList().get(cIdx).getDate();
+                    //put until the last date's list
+                    for(; dIdx <dateListList.size() ; dIdx++){
+                        if(!dateListList.get(dIdx).getKey().before(curDate)){
+                                dateListList.get(dIdx).getValue().add(curCom);
+                        }
+                        else
+                            break;
+                    }
+                }
+
+                else{
+                    Date curDate = f.getComInfoList().get(cIdx).getDate();
+                    Date nextDate = f.getComInfoList().get(cIdx+1).getDate();
+
+                    for(; dIdx <dateListList.size() ; dIdx++){
+                        //for all date which is curDate<= date < nextDate, put curCom
+                        if(!dateListList.get(dIdx).getKey().before(curDate)){
+                            if(dateListList.get(dIdx).getKey().before(nextDate)){
+                                dateListList.get(dIdx).getValue().add(curCom);
+                            }
+                            else
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        //Combine metrics stored in each date's list
+        for(int dIdx = 0 ; dIdx < dateListList.size(); dIdx++){
+            MetricInfo mergedMetricInfo = new MetricInfo();
+            for(int cIdx = 0 ; cIdx < dateListList.get(dIdx).getValue().size() ; cIdx++){
+                CommitInfo curCom = dateListList.get(dIdx).getValue().get(cIdx);
+                if(cIdx == 0)
+                    mergedMetricInfo.setByCommitInfo(curCom);
+                else{
+                    mergedMetricInfo.addByCommitInfo(curCom);
+                }
+            }
+            CommitInfo mergedComInfo = new CommitInfo();
+            mergedMetricInfo.setToCommitInfo(mergedComInfo);
+            projectComInfoList.add(mergedComInfo);
+        }
+
         projectFileInfo.setComInfoList(projectComInfoList);
         fileInfoList.add(0, projectFileInfo);
+
 
         return fileInfoList;
     }
