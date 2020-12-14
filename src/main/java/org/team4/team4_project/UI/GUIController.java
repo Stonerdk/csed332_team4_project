@@ -73,8 +73,9 @@ public class GUIController {
         temp.add(String.valueOf(Commit.getMaintainabilityIndex()));
         temp.add(String.valueOf(Commit.getChurn().getLinesAdded()));
         temp.add(String.valueOf(Commit.getChurn().getLinesDeleted()));
-
-
+        temp.add(String.valueOf(Commit.getNumMethod()));
+        temp.add(String.valueOf(Commit.getNumLoop()));
+        temp.add(String.valueOf(Commit.getNumImport()));
         return temp;
     }
 
@@ -166,6 +167,18 @@ public class GUIController {
                 }
 
                 break; // Implement code churn own way without using getValue
+            case "Number of Methods":
+                for (CommitInfo c : File.getComInfoList()) {
+                    temp.add((double)c.getNumMethod());
+                }
+            case "Number of Loops":
+                for (CommitInfo c : File.getComInfoList()) {
+                    temp.add((double)c.getNumLoop());
+                }
+            case "Number of Imports":
+                for (CommitInfo c : File.getComInfoList()) {
+                    temp.add((double)c.getNumImport());
+                }
             default:
                 System.out.println("Wrong type name : " + Type);
                 break;

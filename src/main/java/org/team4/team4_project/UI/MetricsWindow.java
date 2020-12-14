@@ -69,7 +69,10 @@ public class MetricsWindow extends JFrame {
                 "Halstead Num Del Bugs",
                 "Cyclomatic Complexity",
                 "Maintainability",
-                "Code Churn"
+                "Code Churn",
+                "Number of Methods",
+                "Number of Loops",
+                "Number of Imports"
         };
         graphPanel.setType(comboStrings[0]);
         graphPanel.repaint();
@@ -169,7 +172,7 @@ public class MetricsWindow extends JFrame {
         statusPanel.removeAll();
         List<String> ValueList = guiC.getAllValue(idx);
 
-        if(ValueList.size() == 16){
+        if(ValueList.size() == 19){
             String[] header = {"Metric", "Value"};
             String[][] contents = {{"Date", ValueList.get(0)},
                     {"Commit String", ValueList.get(1)},
@@ -186,7 +189,11 @@ public class MetricsWindow extends JFrame {
                     {"Cyclomatic Complexity", ValueList.get(12)},
                     {"Maintainability Index", ValueList.get(13)},
                     {"Code Churn Added", ValueList.get(14)},
-                    {"Code Churn Deleted", ValueList.get(15)}};
+                    {"Code Churn Deleted", ValueList.get(15)},
+                    {"Number of Methods", ValueList.get(16)},
+                    {"Number of Loops", ValueList.get(17)},
+                    {"Number of Imports", ValueList.get(18)}
+            };
             statusPanel = new JTable(contents, header);
             jsp.setRightComponent(statusPanel);
 
