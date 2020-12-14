@@ -134,9 +134,11 @@ public class CodeChurn {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.startsWith("-") && !line.startsWith("---")) {
-                        codes.remove(deletestartline - 1 - deletenumlines);
-                        deletenumlines++;
-                        deletestartline++;
+                        if(codes.size() >= deletestartline - deletenumlines) {
+                            codes.remove(deletestartline - 1 - deletenumlines);
+                            deletenumlines++;
+                            deletestartline++;
+                        }
                     } else if (line.startsWith("@@")) {
                         String[] split = line.split(" ");
                         String[] split3 = split[1].split(",");
@@ -149,7 +151,6 @@ public class CodeChurn {
                         deletestartline = Integer.valueOf(split3[0]) * -1;
                     }
                 }
-
 
                 Scanner scanner2 = new Scanner(difference);
                 int addnumLines = 1;
@@ -209,7 +210,7 @@ public class CodeChurn {
             for (int i = 0; i < addnumLines; i++) {
                 codes.add("");
             }
-            for (int i = codessize - 1; i >= addstartLine - 1; i--) {
+            for (int i = codessize - 1; i >= addstartLine - 1 && i >= 0; i--) {
                 codes.set(i + addnumLines, codes.get(i));
             }
         }
