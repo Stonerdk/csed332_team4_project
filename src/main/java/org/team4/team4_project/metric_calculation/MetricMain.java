@@ -443,10 +443,11 @@ public class MetricMain {
                     mergedMetricInfo.addByCommitInfo(curCom);
                 }
 
-                //Set date, commitHash
+                //Set date, commitHash, and combine Churn
                 if(curCom.getDate().equals(dateListList.get(dIdx).getKey())){
                     mergedComInfo.setDate(curCom.getDate());
                     mergedComInfo.setCommitHash(curCom.getCommitHash());
+                    mergedMetricInfo.addChurn(curCom.getChurn());
                 }
             }
 
