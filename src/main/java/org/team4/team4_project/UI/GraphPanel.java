@@ -16,11 +16,20 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     private int height = 400;
     private int xOffset = 100;
     private int yOffset = 100;
-    private int delay = 20;
     private int mouseX, mouseY;
-    private int yPartition = 8;
-    private int hoverJ = -1;
+    private int checkIndex = -1;
     private int zoom = 80;
+
+    Color colorTransparent = new JBColor(new Color(30, 80, 200, 128), new Color(30, 80, 200, 128));
+    JBColor colorNormal = new JBColor(new Color(30, 80, 200), new Color(30, 80, 200));
+    JBColor colorSelected = new JBColor(new Color(40, 50, 160), new Color(40, 50, 160));
+    Color colorChurnAddedTransparent = new JBColor(new Color(25, 110, 53, 128),new Color(25, 110, 53, 128));
+    JBColor colorChurnAdded = new JBColor(new Color(25, 110, 53), new Color(25, 110, 53));
+    JBColor colorChurnAddedSelected = new JBColor(new Color(25, 70, 30), new Color(25, 70, 30));
+    Color colorChurnDeletedTransparent = new JBColor(new Color(237, 79, 55, 128), new Color(237, 79, 55, 128));
+    JBColor colorChurnDeleted = new JBColor(new Color(237, 79, 55), new Color(237, 79, 55));
+    JBColor colorChurnDeletedSelected = new JBColor(new Color(160, 49, 35), new Color(160, 49, 35));
+
     //private CommitInfo hoverHistory = null;
     MetricsWindow parentFrame;
     String type;
@@ -79,25 +88,34 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         int postX = 0, postY = 0;
         for(int i = guiC.getSize() - 1; i >= 0; i--) {
             int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
+            int x = xOffset + i * zoom + 40;
+            int y = yOffset + height - height * value / maxValue;
 
-            int x = i * zoom + 40;
-            int y = height - height * value / maxValue;
+            if (i != guiC.getSize() - 1) {
+                g.setColor(colorTransparent);
+                g.fillPolygon(new int[]{x, postX, postX, x}, new int[]{y, postY, yOffset + height, yOffset + height}, 4);
+            }
 
-            int radius = (hoverJ == guiC.getSize() - 1 - i) ? 10 : 5;
-            g.setColor(JBColor.ORANGE);
-            g.setColor(JBColor.LIGHT_GRAY);
-            g.drawLine(xOffset + x, yOffset + height, xOffset + x, yOffset + y);
-
-            g.fillOval(xOffset + x - radius, yOffset + y - radius, radius * 2, radius * 2);
-            if (i != guiC.getSize() - 1)
-                g.drawLine(xOffset + x, yOffset + y, xOffset + postX, yOffset + postY);
-
+            g.setColor(colorNormal);
+            g.drawLine(x, yOffset + height, x, y);
+            if (i != guiC.getSize() - 1) {
+                g.drawLine(x, y, postX, postY);
+            }
             g.setColor(JBColor.black);
             String dat = guiC.getCommitDate(i);
-            g.drawString(dat, xOffset + x - 18, yOffset + height + 30);
+            g.drawString(dat, x - 18, yOffset + height + 30);
             postX = x;
             postY = y;
 
+        }
+
+        for(int i = guiC.getSize() - 1; i >= 0; i--) {
+            int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
+            int x = xOffset + i * zoom + 40;
+            int y = yOffset + height - height * value / maxValue;
+            int radius = (hoverIndex == i || checkIndex == i) ? 10 : 5;
+            g.setColor(checkIndex == i ? colorSelected : colorNormal);
+            g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
         }
     }
 
@@ -125,7 +143,6 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             g.drawLine(xOffset, y1, xRightOffset, y1);
             g.drawLine(xOffset, y2, xRightOffset, y2);
         }
-
         g.drawLine(xOffset, yOffset, xOffset, yOffset + height);
         g.drawLine(xRightOffset, yOffset, xRightOffset, yOffset + height);
         int x;
@@ -134,23 +151,28 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         for(int i = guiC.getSize() - 1; i >= 0; i--) {
             int added = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2))));
             int deleted = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2 + 1))));
-
             x = xOffset + i * zoom + 40;
             y1 = yOffset + height / 2 - (height / 2) * added / maxValue;
             y2 = yOffset + height / 2 + (height / 2) * deleted / maxValue;
+            int radius = (hoverIndex == i || checkIndex == i) ? 10 : 5;
 
-            int radius = (hoverJ == guiC.getSize() - 1 - i) ? 10 : 5;
-            g.setColor(JBColor.BLUE);
+            if (i != guiC.getSize() - 1) {
+                g.setColor(colorChurnAddedTransparent);
+                g.fillPolygon(new int[]{x, postX, postX, x}, new int[]{y1, postY1, yOffset + height / 2, yOffset + height / 2}, 4);
+                g.setColor(colorChurnDeletedTransparent);
+                g.fillPolygon(new int[]{x, postX, postX, x}, new int[]{y2, postY2, yOffset + height / 2, yOffset + height / 2}, 4);
+            }
+
+            g.setColor(colorChurnAdded);
             g.drawLine(x, yOffset + height / 2, x, y1);
-            g.fillOval(x - radius, y1 - radius, radius * 2, radius * 2);
             if (i != guiC.getSize() - 1)
                 g.drawLine(x, y1, postX, postY1);
-
-            g.setColor(JBColor.ORANGE);
+            g.setColor(colorChurnDeleted);
             g.drawLine(x, yOffset + height / 2, x, y2);
-            g.fillOval(x - radius, y2 - radius, radius * 2, radius * 2);
             if (i != guiC.getSize() - 1)
                 g.drawLine(x, y2, postX, postY2);
+
+
 
             g.setColor(JBColor.black);
             String dat = guiC.getCommitDate(i);
@@ -160,25 +182,20 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             postY1 = y1;
             postY2 = y2;
         }
+        for(int i = guiC.getSize() - 1; i >= 0; i--) {
+            int added = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2))));
+            int deleted = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2 + 1))));
+            x = xOffset + i * zoom + 40;
+            y1 = yOffset + height / 2 - (height / 2) * added / maxValue;
+            y2 = yOffset + height / 2 + (height / 2) * deleted / maxValue;
+            int radius = (hoverIndex == i || checkIndex == i) ? 10 : 5;
+            g.setColor(checkIndex == i ? colorChurnAddedSelected : colorChurnAdded);
+            g.fillOval(x - radius, y1 - radius, radius * 2, radius * 2);
+            g.setColor(checkIndex == i ? colorChurnDeletedSelected : colorChurnDeleted);
+            g.fillOval(x - radius, y2 - radius, radius * 2, radius * 2);
+        }
     }
 
-    /*private double getValue(HistoryData h, String type) {
-        switch(type) {
-            case "Halstead Vocabulary": return h.getHalsteadVocabulary();
-            case "Halstead Program Length": return h.getHalsteadProgLength();
-            case "Halstead Cal Prog Length": return h.getHalsteadCalProgLength();
-            case "Halstead Volume": return h.getHalsteadVolume();
-            case "Halstead Difficulty": return h.getHalsteadDifficulty();
-            case "Halstead Effort": return h.getHalsteadEffort();
-            case "Halstead Time Required": return h.getHalsteadTimeRequired();
-            case "Halstead Num Del Bugs": return h.getHalsteadNumDelBugs();
-            case "Cyclomatic Complexity": return h.getCyclomaticComplexity();
-            case "Maintainability" : return h.getMaintainablityIndex();
-            case "Code Churn" : return 0; // Implement code churn own way without using getValue
-        }
-        System.out.println("Wrong type name : " + type);
-        return 0;
-    }*/
 
 
     void setType(String type) {
@@ -197,49 +214,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-        //  System.out.println(e.getX() + ", " + e.getY());
-        int j = 0;
-        hoverJ = -1;
-        //hoverHistory = null;
-        hoverIndex = -1;
-        if (!type.equals("Code Churn")) {
-            for (int i = guiC.getSize() - 1; i >= 0; i--) {
-                int value = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i))));
-                int x = i * zoom + 20;
-                int y = height - height * value / maxValue;
-                Rectangle rect = new Rectangle(xOffset + x - 5, yOffset + y - 20, 40, 40);
-                if (rect.contains(mouseX, mouseY)) {
-                    hoverJ = j;
-                    hoverIndex = i;
-                }
-                j++;
-            }
-        } else {
-            for (int i = guiC.getSize() - 1; i >= 0; i--) {
-                int added = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2))));
-                int deleted = Integer.parseInt(String.valueOf(Math.round(guiC.getValueList(type).get(i * 2 + 1))));
-                int x = i * zoom + 20;
-                int y1 = height / 2 - (height / 2) * added / maxValue;
-                int y2 = height / 2 + (height / 2) * deleted / maxValue;
-                Rectangle rect1 = new Rectangle(xOffset + x - 5, yOffset + y1 - 20, 40, 40);
-                Rectangle rect2 = new Rectangle(xOffset + x - 5, yOffset + y2 - 20, 40, 40);
-                if (rect1.contains(mouseX, mouseY) || rect2.contains(mouseX, mouseY)) {
-                    hoverJ = j;
-                    hoverIndex = i;
-                }
-                j++;
-            }
-        }
+        int u = (e.getX() + zoom / 2 - xOffset - 40) / zoom;
+        hoverIndex = u;
         repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         //System.out.println("Mouse CLicked");
-        if (hoverIndex != -1)
+        if (hoverIndex != -1) {
             parentFrame.setStatusHistory(hoverIndex);
+            checkIndex = hoverIndex;
+        }
         parentFrame.repaint();
     }
 
