@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.util.io.IntToIntBtree;
 import com.intellij.util.ui.GridBag;
+import org.team4.team4_project.git.GitHandler;
 import org.team4.team4_project.history.HistoryData;
 import org.team4.team4_project.history.HistoryReader;
 import org.team4.team4_project.metric_calculation.CommitInfo;
@@ -38,20 +39,18 @@ public class MetricsWindow extends JFrame {
     private final JScrollPane scroll2;
 
     private ComboBox<String> comboBox;
+    private ComboBox<String> branchBox;
 
     private JTree projectTree;
 
     private final GUIController guiC;
 
     private MetricsWindow () {
-
         guiC = GUIController.getInstance();
         guiC.refreshController();
 
         setTitle("Software Metrics Graph");
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 800);
-
         Container contentPane = getContentPane();
 
         JPanel topPanel = new JPanel();
@@ -98,7 +97,16 @@ public class MetricsWindow extends JFrame {
             }
         });
 
+        branchBox = new ComboBox<>(guiC.getBranchStrings());
+        branchBox.addActionListener((ActionEvent e)->{
+            String s = Objects.requireNonNull(branchBox.getSelectedItem()).toString();
+            System.out.println(s);
+            guiC.setBranch(s);
+            graphPanel.repaint();
+        });
+
         topPanel.add(comboBox);
+        topPanel.add(branchBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
 
@@ -131,7 +139,11 @@ public class MetricsWindow extends JFrame {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guiC.refreshController();
+                guiC.setBranch("master");
+                branchBox = new ComboBox<>(guiC.getBranchStrings());
+                branchBox.addActionListener((ActionEvent e2)->{
+                    guiC.setBranch(Objects.requireNonNull(branchBox.getSelectedItem()).toString());
+                });
                 treeGridContainer.removeAll();
 
                 setTree();
@@ -199,12 +211,6 @@ public class MetricsWindow extends JFrame {
 
             repaint();
         }
-
-        /*if (h == null) {
-            statusPane.setText("");
-        } else {
-            statusPane.setText(h.toString());
-        }*/
     }
 
     public static MetricsWindow getInstance() {

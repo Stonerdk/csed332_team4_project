@@ -2,6 +2,8 @@ package org.team4.team4_project.UI;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.DepthWalk;
+import org.team4.team4_project.ProjectHandler;
+import org.team4.team4_project.git.GitHandler;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.FileInfo;
 import org.team4.team4_project.metric_calculation.MetricMain;
@@ -16,6 +18,8 @@ public class GUIController {
     private FileInfo File;
     private FileInfo Proj;
     private CommitInfo Commit;
+    private String[] branchStrings;
+    private String branch = "master";
 
     private static GUIController guiC = new GUIController();
 
@@ -25,7 +29,10 @@ public class GUIController {
 
     public void refreshController(){
         try {
-            FileList = new MetricMain().mcMain();
+            FileList = new MetricMain().mcMain(branch);
+            GitHandler gitHandler = new GitHandler(ProjectHandler.getProject().getBasePath());
+            branchStrings = gitHandler.getBranchList().toArray(new String[0]);
+            System.out.println(gitHandler.getBranchList());
             for(FileInfo f : FileList){
                 if(f.isProject()) {
                     Proj = f;
@@ -37,6 +44,19 @@ public class GUIController {
         } catch (ParseException | NullPointerException | IOException | GitAPIException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+        refreshController();
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public String[] getBranchStrings() {
+        return branchStrings;
     }
 
     public boolean isProj(){

@@ -185,7 +185,7 @@ public class MetricMain {
 
     }
 
-    public List<FileInfo> mcMain() throws IOException, ParseException, GitAPIException {
+    public List<FileInfo> mcMain(String bName) throws IOException, ParseException, GitAPIException {
         /**
          * Option1. get the Directory name from the user
          */
@@ -204,7 +204,7 @@ public class MetricMain {
         // Get from git
         String temp = ProjectHandler.getProject().getBasePath();
         GitHandler gitHandler = new GitHandler(temp);
-        List<FileInfo> fileInfoList = gitHandler.getFileInfo();
+        List<FileInfo> fileInfoList = gitHandler.getFileInfo(bName);
         String name = ProjectHandler.getProject().getName();
         for (FileInfo f : fileInfoList) {
             f.setFilePath(name + "/" + f.getFilePath());
