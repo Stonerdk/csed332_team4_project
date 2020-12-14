@@ -39,6 +39,9 @@ public class MetricInfo {
     // Code churn
     private ChurnResult churn = new ChurnResult();
 
+    //Number of Methods per Class
+    private int num_methods = 0;
+
 
     public void setByVisitor(ASTVisitorSearch visitor) {
         operands = visitor.names;
@@ -66,6 +69,9 @@ public class MetricInfo {
         commentLen = visitor.commentLen;
 
         maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+
+        num_methods = visitor.num_methods;
+
 
         return;
     }
@@ -123,6 +129,8 @@ public class MetricInfo {
         return maintainabilityIndex;
     }
 
+    public int getNum_methods() { return num_methods; }
+
     public void addByVisitor(ASTVisitorSearch visitor){
         HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
         HashMap<String, Integer> mergedOperands = new HashMap<String,Integer>();
@@ -161,6 +169,7 @@ public class MetricInfo {
 
         maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
+        num_methods += visitor.num_methods;
         return;
     }
 
@@ -205,6 +214,8 @@ public class MetricInfo {
         churn.setLinesAdded(churn.getLinesAdded() + cInfo.getChurn().getLinesAdded());
         churn.setLinesDeleted(churn.getLinesDeleted() + cInfo.getChurn().getLinesDeleted());
 
+        num_methods += cInfo.getNumMethods();
+
         return;
 
     }
@@ -225,6 +236,7 @@ public class MetricInfo {
         cInfo.setCodeLen(codeLen);
         cInfo.setCommentLen(commentLen);
         cInfo.setChurn(churn);
+        cInfo.setNumMethods(num_methods);
 
         return;
     }
@@ -262,6 +274,7 @@ public class MetricInfo {
         maintainabilityIndex = cInfo.getMaintainabilityIndex();
 
         churn = cInfo.getChurn();
+        num_methods = cInfo.getNumMethods();
         return;
 
     }

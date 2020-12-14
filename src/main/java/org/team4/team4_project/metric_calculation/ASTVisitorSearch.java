@@ -14,6 +14,8 @@ public class ASTVisitorSearch extends ASTVisitor {
     public int codeLen = 0;
     public int commentLen = 0;
     public int cycloComplexity = 1;
+    public int num_methods = 0;
+
 
     public boolean visit(Expression node) {
         return true;
@@ -179,8 +181,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         //System.out.println(node.getIdentifier());
         return true;
     }
-    // Override visit the null nodes.
-    // if the null doesn't exist in the names hashmap, insert it, otherwise, increment the count field.
     /*
     public boolean visit(NullLiteral node) {
         if (!this.names.containsKey("null")) {
@@ -191,9 +191,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         System.out.println("NullLiteral");
         return true;
     }
-     */
-
-    /*
     public boolean visit(StringLiteral node) {
         if (!this.names.containsKey(node.getLiteralValue())) {
             this.names.put(node.getLiteralValue(), 1);
@@ -318,4 +315,17 @@ public class ASTVisitorSearch extends ASTVisitor {
         //System.out.println("DoStatement");
         return true;
     }
+
+    /*
+    visit for other metrics
+     */
+    @Override
+    public boolean visit(MethodDeclaration unit){
+        num_methods++;
+        //System.out.println("MethodDeclaration");
+        return true;
+    }
+
+
+
 }
