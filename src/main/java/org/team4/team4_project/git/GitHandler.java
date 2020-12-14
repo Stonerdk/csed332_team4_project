@@ -41,14 +41,14 @@ public class GitHandler {
         return repository;
     }
 
-    public List<String> getAllFiles() throws IOException, GitAPIException {
+    public List<String> getAllFiles(String branchName) throws IOException, GitAPIException {
         List<String> fileList = new ArrayList<String>();
         RevWalk walk = new RevWalk(repository);
 
         List<Ref> branches = git.branchList().call();
 
         for (Ref branch : branches) {
-            if (branch.getName().equals("refs/heads/master")) {
+            if (branch.getName().equals("refs/heads/" + (branchName.equals("") ? "master" : branchName))) {
                 Iterable<RevCommit> commits = git.log().call();
 
                 for (RevCommit commit : commits) {
@@ -92,7 +92,7 @@ public class GitHandler {
     }
 
     public List<FileInfo> getFileInfo() throws IOException, GitAPIException {
-        List<String> files = getAllFiles();
+        List<String> files = getAllFiles("");
         List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
 
         for (String file: files) {
@@ -109,5 +109,38 @@ public class GitHandler {
 
         System.out.println(fileInfoList);
         return fileInfoList;
+    }
+
+    public List<FileInfo> getFileInfo(String branchName) throws IOException, GitAPIException {
+        List<String> files = getAllFiles(branchName);
+        List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
+
+        for (String file: files) {
+            FileInfo fileInfo = new FileInfo();
+
+            String fileName = file.substring(file.lastIndexOf('/') + 1);
+            fileInfo.setFileName(fileName);
+            fileInfo.setFilePath(file);
+
+            List<CommitInfo> commitInfos = new CodeChurn(repository).addPath(file).calc();
+            fileInfo.setComInfoList(commitInfos);
+            fileInfoList.add(fileInfo);
+        }
+
+        System.out.println(fileInfoList);
+        return fileInfoList;
+    }
+
+    public List<String> getBranchList() throws GitAPIException {
+        List<Ref> branches = git.branchList().call();
+        List<String> branchList = new ArrayList<String>();
+
+        for (Ref branch: branches) {
+            String branchFullName = branch.getName();
+            String branchName = branchFullName.substring(branchFullName.lastIndexOf('/') + 1);
+            branchList.add(branchName);
+        }
+
+        return branchList;
     }
 }
