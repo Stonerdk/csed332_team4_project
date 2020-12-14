@@ -1,6 +1,7 @@
 package org.team4.team4_project.git;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -12,7 +13,6 @@ import org.team4.team4_project.metric_calculation.FileInfo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -132,7 +132,7 @@ public class GitHandler {
     }
 
     public List<String> getBranchList() throws GitAPIException {
-        List<Ref> branches = git.branchList().call();
+        List<Ref> branches = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
         List<String> branchList = new ArrayList<String>();
 
         for (Ref branch: branches) {
