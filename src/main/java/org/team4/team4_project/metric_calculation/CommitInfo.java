@@ -28,7 +28,9 @@ public class CommitInfo implements Cloneable {
     private double maintainabilityIndex;
     private int codeLen;
     private int commentLen;
-    private int num_methods;
+    private int num_method;
+    private int num_loop;
+    private int num_import;
 
     public Boolean isBasicInfoFilled(){
         if(commitHash == null )
@@ -100,8 +102,14 @@ public class CommitInfo implements Cloneable {
     public int getCommentLen(){return commentLen;}
     public void setCommentLen(int cl){commentLen = cl;}
 
-    public int getNumMethods(){return num_methods;}
-    public void setNumMethods(int nm){num_methods = nm;}
+    public int getNumMethod(){return num_method;}
+    public void setNumMethod(int nm){num_method = nm;}
+
+    public int getNumLoop(){return num_loop;}
+    public void setNumLoop(int lp){num_loop = lp;}
+
+    public int getNumImport(){return num_import;}
+    public void setNumImport(int imp){num_import = imp;}
 
     public CommitInfo clone(){
         CommitInfo vo = null;

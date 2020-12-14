@@ -14,7 +14,9 @@ public class ASTVisitorSearch extends ASTVisitor {
     public int codeLen = 0;
     public int commentLen = 0;
     public int cycloComplexity = 1;
-    public int num_methods = 0;
+    public int num_method = 0;
+    public int num_loop = 0;
+    public int num_import = 0;
 
 
     public boolean visit(Expression node) {
@@ -177,6 +179,8 @@ public class ASTVisitorSearch extends ASTVisitor {
         if (node.getIdentifier().equals("assert") || node.getIdentifier().equals("List") || node.getIdentifier().equals("Set") || node.getIdentifier().equals("Map")) {
             cycloComplexity++;
         }
+        if(node.getIdentifier().equals("import"))
+            num_import++;
         //System.out.println("SimpleName");
         //System.out.println(node.getIdentifier());
         return true;
@@ -253,12 +257,14 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(ForStatement unit) {
         cycloComplexity++;
+        num_loop++;
         //System.out.println("ForStatement");
         return true;
     }
     @Override
     public boolean visit(WhileStatement unit) {
         cycloComplexity++;
+        num_loop++;
         //System.out.println("WhileStatement");
         return true;
     }
@@ -312,16 +318,14 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(DoStatement unit){
         cycloComplexity++;
+        num_loop++;
         //System.out.println("DoStatement");
         return true;
     }
 
-    /*
-    visit for other metrics
-     */
     @Override
     public boolean visit(MethodDeclaration unit){
-        num_methods++;
+        num_method++;
         //System.out.println("MethodDeclaration");
         return true;
     }

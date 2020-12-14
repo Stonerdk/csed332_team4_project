@@ -40,7 +40,10 @@ public class MetricInfo {
     private ChurnResult churn = new ChurnResult();
 
     //Number of Methods per Class
-    private int num_methods = 0;
+    private int num_method = 0;
+
+    private int num_loop = 0;
+    private int num_import = 0;
 
 
     public void setByVisitor(ASTVisitorSearch visitor) {
@@ -70,8 +73,9 @@ public class MetricInfo {
 
         maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
-        num_methods = visitor.num_methods;
-
+        num_method = visitor.num_method;
+        num_loop = visitor.num_loop;
+        num_import = visitor.num_import;
 
         return;
     }
@@ -129,7 +133,7 @@ public class MetricInfo {
         return maintainabilityIndex;
     }
 
-    public int getNum_methods() { return num_methods; }
+    public int getNumMethod() { return num_method; }
 
     public void addByVisitor(ASTVisitorSearch visitor){
         HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
@@ -169,7 +173,10 @@ public class MetricInfo {
 
         maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
-        num_methods += visitor.num_methods;
+        num_method += visitor.num_method;
+        num_loop += visitor.num_loop;
+        num_import += visitor.num_import;
+
         return;
     }
 
@@ -214,7 +221,9 @@ public class MetricInfo {
         churn.setLinesAdded(churn.getLinesAdded() + cInfo.getChurn().getLinesAdded());
         churn.setLinesDeleted(churn.getLinesDeleted() + cInfo.getChurn().getLinesDeleted());
 
-        num_methods += cInfo.getNumMethods();
+        num_method += cInfo.getNumMethod();
+        num_loop += cInfo.getNumLoop();
+        num_import += cInfo.getNumImport();
 
         return;
 
@@ -236,7 +245,11 @@ public class MetricInfo {
         cInfo.setCodeLen(codeLen);
         cInfo.setCommentLen(commentLen);
         cInfo.setChurn(churn);
-        cInfo.setNumMethods(num_methods);
+        cInfo.setNumMethod(num_method);
+        cInfo.setNumLoop(num_loop);
+        cInfo.setNumImport(num_import);
+        cInfo.setNumLoop(num_loop);
+        cInfo.setNumImport(num_import);
 
         return;
     }
@@ -274,8 +287,10 @@ public class MetricInfo {
         maintainabilityIndex = cInfo.getMaintainabilityIndex();
 
         churn = cInfo.getChurn();
-        num_methods = cInfo.getNumMethods();
-        return;
+        num_method = cInfo.getNumMethod();
+        num_loop = cInfo.getNumLoop();
+        num_import = cInfo.getNumImport();
 
+        return;
     }
 }
