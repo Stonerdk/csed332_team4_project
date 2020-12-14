@@ -71,7 +71,8 @@ public class MetricInfo {
         codeLen = visitor.codeLen;
         commentLen = visitor.commentLen;
 
-        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+        maintainabilityIndex = (codeLen == 0) ? 100 : (halSteadVolume == 0) ? Math.max(0, 100 * (171.0 - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0) :
+                Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
         num_method = visitor.num_method;
         num_loop = visitor.num_loop;
@@ -173,7 +174,8 @@ public class MetricInfo {
         halSteadTimeRequired = halsteadMetric.getTimeReqProg();
         halSteadNumDelBugs = halsteadMetric.getTimeDelBugs();
 
-        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+        maintainabilityIndex = (codeLen == 0) ? 100 : (halSteadVolume == 0) ? Math.max(0, 100 * (171.0 - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0) :
+                Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
         num_method += visitor.num_method;
         num_loop += visitor.num_loop;
@@ -217,7 +219,8 @@ public class MetricInfo {
         commentLen += cInfo.getCommentLen();
         cyclomaticComplexity += cInfo.getCyclomaticComplexity();
 
-        maintainabilityIndex = Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
+        maintainabilityIndex = (codeLen == 0) ? 100 : (halSteadVolume == 0) ? Math.max(0, 100 * (171.0 - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0) :
+                Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
         /*
         churn = churn.clone();
@@ -261,13 +264,6 @@ public class MetricInfo {
         cInfo.setNumLoop(num_loop);
         cInfo.setNumImport(num_import);
 
-        return;
-    }
-
-    public void addByString(String str){
-        halSteadVolume +=10;
-        cyclomaticComplexity += 20;
-        maintainabilityIndex += 30;
         return;
     }
 
