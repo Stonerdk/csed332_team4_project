@@ -179,8 +179,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         if (node.getIdentifier().equals("assert") || node.getIdentifier().equals("List") || node.getIdentifier().equals("Set") || node.getIdentifier().equals("Map")) {
             cycloComplexity++;
         }
-        if(node.getIdentifier().equals("import"))
-            num_import++;
         //System.out.println("SimpleName");
         //System.out.println(node.getIdentifier());
         return true;
@@ -326,6 +324,13 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(MethodDeclaration unit){
         num_method++;
+        //System.out.println("MethodDeclaration");
+        return true;
+    }
+
+    @Override
+    public boolean visit(ImportDeclaration unit){
+        num_import++;
         //System.out.println("MethodDeclaration");
         return true;
     }
