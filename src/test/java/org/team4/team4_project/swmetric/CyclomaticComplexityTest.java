@@ -46,7 +46,7 @@ public class CyclomaticComplexityTest {
         metricInfo.setByVisitor(ASTVisitorFile);
 
         //System.out.println("Cyclometic complexity in this .java file = " + metricInfo.getCyclomaticComplexity());
-        Assert.assertEquals(3, metricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(4, metricInfo.getCyclomaticComplexity());
     }
     @Test
     public void testWhileLoop() throws IOException {

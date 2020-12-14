@@ -14,6 +14,10 @@ public class ASTVisitorSearch extends ASTVisitor {
     public int codeLen = 0;
     public int commentLen = 0;
     public int cycloComplexity = 1;
+    public int num_method = 0;
+    public int num_loop = 0;
+    public int num_import = 0;
+
 
     public boolean visit(Expression node) {
         return true;
@@ -179,8 +183,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         //System.out.println(node.getIdentifier());
         return true;
     }
-    // Override visit the null nodes.
-    // if the null doesn't exist in the names hashmap, insert it, otherwise, increment the count field.
     /*
     public boolean visit(NullLiteral node) {
         if (!this.names.containsKey("null")) {
@@ -191,9 +193,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         System.out.println("NullLiteral");
         return true;
     }
-     */
-
-    /*
     public boolean visit(StringLiteral node) {
         if (!this.names.containsKey(node.getLiteralValue())) {
             this.names.put(node.getLiteralValue(), 1);
@@ -256,12 +255,14 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(ForStatement unit) {
         cycloComplexity++;
+        num_loop++;
         //System.out.println("ForStatement");
         return true;
     }
     @Override
     public boolean visit(WhileStatement unit) {
         cycloComplexity++;
+        num_loop++;
         //System.out.println("WhileStatement");
         return true;
     }
@@ -315,7 +316,25 @@ public class ASTVisitorSearch extends ASTVisitor {
     @Override
     public boolean visit(DoStatement unit){
         cycloComplexity++;
+        num_loop++;
         //System.out.println("DoStatement");
         return true;
     }
+
+    @Override
+    public boolean visit(MethodDeclaration unit){
+        num_method++;
+        //System.out.println("MethodDeclaration");
+        return true;
+    }
+
+    @Override
+    public boolean visit(ImportDeclaration unit){
+        num_import++;
+        //System.out.println("MethodDeclaration");
+        return true;
+    }
+
+
+
 }
