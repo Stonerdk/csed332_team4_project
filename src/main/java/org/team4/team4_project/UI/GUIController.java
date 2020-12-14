@@ -171,14 +171,17 @@ public class GUIController {
                 for (CommitInfo c : File.getComInfoList()) {
                     temp.add((double)c.getNumMethod());
                 }
+                break;
             case "Number of Loops":
                 for (CommitInfo c : File.getComInfoList()) {
                     temp.add((double)c.getNumLoop());
                 }
+                break;
             case "Number of Imports":
                 for (CommitInfo c : File.getComInfoList()) {
                     temp.add((double)c.getNumImport());
                 }
+                break;
             default:
                 System.out.println("Wrong type name : " + Type);
                 break;
