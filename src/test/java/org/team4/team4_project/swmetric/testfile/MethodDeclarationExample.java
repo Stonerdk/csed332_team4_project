@@ -1,6 +1,6 @@
 package org.team4.team4_project.swmetric.testfile;
 
-public class methodnum_testfile {
+public class MethodDeclarationExample {
     int a;
 
     private void method() {

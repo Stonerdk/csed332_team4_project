@@ -134,6 +134,8 @@ public class MetricInfo {
     }
 
     public int getNumMethod() { return num_method; }
+    public int getNumLoop() { return num_loop; }
+    public int getNumImport() { return num_import; }
 
     public void addByVisitor(ASTVisitorSearch visitor){
         HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
