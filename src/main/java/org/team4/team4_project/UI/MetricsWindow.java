@@ -100,7 +100,6 @@ public class MetricsWindow extends JFrame {
         branchBox = new ComboBox<>(guiC.getBranchStrings());
         branchBox.addActionListener((ActionEvent e)->{
             String s = Objects.requireNonNull(branchBox.getSelectedItem()).toString();
-            System.out.println(s);
             guiC.setBranch(s);
             graphPanel.repaint();
         });

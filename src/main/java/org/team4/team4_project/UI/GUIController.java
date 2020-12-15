@@ -32,7 +32,6 @@ public class GUIController {
             FileList = new MetricMain().mcMain(branch);
             GitHandler gitHandler = new GitHandler(ProjectHandler.getProject().getBasePath());
             branchStrings = gitHandler.getBranchList().toArray(new String[0]);
-            System.out.println(gitHandler.getBranchList());
             for(FileInfo f : FileList){
                 if(f.isProject()) {
                     Proj = f;

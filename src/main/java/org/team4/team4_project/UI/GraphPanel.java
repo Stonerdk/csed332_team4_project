@@ -154,7 +154,6 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             x = xOffset + i * zoom + 40;
             y1 = yOffset + height / 2 - (height / 2) * added / maxValue;
             y2 = yOffset + height / 2 + (height / 2) * deleted / maxValue;
-            int radius = (hoverIndex == i || checkIndex == i) ? 10 : 5;
 
             if (i != guiC.getSize() - 1) {
                 g.setColor(colorChurnAddedTransparent);
@@ -214,14 +213,12 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int u = (e.getX() + zoom / 2 - xOffset - 40) / zoom;
-        hoverIndex = u;
+        hoverIndex = (e.getX() + zoom / 2 - xOffset - 40) / zoom;
         repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //System.out.println("Mouse CLicked");
         if (hoverIndex != -1) {
             parentFrame.setStatusHistory(hoverIndex);
             checkIndex = hoverIndex;
