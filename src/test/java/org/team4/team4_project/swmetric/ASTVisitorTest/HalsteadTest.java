@@ -1,4 +1,4 @@
-package org.team4.team4_project.swmetric;
+package org.team4.team4_project.swmetric.ASTVisitorTest;
 
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;

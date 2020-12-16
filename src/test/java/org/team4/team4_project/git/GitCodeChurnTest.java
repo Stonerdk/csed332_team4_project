@@ -12,7 +12,13 @@ import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.FileInfo;
 
 public class GitCodeChurnTest {
+    /*
+     * These are tests done in local directory
+     * We did not remove, just keep it in comment
+     */
 
+
+    /*
     @Test
     public void Test() throws Exception {
         GitHandler gitHandler = new GitHandler("C:\\Users\\admin\\Documents\\GitHub\\team4_project\\datatest\\homework6");
@@ -29,5 +35,6 @@ public class GitCodeChurnTest {
         assertEquals(5,result.get(0).getChurn().getLinesAdded());
         //assertEquals(1,result.getLinesDeleted());
     }
+    */
 
 }
