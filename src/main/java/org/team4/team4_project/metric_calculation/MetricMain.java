@@ -105,40 +105,6 @@ public class MetricMain {
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
             final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-            // Check for compilationUnits problems in the provided file
-            /*IProblem[] problems = cu.getProblems();
-            for(IProblem problem : problems) {
-                // Ignore some error because of the different versions.
-                if (problem.getID() == 1610613332) 		 // 1610613332 = Syntax error, annotations are only available if source level is 5.0
-                    continue;
-                else if (problem.getID() == 1610613329) // 1610613329 = Syntax error, parameterized types are only available if source level is 5.0
-                    continue;
-                else if (problem.getID() == 1610613328) // 1610613328 = Syntax error, 'for each' statements are only available if source level is 5.0
-                    continue;
-                else if (problem.getID() == 1610612969) // Syntax error on tokens, delete these tokens 	    /Problem ID=1610612969
-                    continue;
-                else if (problem.getID() == 1610612967) // Syntax error on token "assert", AssignmentOperator expected after this token 	 /Problem ID=1610612967
-                    continue;
-                else if (problem.getID() == 536871352) // 'assert' should not be used as an identifier, since it is a reserved keyword from source level 1.4	 /Problem ID=536871352
-                    continue;
-                else if (problem.getID() == 1610612940) //Syntax error on token "=", != expected 	 /Problem ID=1610612940
-                    continue;
-                else
-                {
-                    // quit compilation if
-                    System.out.println("CompilationUnit problem Message " + problem.getMessage() + " \t At line= "+problem.getSourceLineNumber() + "\t Problem ID="+ problem.getID());
-
-                    System.out.println("The program will quit now!");
-
-                    /** We need to modify **/
-                    /**
-                     * We are not considering trouble making files!!!!!!!!!!!!!!!!!!!!!!!
-                     */
-                    //System.exit(1);
-                    /*ASTVisitorSearch tempVisitor = new ASTVisitorSearch();
-                    return tempVisitor;
-                }
-            }*/
             // visit nodes of the constructed AST
             ASTVisitorSearch visitor= new ASTVisitorSearch();
             cu.accept(visitor);
@@ -152,10 +118,6 @@ public class MetricMain {
                 String comment_str = (new String(str)).substring(start, end);
 
                 visitor.commentLen += comment_str.lines().count();
-
-                //System.out.println(comment_str);
-                //System.out.println(comment_str.lines().count());
-
 
             }
 
@@ -186,21 +148,7 @@ public class MetricMain {
     }
 
     public List<FileInfo> mcMain(String bName) throws IOException, ParseException, GitAPIException {
-        /**
-         * Option1. get the Directory name from the user
-         */
-        /*
-        String DirName = null;
-        Scanner user_input = new Scanner(System.in);
-        System.out.print("Enter Directory Name: ");
-        DirName = user_input.next();
-        user_input.close();
-        System.out.println("Directory Name is: " + DirName);
-        */
 
-        /**
-         * Option 2. get from Git
-         */
         // Get from git
         String temp = ProjectHandler.getProject().getBasePath();
         GitHandler gitHandler = new GitHandler(temp);
@@ -348,38 +296,7 @@ public class MetricMain {
                 //Put into dateListMap
                 dateListMap.put(c.getDate(), new ArrayList<CommitInfo>());
 
-                // Find a proper index to put this commit in ProjectFileInfo's CommitInfoList (by Date)
-                /*
-                for (int i = 0; i < projectComInfoList.size(); i++) {
-                    projectComInfo = projectComInfoList.get(i);
-                    if (projectComInfo.getDate().after(c.getDate())) {
-                        projectComInfoList.add(i, c); //
-                        break;
-                    } else if (projectComInfo.getDate().equals(c.getDate())) {
-                        projectMetricInfo.setByCommitInfo(projectComInfo);
-                        projectMetricInfo.addByCommitInfo(c);
 
-                        CommitInfo mergedComInfo = projectComInfo.clone();
-                        projectMetricInfo.setToCommitInfo(mergedComInfo);
-                        //mergedComInfo.setCommitHash(projectComInfo.getCommitHash());
-                        //mergedComInfo.setDate(projectComInfo.getDate());
-                        //mergedComInfo.setChurn(projectComInfo.getChurn());
-                        projectComInfoList.remove(i);
-                        projectComInfoList.add(i, mergedComInfo);
-                        break;
-
-                    } else {
-                        if (i == projectComInfoList.size() - 1) {
-                            projectComInfoList.add(c);
-                            break;
-                        }
-                    }
-
-                }
-                if (projectComInfoList.isEmpty()) {
-                    projectComInfoList.add(c);
-                }
-                */
             }
         }
 

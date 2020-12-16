@@ -222,11 +222,7 @@ public class MetricInfo {
         maintainabilityIndex = (codeLen == 0) ? 100 : (halSteadVolume == 0) ? Math.max(0, 100 * (171.0 - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0) :
                 Math.max(0, 100 * (171.0 - 5.2 * Math.log(halSteadVolume) - 0.23 * cyclomaticComplexity - 16.2 * Math.log(codeLen) + 50.0 * Math.sin(Math.pow(2.4 * Math.toRadians(commentLen/(codeLen+1)), 0.5))) / 171.0);
 
-        /*
-        churn = churn.clone();
-        churn.setLinesAdded(churn.getLinesAdded() + cInfo.getChurn().getLinesAdded());
-        churn.setLinesDeleted(churn.getLinesDeleted() + cInfo.getChurn().getLinesDeleted());
-        */
+
 
         num_method += cInfo.getNumMethod();
         num_loop += cInfo.getNumLoop();
