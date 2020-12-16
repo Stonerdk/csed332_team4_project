@@ -1,8 +1,6 @@
 package org.team4.team4_project.UI;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.revwalk.DepthWalk;
-import org.team4.team4_project.ProjectHandler;
 import org.team4.team4_project.git.GitHandler;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.FileInfo;
@@ -18,8 +16,10 @@ public class GUIController {
     private FileInfo File;
     private FileInfo Proj;
     private CommitInfo Commit;
-    private String[] branchStrings;
-    private final String branch = "master";
+    //private String[] branchStrings;
+    private String path;
+    private String proj;
+    //private final String branch = "master";
 
     private static GUIController guiC = new GUIController();
 
@@ -27,11 +27,14 @@ public class GUIController {
         return guiC;
     }
 
-    public void refreshController(){
+    public void refreshController(String _path, String projName){
         try {
-            FileList = new MetricMain().mcMain(branch);
-            GitHandler gitHandler = new GitHandler(ProjectHandler.getProject().getBasePath());
-            branchStrings = gitHandler.getBranchList().toArray(new String[0]);
+            path = _path;
+            proj = projName;
+
+            FileList = new MetricMain().mcMain(path, proj);
+            GitHandler gitHandler = new GitHandler(path);
+            //branchStrings = gitHandler.getBranchList().toArray(new String[0]);
             for(FileInfo f : FileList){
                 if(f.isProject()) {
                     Proj = f;
@@ -45,6 +48,13 @@ public class GUIController {
         }
     }
 
+    public String getPath(){
+        return path;
+    }
+
+    public String getProj(){
+        return proj;
+    }/*
 
     public String getBranch() {
         return branch;
@@ -56,7 +66,7 @@ public class GUIController {
 
     public boolean isProj(){
         return File.isProject();
-    }
+    }*/
 
     public int getSize(){
         return File.getComInfoList().size();
@@ -74,7 +84,6 @@ public class GUIController {
 
         temp.add(Commit.getDate().toString());
         temp.add(Commit.getCommitHash());
-        temp.add(Commit.getBranchName());
         temp.add(String.valueOf(Commit.getCodeLen()));
         temp.add(String.valueOf(Commit.getHalProgVocab()));
         temp.add(String.valueOf(Commit.getHalProgLen()));
@@ -118,10 +127,6 @@ public class GUIController {
 
     public void selectProj(){
         File = Proj;
-    }
-
-    public String getFileName(int idx){
-        return FileList.get(idx).getFileName();
     }
 
     public String getFilePath(int idx){
@@ -180,7 +185,6 @@ public class GUIController {
                     temp.add((double)c.getChurn().getLinesAdded());
                     temp.add((double)c.getChurn().getLinesDeleted());
                 }
-
                 break; // Implement code churn own way without using getValue
             case "Number of Methods":
                 for (CommitInfo c : File.getComInfoList()) {

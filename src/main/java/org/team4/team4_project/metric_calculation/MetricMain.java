@@ -147,13 +147,13 @@ public class MetricMain {
 
     }
 
-    public List<FileInfo> mcMain(String bName) throws IOException, ParseException, GitAPIException {
+    public List<FileInfo> mcMain(String path, String name) throws IOException, ParseException, GitAPIException {
 
         // Get from git
-        String temp = ProjectHandler.getProject().getBasePath();
-        GitHandler gitHandler = new GitHandler(temp);
+        //String temp = ProjectHandler.getProject().getBasePath();
+        GitHandler gitHandler = new GitHandler(path);
         List<FileInfo> fileInfoList = gitHandler.getFileInfo();
-        String name = ProjectHandler.getProject().getName();
+        //String name = ProjectHandler.getProject().getName();
         for (FileInfo f : fileInfoList) {
             f.setFilePath(name + "/" + f.getFilePath());
         }
