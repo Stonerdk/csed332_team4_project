@@ -1,12 +1,15 @@
 package org.team4.team4_project.swmetric;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.metric_calculation.ASTVisitorSearch;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.MetricInfo;
 import org.team4.team4_project.metric_calculation.MetricMain;
+
+import java.util.Date;
 
 public class CommitInfoTest {
     MetricInfo testMetricInfo = new MetricInfo();
@@ -15,7 +18,8 @@ public class CommitInfoTest {
     ChurnResult tempChurn = new ChurnResult();
     CommitInfo testComInfo = new CommitInfo();
 
-    public void test_setting() {
+    @Before
+    public void initTest() {
         tempChurn.setcode("class LowInterestAccount implements Account {\n" +
                 "    //TODO implement this\n" +
                 "    private int accountNumber;\n" +
@@ -62,6 +66,7 @@ public class CommitInfoTest {
                 "        return;\n" +
                 "    }\n" +
                 "}");
+        testComInfo.setDate(new Date(0));
 
         testComInfo.setChurn(tempChurn);
 
@@ -73,20 +78,17 @@ public class CommitInfoTest {
     }
     @Test
     public void OperandOperatorTest() {
-        test_setting();
         Assert.assertEquals("4", testComInfo.getOperands().get("balance").toString());
         Assert.assertEquals("4", testComInfo.getOperators().get("=").toString());
     }
     @Test
     public void GitTest() {
-        test_setting();
         Assert.assertEquals("arb commit hash", testComInfo.getCommitHash());
         Assert.assertEquals("master", testComInfo.getBranchName());
         Assert.assertEquals(0, testComInfo.getChurn().getLinesAdded());
     }
     @Test
     public void HalsteadTest() {
-        test_setting();
         Assert.assertEquals(17, Math.round(testComInfo.getHalProgVocab()));
         Assert.assertEquals(26, Math.round(testComInfo.getHalProgLen()));
         Assert.assertEquals(54, Math.round(testComInfo.getHalCalProgLen()));
@@ -98,26 +100,26 @@ public class CommitInfoTest {
     }
     @Test
     public void CyclomaticComplexityTest() {
-        test_setting();
         Assert.assertEquals(2, Math.round(testComInfo.getCyclomaticComplexity()));
     }
     @Test
     public void MaintainabilityTest() {
-        test_setting();
         Assert.assertEquals(49, Math.round(testComInfo.getMaintainabilityIndex()));
     }
     @Test
     public void Code_Comment_Test() {
-        test_setting();
         Assert.assertEquals(46, testComInfo.getCodeLen());
         Assert.assertEquals(7, testComInfo.getCommentLen());
     }
     @Test
     public void ExtraMetricTest() {
-        test_setting();
         Assert.assertEquals(7, testComInfo.getNumMethod());
         Assert.assertEquals(1, testComInfo.getNumLoop());
         Assert.assertEquals(0, testComInfo.getNumImport());
+    }
+    @Test
+    public void getDateTest(){
+        Assert.assertEquals("Thu Jan 01 09:00:00 KST 1970", testComInfo.getDate().toString());
     }
 
 }

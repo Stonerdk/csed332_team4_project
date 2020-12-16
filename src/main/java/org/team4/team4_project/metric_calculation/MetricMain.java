@@ -9,11 +9,8 @@ import com.intellij.codeInsight.completion.impl.CamelHumpMatcher;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.team4.team4_project.ProjectHandler;
 import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.git.GitHandler;
-import org.team4.team4_project.history.HistoryData;
-
 
 public class MetricMain {
 

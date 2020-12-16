@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.team4.team4_project.UI.GUIController;
 
 public class GUIControllerTest {
-    GUIController guiC = GUIController.getInstance();
+    /*GUIController guiC = GUIController.getInstance();
 
     @Before
     public void init(){
@@ -65,6 +65,6 @@ public class GUIControllerTest {
     @Test
     public void getFilePathTest(){
         assertEquals("homework3/homework3/homework3/src/main/java/edu/postech/csed332/homework3/AdjacencyListGraph.java", guiC.getFilePath(0));
-    }
+    }*/
 
 }
