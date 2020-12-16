@@ -39,7 +39,6 @@ public class MetricsWindow extends JFrame {
     private final JScrollPane scroll2;
 
     private ComboBox<String> comboBox;
-    private ComboBox<String> branchBox;
 
     private JTree projectTree;
 
@@ -97,15 +96,8 @@ public class MetricsWindow extends JFrame {
             }
         });
 
-        branchBox = new ComboBox<>(guiC.getBranchStrings());
-        branchBox.addActionListener((ActionEvent e)->{
-            String s = Objects.requireNonNull(branchBox.getSelectedItem()).toString();
-            guiC.setBranch(s);
-            graphPanel.repaint();
-        });
 
         topPanel.add(comboBox);
-        topPanel.add(branchBox);
 
         contentPane.add(topPanel, BorderLayout.NORTH);
 
@@ -138,11 +130,6 @@ public class MetricsWindow extends JFrame {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guiC.setBranch("master");
-                branchBox = new ComboBox<>(guiC.getBranchStrings());
-                branchBox.addActionListener((ActionEvent e2)->{
-                    guiC.setBranch(Objects.requireNonNull(branchBox.getSelectedItem()).toString());
-                });
                 treeGridContainer.removeAll();
 
                 setTree();

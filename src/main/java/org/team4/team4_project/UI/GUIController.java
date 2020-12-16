@@ -19,7 +19,7 @@ public class GUIController {
     private FileInfo Proj;
     private CommitInfo Commit;
     private String[] branchStrings;
-    private String branch = "master";
+    private final String branch = "master";
 
     private static GUIController guiC = new GUIController();
 
@@ -45,10 +45,6 @@ public class GUIController {
         }
     }
 
-    public void setBranch(String branch) {
-        this.branch = branch;
-        refreshController();
-    }
 
     public String getBranch() {
         return branch;
