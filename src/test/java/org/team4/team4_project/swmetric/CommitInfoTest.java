@@ -1,4 +1,4 @@
-package org.team4.team4_project;
+package org.team4.team4_project.swmetric;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,14 +8,12 @@ import org.team4.team4_project.metric_calculation.CommitInfo;
 import org.team4.team4_project.metric_calculation.MetricInfo;
 import org.team4.team4_project.metric_calculation.MetricMain;
 
-import java.util.ArrayList;
-
-public class MetricInfoTest {
+public class CommitInfoTest {
     MetricInfo testMetricInfo = new MetricInfo();
 
     MetricMain metricMain = new MetricMain();
     ChurnResult tempChurn = new ChurnResult();
-    CommitInfo tempComInfo = new CommitInfo();
+    CommitInfo testComInfo = new CommitInfo();
 
     public void test_setting() {
         tempChurn.setcode("class LowInterestAccount implements Account {\n" +
@@ -65,52 +63,61 @@ public class MetricInfoTest {
                 "    }\n" +
                 "}");
 
-        tempComInfo.setChurn(tempChurn);
+        testComInfo.setChurn(tempChurn);
 
-        ASTVisitorSearch tempVisitor = metricMain.parse(tempComInfo.getChurn().getcode().toCharArray(), 1);
+        ASTVisitorSearch tempVisitor = metricMain.parse(testComInfo.getChurn().getcode().toCharArray(), 1);
 
-        testMetricInfo.setByCommitInfo(tempComInfo);
+        testMetricInfo.setByCommitInfo(testComInfo);
         testMetricInfo.setByVisitor(tempVisitor);
-        testMetricInfo.setToCommitInfo(tempComInfo);
+        testMetricInfo.setToCommitInfo(testComInfo);
     }
     @Test
-    public void OperandTest() {
+    public void OperandOperatorTest() {
         test_setting();
-        Assert.assertEquals(11, testMetricInfo.getDistOperands());
-        Assert.assertEquals(6, testMetricInfo.getDistOperators());
-        Assert.assertEquals(17, testMetricInfo.getTotalOperands());
-        Assert.assertEquals(9, testMetricInfo.getTotalOperators());
+        Assert.assertEquals("4", testComInfo.getOperands().get("balance").toString());
+        Assert.assertEquals("4", testComInfo.getOperators().get("=").toString());
+    }
+    @Test
+    public void GitTest() {
+        test_setting();
+        Assert.assertEquals("arb commit hash", testComInfo.getCommitHash());
+        Assert.assertEquals("master", testComInfo.getBranchName());
+        Assert.assertEquals(0, testComInfo.getChurn().getLinesAdded());
     }
     @Test
     public void HalsteadTest() {
         test_setting();
-        Assert.assertEquals(17, Math.round(testMetricInfo.getHalsteadVocabulary()));
-        Assert.assertEquals(26, Math.round(testMetricInfo.getHalsteadProgLength()));
-        Assert.assertEquals(54, Math.round(testMetricInfo.getHalsteadCalProgLength()));
-        Assert.assertEquals(106, Math.round(testMetricInfo.getHalsteadVolume()));
-        Assert.assertEquals(5, Math.round(testMetricInfo.getHalsteadDifficulty()));
-        Assert.assertEquals(493, Math.round(testMetricInfo.getHalsteadEffort()));
-        Assert.assertEquals(27, Math.round(testMetricInfo.getHalsteadTimeRequired()));
-        Assert.assertEquals(0, Math.round(testMetricInfo.getHalsteadNumDelBugs()));
+        Assert.assertEquals(17, Math.round(testComInfo.getHalProgVocab()));
+        Assert.assertEquals(26, Math.round(testComInfo.getHalProgLen()));
+        Assert.assertEquals(54, Math.round(testComInfo.getHalCalProgLen()));
+        Assert.assertEquals(106, Math.round(testComInfo.getHalVolume()));
+        Assert.assertEquals(5, Math.round(testComInfo.getHalDifficulty()));
+        Assert.assertEquals(493, Math.round(testComInfo.getHalEffort()));
+        Assert.assertEquals(27, Math.round(testComInfo.getHalTime()));
+        Assert.assertEquals(0, Math.round(testComInfo.getHalNumBugs()));
     }
     @Test
-    public void CyclomaticTest() {
+    public void CyclomaticComplexityTest() {
         test_setting();
-        Assert.assertEquals(2, testMetricInfo.getCyclomaticComplexity());
+        Assert.assertEquals(2, Math.round(testComInfo.getCyclomaticComplexity()));
+    }
+    @Test
+    public void MaintainabilityTest() {
+        test_setting();
+        Assert.assertEquals(49, Math.round(testComInfo.getMaintainabilityIndex()));
     }
     @Test
     public void Code_Comment_Test() {
         test_setting();
-        Assert.assertEquals(46, testMetricInfo.getCodeLen());
-        Assert.assertEquals(7, testMetricInfo.getCommentLen());
+        Assert.assertEquals(46, testComInfo.getCodeLen());
+        Assert.assertEquals(7, testComInfo.getCommentLen());
     }
     @Test
     public void ExtraMetricTest() {
         test_setting();
-        Assert.assertEquals(7, testMetricInfo.getNumMethod());
-        Assert.assertEquals(1, testMetricInfo.getNumLoop());
-        Assert.assertEquals(0, testMetricInfo.getNumImport());
+        Assert.assertEquals(7, testComInfo.getNumMethod());
+        Assert.assertEquals(1, testComInfo.getNumLoop());
+        Assert.assertEquals(0, testComInfo.getNumImport());
     }
-
 
 }
