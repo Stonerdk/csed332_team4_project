@@ -152,13 +152,13 @@ public class MetricMain {
         // Get from git
         String temp = ProjectHandler.getProject().getBasePath();
         GitHandler gitHandler = new GitHandler(temp);
-        List<FileInfo> fileInfoList = gitHandler.getFileInfo(bName);
+        List<FileInfo> fileInfoList = gitHandler.getFileInfo();
         String name = ProjectHandler.getProject().getName();
         for (FileInfo f : fileInfoList) {
             f.setFilePath(name + "/" + f.getFilePath());
         }
 
-        
+
         // Calculate for each commit
         FileInfo projectFileInfo = new FileInfo();
         projectFileInfo.setIsProject();

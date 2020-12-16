@@ -257,8 +257,6 @@ public class MetricInfo {
         cInfo.setNumMethod(num_method);
         cInfo.setNumLoop(num_loop);
         cInfo.setNumImport(num_import);
-        cInfo.setNumLoop(num_loop);
-        cInfo.setNumImport(num_import);
 
         return;
     }
