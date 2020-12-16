@@ -45,7 +45,7 @@ public class GitHandler {
         List<String> fileList = new ArrayList<String>();
         RevWalk walk = new RevWalk(repository);
 
-        List<Ref> branches = git.branchList().call();
+        List<Ref> branches = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
 
         for (Ref branch : branches) {
             if (branch.getName().equals("refs/heads/" + (branchName.equals("") ? "master" : branchName))) {
