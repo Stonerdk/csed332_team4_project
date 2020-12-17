@@ -86,6 +86,12 @@ public class MetricMain {
 
 
     // construct AST of the .java files
+    /**
+     * Given a string of a java file and a parsing option, parse string to a tree and visit all nodes though a visitor
+     * @param str a string of a java file contents
+     * @param opt 1 or 2 (1: set ASTParser as a parser for compilation unit, 2: set ASTParser as a parser for a number of statements
+     * @return An ASTVisitorSearch which was used to visit all nodes in tree made by parsing input string
+     */
     public static ASTVisitorSearch parse(char[] str, int opt) {
         /**
          * option 1: using compilationUnit
@@ -150,6 +156,11 @@ public class MetricMain {
 
     }
 
+    /**
+     * UI part call a mcMain method to get List<FileInfo> which is overall structure storing all calculated metrics needed to display graph.
+     * @param path an absolute path of the directory which includes .git
+     * @param name a project name a user open using a plugin 
+     */
     public List<FileInfo> mcMain(String path, String name) throws IOException, ParseException, GitAPIException {
 
         // Get from git
