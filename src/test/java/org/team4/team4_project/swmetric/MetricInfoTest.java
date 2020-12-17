@@ -73,6 +73,40 @@ public class MetricInfoTest {
         testMetricInfo.setByVisitor(tempVisitor);
         testMetricInfo.setToCommitInfo(tempComInfo);
     }
+    public void test_setting_add() {
+        ChurnResult tempChurn2 = new ChurnResult();
+        tempChurn2.setcode("public LowInterestAccount(int aN, double bl, String ow){\\n\" +\n" +
+                "                \"        accountNumber = aN;\\n\" +\n" +
+                "                \"        balance = bl;\\n\" +\n" +
+                "                \"        owner = ow;\\n\" +\n" +
+                "                \"    }\\n\" +");
+
+        CommitInfo tempComInfo2 = new CommitInfo();
+        tempComInfo2.setChurn(tempChurn2);
+
+        ASTVisitorSearch tempVisitor2 = metricMain.parse(tempComInfo2.getChurn().getcode().toCharArray(), 1);
+
+        testMetricInfo.addByVisitor(tempVisitor2);
+        //testMetricInfo.addByCommitInfo(tempComInfo2);
+    }
+    public void test_setting_add2() {
+        ChurnResult tempChurn2 = new ChurnResult();
+        tempChurn2.setcode("public LLowInterestAccount(int aN, double bl, String ow){\\n\" +\n" +
+                "                \"        accountNumber = aN;\\n\" +\n" +
+                "                \"        balance = bl;\\n\" +\n" +
+                "                \"        owner = ow;\\n\" +\n" +
+                "                \"    }\\n\" +");
+
+        CommitInfo tempComInfo2 = new CommitInfo();
+        tempComInfo2.setChurn(tempChurn2);
+
+        ASTVisitorSearch tempVisitor2 = metricMain.parse(tempComInfo2.getChurn().getcode().toCharArray(), 1);
+
+        MetricInfo tempmetric = new MetricInfo();
+        tempmetric.setByVisitor(tempVisitor2);
+        tempmetric.setToCommitInfo(tempComInfo2);
+        testMetricInfo.addByCommitInfo(tempComInfo2);
+    }
     @Test
     public void OperandTest() {
         test_setting();
@@ -111,6 +145,18 @@ public class MetricInfoTest {
         Assert.assertEquals(1, testMetricInfo.getNumLoop());
         Assert.assertEquals(0, testMetricInfo.getNumImport());
     }
-
-
+    @Test
+    public void Test_AddedByVisitor() {
+        test_setting();
+        test_setting_add();
+        Assert.assertEquals(51, testMetricInfo.getCodeLen());
+        Assert.assertEquals(7, testMetricInfo.getCommentLen());
+    }
+    @Test
+    public void Test_AddedByCommitInfo() {
+        test_setting();
+        test_setting_add2();
+        Assert.assertEquals(51, testMetricInfo.getCodeLen());
+        Assert.assertEquals(7, testMetricInfo.getCommentLen());
+    }
 }

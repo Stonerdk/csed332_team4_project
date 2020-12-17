@@ -172,11 +172,6 @@ public class ASTVisitorSearch extends ASTVisitor {
         return true;
     }
     @Override
-    public boolean visit(AssertStatement unit) {
-        cycloComplexity++;
-        return true;
-    }
-    @Override
     public boolean visit(TryStatement unit) {
         if (unit.getFinally() != null)
             cycloComplexity++;
