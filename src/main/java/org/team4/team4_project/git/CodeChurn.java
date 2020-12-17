@@ -123,7 +123,6 @@ public class CodeChurn {
 
     public List<CommitInfo> completeCode(List<CommitInfo> results, List<String> differences) {
         List<String> codes = new ArrayList<String>();
-        Integer pre = 1;
         for (int i=0; i<differences.size(); i++){
             if (i>0) {
                 codes = results.get(results.size() - i).getChurn().getcodelist();
@@ -142,12 +141,6 @@ public class CodeChurn {
                     } else if (line.startsWith("@@")) {
                         String[] split = line.split(" ");
                         String[] split3 = split[1].split(",");
-                        /*if (split3.length > 1) {
-                            deletenumlines = deletenumlines + Integer.valueOf(split3[1]);
-                        }
-                        else {
-                            deletenumlines++;
-                        }*/
                         deletestartline = Integer.valueOf(split3[0]) * -1;
                     }
                 }
@@ -159,7 +152,11 @@ public class CodeChurn {
                     String line = scanner2.nextLine();
                     if (line.startsWith("+") && !line.startsWith("+++")) {
                         String code = line.substring(1, line.length());
-                        codes.set(addstartLine - 1, code);
+                        try {
+                            codes.set(addstartLine - 1, code);
+                        }catch (IndexOutOfBoundsException e){
+                            //System.out.println("Commit is ruined.");
+                        }
                         addstartLine++;
                     }
                     else if (line.startsWith("@@")) {
@@ -211,7 +208,11 @@ public class CodeChurn {
                 codes.add("");
             }
             for (int i = codessize - 1; i >= addstartLine - 1 && i >= 0; i--) {
-                codes.set(i + addnumLines, codes.get(i));
+                try {
+                    codes.set(i + addnumLines, codes.get(i));
+                }catch (IndexOutOfBoundsException e){
+                    //System.out.println("Commit is ruined.");
+                }
             }
         }
 

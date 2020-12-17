@@ -103,6 +103,7 @@ public class GitHandler {
             fileInfo.setFilePath(file);
 
             List<CommitInfo> commitInfos = new CodeChurn(repository).addPath(file).calc();
+
             fileInfo.setComInfoList(commitInfos);
             fileInfoList.add(fileInfo);
         }
