@@ -100,22 +100,28 @@ public class MetricMain {
 
         if (opt == 1){
             parser.setKind(ASTParser.K_COMPILATION_UNIT);
-            final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-
-            // visit nodes of the constructed AST
             ASTVisitorSearch visitor= new ASTVisitorSearch();
-            cu.accept(visitor);
 
-            //Calculate the number of source, comments (for Cyclomatic complexity)
-            visitor.codeLen += (new String(str)).lines().count();
+            try {
+                final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-            for (Comment comment : (List<Comment>) cu.getCommentList()) {
-                int start = comment.getStartPosition();
-                int end = start + comment.getLength();
-                String comment_str = (new String(str)).substring(start, end);
+                // visit nodes of the constructed AST
+                cu.accept(visitor);
 
-                visitor.commentLen += comment_str.lines().count();
+                //Calculate the number of source, comments (for Cyclomatic complexity)
+                visitor.codeLen += (new String(str)).lines().count();
 
+                for (Comment comment : (List<Comment>) cu.getCommentList()) {
+                    int start = comment.getStartPosition();
+                    int end = start + comment.getLength();
+                    String comment_str = (new String(str)).substring(start, end);
+
+                    visitor.commentLen += comment_str.lines().count();
+                }
+
+            } catch (Exception e){
+                System.out.println("Some files are invalid(cannot compile)");
+                return visitor;
             }
 
             return visitor;
