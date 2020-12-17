@@ -15,9 +15,4 @@ public class ProjectHandler {
     {
         return project;
     }
-
-    public static String getProjectPath()
-    {
-        return projectPath;
-    }
 }

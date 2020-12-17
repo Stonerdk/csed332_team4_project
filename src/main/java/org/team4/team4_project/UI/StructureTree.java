@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StructureTree extends JTree {
-    GUIController guiC;
+    private GUIController guiC;
 
     public StructureTree() {
         guiC = GUIController.getInstance();
@@ -20,25 +20,26 @@ public class StructureTree extends JTree {
         DefaultTreeModel model = (DefaultTreeModel) getModel();
 
         for (String dir : guiC.getAllPath()) {
-            if (!dir.contains("/")) {
+            if (!dir.contains("/"))
                 continue;
-            }
-            List<String> dirList = new ArrayList<>();
-            String cur, rest, fileName;
-            int idx;
 
-            rest = dir;
+            List<String> dirList = new ArrayList<>();
+            String cur, rest = dir, fileName;
+            int idx;
+            DefaultMutableTreeNode temp = root;
+
             while (true) {
                 idx = rest.indexOf("/");
                 cur = rest.substring(0, idx);
                 rest = rest.substring(idx + 1);
                 dirList.add(cur);
+
                 if (!rest.contains("/")) {
                     fileName = rest;
                     break;
                 }
             }
-            DefaultMutableTreeNode temp = root;
+
             for (int i = 1; i < dirList.size(); i++) {
                 boolean isChild = false;
                 for (int j = 0; j < temp.getChildCount(); j++) {
@@ -48,14 +49,15 @@ public class StructureTree extends JTree {
                         break;
                     }
                 }
+
                 if (!isChild) {
                     DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(dirList.get(i));
                     temp.add(newNode);
                     model.reload();
-
                     temp = newNode;
                 }
             }
+
             DefaultMutableTreeNode newnode4 = new DefaultMutableTreeNode(fileName);
             model.insertNodeInto(newnode4, temp, temp.getChildCount());
             model.reload();

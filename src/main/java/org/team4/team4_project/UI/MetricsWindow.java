@@ -2,7 +2,6 @@ package org.team4.team4_project.UI;
 
 import com.intellij.openapi.ui.ComboBox;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -20,19 +19,18 @@ public class MetricsWindow extends JFrame {
     private final GraphPanel graphPanel;
     private JTable statusPanel;
     private final JSplitPane jsp;
+    private final JSplitPane jsp2;
     private final JSlider slider;
     private final JScrollPane scroll;
     private final JScrollPane scroll2;
-
-    private ComboBox<String> comboBox;
-
     private JTree projectTree;
     private JPanel treeGridContainer;
+    private ComboBox<String> comboBox;
+
     private final GUIController guiC;
 
     private MetricsWindow () {
         guiC = GUIController.getInstance();
-        //guiC.refreshController();
 
         setTitle("Software Metrics Graph");
         setSize(1600, 800);
@@ -67,11 +65,10 @@ public class MetricsWindow extends JFrame {
         statusPane.setEditable(false);
         JPanel treePanel = new JPanel(new BorderLayout());
 
-        comboBox = new ComboBox<String>(comboStrings);                              // ComboBox for Metrics
+        comboBox = new ComboBox<String>(comboStrings);                              // ComboBox for Choosing Metrics
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 try {
                     graphPanel.setType(Objects.requireNonNull(comboBox.getSelectedItem()).toString());
                     graphPanel.repaint();
@@ -110,8 +107,6 @@ public class MetricsWindow extends JFrame {
 
         setTree();
 
-        //treeGridContainer.add(projectTree);
-
         JButton resetButton = new JButton("Reset Project");
         resetButton.addActionListener(new ActionListener() {
             @Override
@@ -131,13 +126,12 @@ public class MetricsWindow extends JFrame {
         treePanel.add(resetButton, BorderLayout.SOUTH);
 
         treePanel.add(treeGridContainer, BorderLayout.CENTER);
-        //treePanel.setPreferredSize(new Dimension(130, 300));
 
         scroll2 = new JScrollPane(treePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         topPanel.add(slider);
         jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        JSplitPane jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        jsp2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
         jsp.setLeftComponent(scroll);
         jsp.setRightComponent(statusPanel);
@@ -187,11 +181,13 @@ public class MetricsWindow extends JFrame {
         return instance;
     }
 
+    /**
+     * Rebuild the struct tree with new project and add action when contents of tree are chosen
+     *
+     */
     public void setTree(){
         treeGridContainer.removeAll();
-
         projectTree = new StructureTree();
-
         treeGridContainer.add(projectTree);
 
         projectTree.addTreeSelectionListener(new TreeSelectionListener() {
@@ -206,10 +202,15 @@ public class MetricsWindow extends JFrame {
         });
     }
 
+    /**
+     * When opening new metric window, reset into initial state
+     *
+     */
     public void Open(){
         setTree();
 
         comboBox.setSelectedIndex(0);
+        slider.setValue(80);
 
         scroll2.revalidate();
         scroll2.repaint();
@@ -217,7 +218,4 @@ public class MetricsWindow extends JFrame {
         scroll.revalidate();
         scroll.repaint();
     }
-
-    /*public void setProject(Project project) {
-    }*/
 }
