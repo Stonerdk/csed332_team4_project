@@ -5,11 +5,7 @@ import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
-import org.eclipse.jgit.errors.IncorrectObjectTypeException;
-import org.eclipse.jgit.errors.MissingObjectException;
-import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
-import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -17,13 +13,20 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.EmptyTreeIterator;
-import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.team4.team4_project.metric_calculation.CommitInfo;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+
+
+/**
+ * Obtain a code change in the git commit history and
+ * use it to calculate the code churn and
+ * complete the code at the time of commit.
+ * @author Eojin Kim
+ */
 
 public class CodeChurn {
     private final Repository repo;
@@ -32,22 +35,45 @@ public class CodeChurn {
 
     private String path = "";
 
+    /**
+     * Creates Codechurn class pointing to git repository
+     * @param repo Repository class for git repository
+     */
     public CodeChurn(Repository repo) {
         this.repo = repo;
         git = new Git(this.repo);
         log = git.log();
     }
 
+
+    /**
+     * Returns this CodeChurn class's git
+     * @return git class pointing to project's git
+     */
     public Git git() {
         return git;
     }
 
+
+    /**
+     * Set the file path for this commit
+     * If file path is set, the LogCommand class log's method call() returns all commit relevant to the file.
+     * @param path the file path which user want to track git history.
+     * @return CodeChurn class which path is set to param path.
+     */
     public CodeChurn addPath(String path){
         log.addPath(path);
         this.path = path;
         return this;
     }
 
+
+    /**
+     * Calculate all code churn and code for commit relevant to the file path.
+     * After calculating, return List<CommitInfo> containing the code and the information of the commits.
+     * All commit is relevant to the file path.
+     * @return List<CommitInfo> for all commit relevant to file path.
+     */
     public List<CommitInfo> calc() throws GitAPIException, IOException {
         List<CommitInfo> results = new ArrayList<CommitInfo>();
         List<String> differences = new ArrayList<String>();
@@ -121,6 +147,16 @@ public class CodeChurn {
         return temp;
     }
 
+
+    /**
+     * This method complete code for all commits.
+     * First, in the root commit, complete the code using difference.
+     * After that, using previous CommitInfo and difference, complete the code for all commits.
+     * In summary, it is a function that completes the code by adding differences from root commit.
+     * @param results List<CommitInfo> containing the information of the commits except code.
+     * @param differences List<String> containing all code differences written in commit.
+     * @return List<CommitInfo> containing the code and information of the commits.
+     */
     public List<CommitInfo> completeCode(List<CommitInfo> results, List<String> differences) {
         List<String> codes = new ArrayList<String>();
         for (int i=0; i<differences.size(); i++){
@@ -155,7 +191,6 @@ public class CodeChurn {
                         try {
                             codes.set(addstartLine - 1, code);
                         }catch (IndexOutOfBoundsException e){
-                            //System.out.println("Commit is ruined.");
                         }
                         addstartLine++;
                     }
@@ -201,6 +236,16 @@ public class CodeChurn {
         return results;
     }
 
+
+    /**
+     * This method expands codes (List<String)) for adding code difference.
+     * addnumLines means code length for added codes and addstartLine means where the code to insert will start.
+     * For adding code difference, expand codes by addnumLines and push the list's contents after addstartLine index.
+     * @param codes List<String> code for previous commit.
+     * @param addnumLines code length for added codes
+     * @param addstartLine where the code to insert will start.
+     * @return List<String> containing the code and information of the commits.
+     */
     public List<String> pushString (List<String> codes, int addnumLines, int addstartLine){
         int codessize = codes.size();
         if (codessize > 0) {
@@ -211,7 +256,6 @@ public class CodeChurn {
                 try {
                     codes.set(i + addnumLines, codes.get(i));
                 }catch (IndexOutOfBoundsException e){
-                    //System.out.println("Commit is ruined.");
                 }
             }
         }
