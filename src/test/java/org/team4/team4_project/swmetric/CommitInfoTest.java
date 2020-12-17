@@ -122,4 +122,5 @@ public class CommitInfoTest {
         Assert.assertEquals("Thu Jan 01 09:00:00 KST 1970", testComInfo.getDate().toString());
     }
 
+
 }
