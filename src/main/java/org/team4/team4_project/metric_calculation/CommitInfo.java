@@ -53,6 +53,11 @@ public class CommitInfo implements Cloneable {
      * @return operands which is HashMap<String, Integer>
      */
     public HashMap<String, Integer> getOperands() {return operands;}
+
+    /**
+     * enable to set HashMap of operands to be stored in this class
+     * @param oprd HashMap<String, Integer> which mapps each operand's name to the number of usage of the operand
+     */
     public void setOperands(HashMap<String, Integer> oprd){operands = oprd;}
 
     /**
@@ -60,6 +65,11 @@ public class CommitInfo implements Cloneable {
      * @return oprt which is HashMap<String, Integer>
      */
     public HashMap<String, Integer> getOperators() {return operators;}
+
+    /**
+     * enable to set HashMap of operators to be stored in this class
+     * @param oprt HashMap<String, Integer> which mapps each operator's name to the number of usage of the operator
+     */
     public void setOperators(HashMap<String, Integer> oprt){operators = oprt;}
 
     /**
@@ -67,6 +77,11 @@ public class CommitInfo implements Cloneable {
      * @return commitHash string stored in this class
      */
     public String getCommitHash(){return commitHash;}
+
+    /**
+     * enable to set commitHash string in this class
+     * @param str a string to be stored as a commitHash
+     */
     public void setCommitHash(String str){commitHash = str;};
 
     /**
@@ -74,6 +89,11 @@ public class CommitInfo implements Cloneable {
      * @return branchName string stored in this class
      */
     public String getBranchName(){return branchName;}
+
+    /**
+     * enable to set branchName string in this class
+     * @param str a string to be stored as a branchName
+     */
     public void setBranchName(String str){branchName = str;}
 
     /**
@@ -81,6 +101,11 @@ public class CommitInfo implements Cloneable {
      * @return oprd which is HashMap<String, Integer>
      */
     public ChurnResult getChurn(){return churn;}
+
+    /**
+     * enable to set churn in this class
+     * @param ch a ChurnResult class to be stored as a churn
+     */
     public void setChurn(ChurnResult ch){churn = ch;};
 
     /**
@@ -88,6 +113,11 @@ public class CommitInfo implements Cloneable {
      * @return Date date stored in this class
      */
     public Date getDate(){return date;}
+
+    /**
+     * enable to set date in this class
+     * @param str a Date class to be stored as a date
+     */
     public void setDate(Date str){date = str;}
 
     /**
@@ -95,6 +125,11 @@ public class CommitInfo implements Cloneable {
      * @return halProgVocab value stored in this class
      */
     public double getHalProgVocab(){ return halProgVocab; }
+
+    /**
+     * enable to set halProgVocab in this class
+     * @param d a double value to be stored as a halProgVocab
+     */
     public void setHalProgVocab(double d){halProgVocab = d;}
 
     /**
@@ -102,6 +137,11 @@ public class CommitInfo implements Cloneable {
      * @return halProgLen value stored in this class
      */
     public double getHalProgLen(){return halProgLen; }
+
+    /**
+     * enable to set halProgLen in this class
+     * @param d a double value to be stored as a halProgLen
+     */
     public void setHalProgLen(double d){halProgLen = d;}
 
     /**
@@ -109,6 +149,11 @@ public class CommitInfo implements Cloneable {
      * @return halCalProgLen value stored in this class
      */
     public double getHalCalProgLen(){return halCalProgLen; }
+
+    /**
+     * enable to set halCalProgLen in this class
+     * @param d a double value to be stored as a halCalProgLen
+     */
     public void setHalCalProgLen(double d){halCalProgLen = d;}
 
     /**
@@ -116,6 +161,11 @@ public class CommitInfo implements Cloneable {
      * @return halVolume value stored in this class
      */
     public double getHalVolume(){ return halVolume; }
+
+    /**
+     * enable to set halVolume in this class
+     * @param d a double value to be stored as a halVolume
+     */
     public void setHalVolume(double d){halVolume = d;}
 
     /**
@@ -123,6 +173,11 @@ public class CommitInfo implements Cloneable {
      * @return halDifficulty value stored in this class
      */
     public double getHalDifficulty(){return halDifficulty; }
+
+    /**
+     * enable to set halDifficulty in this class
+     * @param d a double value to be stored as a halDifficulty
+     */
     public void setHalDifficulty(double d){halDifficulty = d;}
 
     /**
@@ -130,6 +185,11 @@ public class CommitInfo implements Cloneable {
      * @return halEffort value stored in this class
      */
     public double getHalEffort(){return halEffort; }
+
+    /**
+     * enable to set halEffort in this class
+     * @param d a double value to be stored as a halEffort
+     */
     public void setHalEffort(double d){halEffort = d;}
 
     /**
@@ -137,6 +197,11 @@ public class CommitInfo implements Cloneable {
      * @return halTime value stored in this class
      */
     public double getHalTime(){return halTime; }
+
+    /**
+     * enable to set halTime in this class
+     * @param d a double value to be stored as a halTime
+     */
     public void setHalTime(double d){halTime = d;}
 
     /**
@@ -144,6 +209,11 @@ public class CommitInfo implements Cloneable {
      * @return halNumBugs value stored in this class
      */
     public double getHalNumBugs(){return halNumBugs;}
+
+    /**
+     * enable to set halNumBugs in this class
+     * @param d a double value to be stored as a halNumBugs
+     */
     public void setHalNumBugs(double d){halNumBugs = d;}
 
     /**
@@ -151,6 +221,11 @@ public class CommitInfo implements Cloneable {
      * @return cyclomaticComplexity value stored in this class
      */
     public double getCyclomaticComplexity(){return cyclomaticComplexity; }
+
+    /**
+     * enable to set cyclomaticComplexity in this class
+     * @param d a double value to be stored as a cyclomaticComplexity
+     */
     public void setCyclomaticComplexity(double d){cyclomaticComplexity = d;}
 
     /**
@@ -158,6 +233,11 @@ public class CommitInfo implements Cloneable {
      * @return maintainability value stored in this class
      */
     public double getMaintainabilityIndex(){return maintainabilityIndex;}
+
+    /**
+     * enable to set maintainability in this class
+     * @param d a double value to be stored as a maintainability
+     */
     public void setMaintainabilityIndex(double d){maintainabilityIndex = d;}
 
     /**
@@ -165,6 +245,11 @@ public class CommitInfo implements Cloneable {
      * @return codeLen value stored in this class
      */
     public int getCodeLen(){return codeLen;}
+
+    /**
+     * enable to set codeLen in this class
+     * @param cl a double value to be stored as a codeLen
+     */
     public void setCodeLen(int cl){codeLen = cl;}
 
     /**
@@ -172,6 +257,11 @@ public class CommitInfo implements Cloneable {
      * @return commentLen value stored in this class
      */
     public int getCommentLen(){return commentLen;}
+
+    /**
+     * enable to set commnetLen in this class
+     * @param cl a double value to be stored as a commentLen
+     */
     public void setCommentLen(int cl){commentLen = cl;}
 
     /**
@@ -179,6 +269,11 @@ public class CommitInfo implements Cloneable {
      * @return num_method value stored in this class
      */
     public int getNumMethod(){return num_method;}
+
+    /**
+     * enable to set num_method in this class
+     * @param nm a double value to be stored as a num_method
+     */
     public void setNumMethod(int nm){num_method = nm;}
 
     /**
@@ -186,6 +281,11 @@ public class CommitInfo implements Cloneable {
      * @return num_loop value stored in this class
      */
     public int getNumLoop(){return num_loop;}
+
+    /**
+     * enable to set num_loop in this class
+     * @param lp a double value to be stored as a num_loop
+     */
     public void setNumLoop(int lp){num_loop = lp;}
 
     /**
@@ -193,6 +293,11 @@ public class CommitInfo implements Cloneable {
      * @return num_import value stored in this class
      */
     public int getNumImport(){return num_import;}
+
+    /**
+     * enable to set num_import in this class
+     * @param imp a double value to be stored as a num_import
+     */
     public void setNumImport(int imp){num_import = imp;}
 
     public CommitInfo clone(){
