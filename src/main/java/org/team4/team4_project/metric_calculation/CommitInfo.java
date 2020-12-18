@@ -300,14 +300,6 @@ public class CommitInfo implements Cloneable {
      */
     public void setNumImport(int imp){num_import = imp;}
 
-    public CommitInfo clone(){
-        CommitInfo vo = null;
-        try {
-            vo = (CommitInfo) super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return vo;
-    }
+
 
 }
