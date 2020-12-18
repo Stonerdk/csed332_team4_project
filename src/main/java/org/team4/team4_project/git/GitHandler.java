@@ -78,12 +78,10 @@ public class GitHandler {
                 for (RevCommit commit : commits) {
                     boolean foundInThisBranch = false;
 
-                    RevCommit targetCommit = walk.parseCommit(repository.resolve(
-                            commit.getName()));
+                    RevCommit targetCommit = walk.parseCommit(repository.resolve(commit.getName()));
                     for (Map.Entry<String, Ref> e : repository.getAllRefs().entrySet()) {
                         if (e.getKey().startsWith(Constants.R_HEADS)) {
-                            if (walk.isMergedInto(targetCommit, walk.parseCommit(
-                                    e.getValue().getObjectId()))) {
+                            if (walk.isMergedInto(targetCommit, walk.parseCommit(e.getValue().getObjectId()))) {
                                 String foundInBranch = e.getValue().getName();
                                 if (branch.getName().equals(foundInBranch)) {
                                     foundInThisBranch = true;
