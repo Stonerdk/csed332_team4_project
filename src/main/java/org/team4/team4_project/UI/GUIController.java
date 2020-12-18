@@ -17,8 +17,8 @@ public class GUIController {
     private FileInfo Proj;
     private CommitInfo Commit;
     //private String[] branchStrings;
-    private String path;
-    private String proj;
+    private String path = null;
+    private String proj = null;
     //private final String branch = "master";
 
     private static GUIController guiC = new GUIController();

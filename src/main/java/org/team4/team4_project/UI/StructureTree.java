@@ -3,62 +3,54 @@ package org.team4.team4_project.UI;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 public class StructureTree extends JTree {
     GUIController guiC;
 
+    /**
+     * Construct structure tree based on current project
+     *
+     */
     public StructureTree() {
         guiC = GUIController.getInstance();
-        String init = guiC.getFilePath(0);
 
-        init = init.substring(0, init.indexOf("/"));
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(init);
-        this.setModel(new DefaultTreeModel(root));
+        File fileRoot = new File(guiC.getPath());
+        System.out.println(fileRoot.toString());
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(fileRoot.getName());
+        this.setModel(new DefaultTreeModel(node));
         this.setShowsRootHandles(true);
-        DefaultTreeModel model = (DefaultTreeModel) getModel();
+        this.scanDirectory(fileRoot, node);
+    }
 
-        for (String dir : guiC.getAllPath()) {
-            if (!dir.contains("/")) {
-                continue;
-            }
-            List<String> dirList = new ArrayList<>();
-            String cur, rest, fileName;
-            int idx;
+    /**
+     * Scan contents of chosen directory
+     *
+     * @param dir File dir that is chosen
+     * @param root tree node of dir in the structure tree
+     */
+    public void scanDirectory(File dir, DefaultMutableTreeNode root) {
+        File[] files = dir.listFiles();
 
-            rest = dir;
-            while (true) {
-                idx = rest.indexOf("/");
-                cur = rest.substring(0, idx);
-                rest = rest.substring(idx + 1);
-                dirList.add(cur);
-                if (!rest.contains("/")) {
-                    fileName = rest;
-                    break;
-                }
-            }
-            DefaultMutableTreeNode temp = root;
-            for (int i = 1; i < dirList.size(); i++) {
-                boolean isChild = false;
-                for (int j = 0; j < temp.getChildCount(); j++) {
-                    if (((temp.getChildAt(j))).toString().equals(dirList.get(i))) {
-                        isChild = true;
-                        temp = (DefaultMutableTreeNode) temp.getChildAt(j);
-                        break;
-                    }
-                }
-                if (!isChild) {
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(dirList.get(i));
-                    temp.add(newNode);
-                    model.reload();
+        for(File file : files) {
+            if (file == null) continue;
+            DefaultTreeModel model = (DefaultTreeModel)getModel();
+            DefaultMutableTreeNode newnode = new DefaultMutableTreeNode(file.getName());
 
-                    temp = newNode;
-                }
+            if (file.isDirectory()) {
+                scanDirectory(file, newnode);
+
+                if(newnode.getChildCount() == 0) continue;
+
+                root.add(newnode);
+                model.reload();
             }
-            DefaultMutableTreeNode newnode4 = new DefaultMutableTreeNode(fileName);
-            model.insertNodeInto(newnode4, temp, temp.getChildCount());
-            model.reload();
+            else {
+                if(file.getName().indexOf(".java") == -1) continue;
+
+                model.insertNodeInto(newnode, root, root.getChildCount());
+                model.reload();
+            }
         }
     }
 }
