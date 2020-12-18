@@ -25,7 +25,7 @@ import java.util.*;
  * Obtain a code change in the git commit history and
  * use it to calculate the code churn and
  * complete the code at the time of commit.
- * @author Eojin Kim
+ * @author Eojin Kim, Honggi Kim
  */
 
 public class CodeChurn {
@@ -164,6 +164,7 @@ public class CodeChurn {
                 codes = results.get(results.size() - i).getChurn().getcodelist();
                 String difference = differences.get(differences.size() - 1 - i);
                 Scanner scanner = new Scanner(difference);
+
                 int deletenumlines = 0;
                 int deletestartline = 1;
                 while (scanner.hasNextLine()) {
@@ -246,6 +247,7 @@ public class CodeChurn {
      * @param addstartLine where the code to insert will start.
      * @return List<String> containing the code and information of the commits.
      */
+
     public List<String> pushString (List<String> codes, int addnumLines, int addstartLine){
         int codessize = codes.size();
         if (codessize > 0) {

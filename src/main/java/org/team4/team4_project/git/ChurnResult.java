@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Store code and code churn for specific commit.
- * @author Eojin Kim
+ * @author Eojin Kim, Honggi Kim
  */
 public class ChurnResult implements Cloneable{
     private int linesAdded = 0;

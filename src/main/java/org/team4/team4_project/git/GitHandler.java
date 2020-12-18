@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Handle about all git functions
- * @author Honggi Kim
+ * @author Eojin Kim, Honggi Kim
  */
 public class GitHandler {
     private Git git;
