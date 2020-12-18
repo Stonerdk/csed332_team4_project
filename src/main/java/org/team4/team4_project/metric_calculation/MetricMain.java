@@ -159,7 +159,7 @@ public class MetricMain {
     /**
      * UI part call a mcMain method to get List<FileInfo> which is overall structure storing all calculated metrics needed to display graph.
      * @param path an absolute path of the directory which includes .git
-     * @param name a project name a user open using a plugin 
+     * @param name a project name a user open using a plugin
      */
     public List<FileInfo> mcMain(String path, String name) throws IOException, ParseException, GitAPIException {
 
