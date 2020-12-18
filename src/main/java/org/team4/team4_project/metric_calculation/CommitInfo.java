@@ -5,6 +5,10 @@ import org.team4.team4_project.git.ChurnResult;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * A class used to store metrics about each code in each code
+ * @author Tahyeong, Chaeyoon
+ */
 public class CommitInfo implements Cloneable {
     //Basic Information
     private String commitHash = "arb commit hash";
@@ -32,22 +36,7 @@ public class CommitInfo implements Cloneable {
     private int num_loop;
     private int num_import;
 
-    public Boolean isBasicInfoFilled(){
-        if(commitHash == null )
-            return false;
-        if(branchName == null)
-            return false;
-        if(branchName == null)
-            return false;
-        if(date == null )
-            return false;
 
-        return true;
-    }
-
-
-    //methods to set, get
-    //methods to set, get
     /**
      * enable to get HashMap of operands stored in this class
      * @return operands which is HashMap<String, Integer>

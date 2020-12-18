@@ -3,6 +3,10 @@ package org.team4.team4_project.metric_calculation;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class used to store all commits' information as list
+ * @author Tahyeong, Chaeyoon
+ */
 public class FileInfo {
     private String fileName = null;
     private String filePath = null;

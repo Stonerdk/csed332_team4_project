@@ -8,6 +8,10 @@ import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.team4.team4_project.git.GitHandler;
 
+/**
+ * A Class that manages and uses other class to calculate metrics for overall project. 
+ * @author Tahyeong, Chaeyoon
+ */
 public class MetricMain {
 
         // parse file in char array

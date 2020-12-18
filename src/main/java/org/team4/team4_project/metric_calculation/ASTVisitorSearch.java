@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.*;
 
+/**
+ * a visitor used to visit all nodes in tree made from parsing codes.
+ * This visitor store some information about the code
+ * (operators, operands, codeLen, commentLen, cyclomaticComplexity, num_method, num_loop, num_import)
+ * @author Tahyeong, Chaeyoon
+ */
 public class ASTVisitorSearch extends ASTVisitor {
     public HashMap<String, Integer> names = new HashMap<String, Integer>();
     public HashMap<String, Integer> oprt = new HashMap<String, Integer>();

@@ -1,5 +1,10 @@
 package org.team4.team4_project.metric_calculation;
 
+
+/**
+ * A Class used to calculate halstead metric using operator, operands information
+ * @author Tahyeong, Chaeyoon
+ */
 public class HalsteadMetric {
     private int DistOperators, DistOperands, TotOperators, TotOperands;
     private int Vocabulary=0;

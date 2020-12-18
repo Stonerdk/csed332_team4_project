@@ -5,6 +5,11 @@ import org.team4.team4_project.git.ChurnResult;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class used to store and calculate using stored attributes
+ * Enable to combine two metric values
+ * @author Tahyeong, Chaeyoon
+ */
 public class MetricInfo {
     //operands, operators
     private HashMap<String, Integer> operands = new HashMap<String, Integer>();
