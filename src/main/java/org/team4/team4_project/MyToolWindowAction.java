@@ -8,12 +8,15 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
 
 public class MyToolWindowAction extends AnAction {
+    /**
+     * Invoke when MyToolWindow(Tools > Show Graph) action is performed
+     * @param e action event.
+     */
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         Project proj = e.getProject();
         assert proj != null;
         ProjectHandler.setProject(proj);
-        System.out.println(proj.getBasePath());
 
         ToolWindow win = ToolWindowManager.getInstance(proj).getToolWindow("Software Metrics");
         if (win != null && win.isAvailable())

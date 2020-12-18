@@ -6,11 +6,10 @@ import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
 
 public class StructureTree extends JTree {
-    GUIController guiC;
+    private GUIController guiC;
 
     /**
      * Construct structure tree based on current project
-     *
      */
     public StructureTree() {
         guiC = GUIController.getInstance();
@@ -22,6 +21,7 @@ public class StructureTree extends JTree {
         this.setShowsRootHandles(true);
         this.scanDirectory(fileRoot, node);
     }
+
 
     /**
      * Scan contents of chosen directory
@@ -51,6 +51,7 @@ public class StructureTree extends JTree {
                 model.insertNodeInto(newnode, root, root.getChildCount());
                 model.reload();
             }
+
         }
     }
 }

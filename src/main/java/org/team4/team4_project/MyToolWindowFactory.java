@@ -8,6 +8,7 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 public class MyToolWindowFactory implements ToolWindowFactory {
+
     /**
      * Create the tool window content.
      *
@@ -15,8 +16,7 @@ public class MyToolWindowFactory implements ToolWindowFactory {
      * @param toolWindow current tool window
      */
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        System.out.println(project.getBasePath());
-        MyToolWindow myToolWindow = new MyToolWindow(toolWindow);
+        MyToolWindow myToolWindow = new MyToolWindow();
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(myToolWindow.getContent(), "", false);
         toolWindow.getContentManager().addContent(content);
