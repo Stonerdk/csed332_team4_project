@@ -10,6 +10,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class connects GUIController and the other part.
+ * Acts as a facade between metric part and the GUI.
+ * @author Yujin Jeon
+ */
 public class GUIController {
     private List<FileInfo> FileList;
     private FileInfo File;

@@ -5,6 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * The Panel class extends JPanel, shows the actual graph.
+ * Implements drawing two types of graph (Code Churn metrics, and others)
+ * Implements mouseListener for interaction with users.
+ * @author Dookyeong Kang, Yujin Jeon
+ */
 public class GraphPanel extends JPanel implements MouseMotionListener, MouseListener, ComponentListener {
     private int maxValue = 10;
     private int height = 400;

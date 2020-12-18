@@ -7,6 +7,10 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The factory class which creates MyToolWindow on the IDE.
+ * @author Hongi Kim, Dookyeong Kang
+ */
 public class MyToolWindowFactory implements ToolWindowFactory {
 
     /**

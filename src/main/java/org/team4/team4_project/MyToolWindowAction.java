@@ -7,6 +7,10 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * MyToolWindow Actions class implements the action when the ToolWindow has been invoked.
+ * @author Hongi Kim, Dookyeong Kang
+ */
 public class MyToolWindowAction extends AnAction {
     /**
      * Invoke when MyToolWindow(Tools > Show Graph) action is performed

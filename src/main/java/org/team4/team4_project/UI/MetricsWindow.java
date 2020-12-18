@@ -13,6 +13,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * JFrame class which shows the layout of the metric window.
+ * Contains graph, tree, metric table, sliders and metric combo box, split pane and scrollbar.
+ * @author Dookyeong Kang, Yujin Jeon
+ */
 public class MetricsWindow extends JFrame {
 
     private static MetricsWindow instance = null;

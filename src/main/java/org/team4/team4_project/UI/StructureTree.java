@@ -5,6 +5,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
 
+/**
+ * Tree class implements the project tree on the left side of the metric window.
+ * Shows the .java file in the current working directory,
+ * and ensures to change the file to show graph by user input.
+ * @author Dookyeong Kang, Yujin Jeon
+ */
 public class StructureTree extends JTree {
     private GUIController guiC;
 

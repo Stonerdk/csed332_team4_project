@@ -2,6 +2,10 @@ package org.team4.team4_project;
 
 import com.intellij.openapi.project.Project;
 
+/**
+ * Handler class which provides static information of current project.
+ * @author Dookyeong Kang
+ */
 public class ProjectHandler {
     public static Project project;
 

@@ -3,6 +3,10 @@ package org.team4.team4_project.UI;
 import org.team4.team4_project.ProjectHandler;
 import javax.swing.*;
 
+/**
+ * Initial ToolWindow GUI class, contains 'Show Metrics' button.
+ * @author Dookyeong Kang
+ */
 public class MyToolWindowGUI {
     private JPanel mainPanel;
     private JButton showMetricsButton;
