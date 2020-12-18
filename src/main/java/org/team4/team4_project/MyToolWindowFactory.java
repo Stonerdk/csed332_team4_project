@@ -8,6 +8,7 @@ import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 public class MyToolWindowFactory implements ToolWindowFactory {
+
     /**
      * Create the tool window content.
      *

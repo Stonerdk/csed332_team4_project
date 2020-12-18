@@ -197,10 +197,20 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
 
+    /**
+     * Change type of metric value displayed on the graph
+     *
+     * @param type the type of metric value
+     */
     void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Change distance between adjacent points in the graph
+     *
+     * @param k degree of distance that you want
+     */
     void Zoom(int k){
         zoom = k;
         repaint();
