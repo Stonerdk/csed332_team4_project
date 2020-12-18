@@ -16,10 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handle about all git functions
+ * @author Honggi Kim
+ */
 public class GitHandler {
     private Git git;
     private Repository repository;
 
+    /**
+     * Initiate git for this project
+     */
     public GitHandler() throws IOException {
         String root = System.getProperty("user.dir");
         git = Git.open(new File(root + "/.git"));
@@ -27,20 +34,37 @@ public class GitHandler {
         repository = git.getRepository();
     }
 
+    /**
+     * Initiate git for given path
+     * @param path String path to find .git folder
+     */
     public GitHandler(String path) throws IOException {
         git = Git.open(new File(path + "/.git"));
         git.checkout();
         repository = git.getRepository();
     }
 
+    /**
+     * Returns git class
+     * @return git value for git class
+     */
     public Git getGit() {
         return git;
     }
 
+    /**
+     * Returns repository class
+     * @return repository Repository for repository class
+     */
     public Repository getRepository() {
         return repository;
     }
 
+    /**
+     * Search all changed files of branch
+     * @param branchName String value of branch name to search
+     * @return List of file path
+     */
     public List<String> getAllFiles(String branchName) throws IOException, GitAPIException {
         List<String> fileList = new ArrayList<String>();
         RevWalk walk = new RevWalk(repository);
@@ -91,6 +115,10 @@ public class GitHandler {
         return fileList;
     }
 
+    /**
+     * Get all file info of master branch
+     * @return List of fileInfo
+     */
     public List<FileInfo> getFileInfo() throws IOException, GitAPIException {
         List<String> files = getAllFiles("");
         List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
@@ -108,10 +136,14 @@ public class GitHandler {
             fileInfoList.add(fileInfo);
         }
 
-        System.out.println(fileInfoList);
         return fileInfoList;
     }
 
+    /**
+     * Get all file info of specific branch
+     * @param branchName String value of branch name to search
+     * @return List of fileInfo
+     */
     public List<FileInfo> getFileInfo(String branchName) throws IOException, GitAPIException {
         List<String> files = getAllFiles(branchName);
         List<FileInfo> fileInfoList = new ArrayList<FileInfo>();
@@ -128,10 +160,13 @@ public class GitHandler {
             fileInfoList.add(fileInfo);
         }
 
-        System.out.println(fileInfoList);
         return fileInfoList;
     }
 
+    /**
+     * Get all branch list
+     * @return List of branch names
+     */
     public List<String> getBranchList() throws GitAPIException {
         List<Ref> branches = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call();
         List<String> branchList = new ArrayList<String>();
