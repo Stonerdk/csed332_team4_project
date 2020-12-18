@@ -28,6 +28,10 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     JBColor colorChurnDeleted = new JBColor(new Color(237, 79, 55), new Color(237, 79, 55));
     JBColor colorChurnDeletedSelected = new JBColor(new Color(160, 49, 35), new Color(160, 49, 35));
 
+    /**
+     * Constructor of the Graphpanel(center JPanel which draws the actual graph.)
+     * @param parentFrame JFrame instance contains this panel.
+     */
     GraphPanel(MetricsWindow parentFrame) {
         guiC = GUIController.getInstance();
 
@@ -38,6 +42,10 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         addComponentListener(this);
     }
 
+    /**
+     * Overrided method. draw the graph.
+     * @param g graphics.
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
@@ -54,6 +62,10 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
             paintChurnGraph(g2d);
     }
 
+    /**
+     * Draw the default graph. Used to draw metrics without code churn.
+     * @param g graphics
+     */
     private void paintDefaultGraph(Graphics2D g) {
         int xRightOffset = xOffset + (guiC.getSize() - 1) * zoom + 80;
         int postX = 0, postY = 0;
@@ -114,6 +126,10 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
 
+    /**
+     * Draw the code churn metrics graph.
+     * @param g graphics
+     */
     private void paintChurnGraph(Graphics2D g) {
         maxValue = 0;
         int xRightOffset = xOffset + (guiC.getSize() - 1) * zoom + 80;
@@ -197,10 +213,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
         }
     }
 
+    /**
+     * Set the metric type to draw.
+     * @param type String type of the metrics.
+     */
     void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Reset the zoom amount and redraw.
+     * @param k the zoom amount.
+     */
     void Zoom(int k){
         zoom = k;
         repaint();

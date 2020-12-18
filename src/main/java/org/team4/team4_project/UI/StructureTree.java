@@ -9,6 +9,9 @@ import java.util.List;
 public class StructureTree extends JTree {
     private GUIController guiC;
 
+    /**
+     * Create structure tree left of the metric window.
+     */
     public StructureTree() {
         guiC = GUIController.getInstance();
         String init = guiC.getFilePath(0);

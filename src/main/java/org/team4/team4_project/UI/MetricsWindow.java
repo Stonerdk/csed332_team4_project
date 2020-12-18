@@ -29,6 +29,9 @@ public class MetricsWindow extends JFrame {
 
     private final GUIController guiC;
 
+    /**
+     * Constructor of creating MetricsWindow frame.
+     */
     private MetricsWindow () {
         guiC = GUIController.getInstance();
 
@@ -143,6 +146,10 @@ public class MetricsWindow extends JFrame {
         contentPane.add(jsp2, BorderLayout.CENTER);
     }
 
+    /**
+     * Set commit history to refresh the metrics table on the right side.
+     * @param idx the index of the git commitment.
+     */
     public void setStatusHistory(int idx) {
         statusPanel.removeAll();
         List<String> ValueList = guiC.getAllValue(idx);
@@ -175,6 +182,10 @@ public class MetricsWindow extends JFrame {
         }
     }
 
+    /**
+     * Since MetricsWindow is singleton class, return the singleton instance of MetricsWindow.
+     * @return the singleton instance of the MetricsWindow
+     */
     public static MetricsWindow getInstance() {
         if (instance == null)
             instance = new MetricsWindow();
