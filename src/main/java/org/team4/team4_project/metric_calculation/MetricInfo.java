@@ -1,7 +1,6 @@
 package org.team4.team4_project.metric_calculation;
 
 import org.team4.team4_project.git.ChurnResult;
-import org.team4.team4_project.git.CodeChurn;
 
 import java.util.HashMap;
 import java.util.Map;

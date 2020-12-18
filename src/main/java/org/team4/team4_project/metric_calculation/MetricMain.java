@@ -4,12 +4,8 @@ import java.io.*;
 import java.text.ParseException;
 import java.util.*;
 
-import com.google.common.collect.Iterables;
-import com.intellij.codeInsight.completion.impl.CamelHumpMatcher;
-import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.team4.team4_project.git.ChurnResult;
 import org.team4.team4_project.git.GitHandler;
 
 public class MetricMain {

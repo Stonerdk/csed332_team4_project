@@ -127,19 +127,6 @@ public class GUIController {
     }
 
     /**
-     * Collect path of all files in the file list
-     *
-     * @return List of String which contains path of each file
-     */
-    public List<String> getAllPath(){
-        List<String> temp = new ArrayList<String>();
-        for(FileInfo f : FileList)
-            temp.add(f.getFilePath());
-
-        return temp;
-    }
-
-    /**
      * Return name of currently chosen file
      *
      * @return String name of currently chosen file
@@ -170,16 +157,6 @@ public class GUIController {
      */
     public void selectProj(){
         File = Proj;
-    }
-
-    /**
-     * Return file path of currently chosen file
-     *
-     * @param index index of file that you want to see
-     * @return String path of currently chosen file
-     */
-    public String getFilePath(int index){
-        return FileList.get(index).getFilePath();
     }
 
     /**
