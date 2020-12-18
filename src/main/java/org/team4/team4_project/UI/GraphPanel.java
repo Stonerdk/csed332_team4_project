@@ -214,16 +214,18 @@ public class GraphPanel extends JPanel implements MouseMotionListener, MouseList
     }
 
     /**
-     * Set the metric type to draw.
-     * @param type String type of the metrics.
+     * Change type of metric value displayed on the graph
+     *
+     * @param type the type of metric value
      */
     void setType(String type) {
         this.type = type;
     }
 
     /**
-     * Reset the zoom amount and redraw.
-     * @param k the zoom amount.
+     * Change distance between adjacent points in the graph
+     *
+     * @param k degree of distance that you want
      */
     void Zoom(int k){
         zoom = k;

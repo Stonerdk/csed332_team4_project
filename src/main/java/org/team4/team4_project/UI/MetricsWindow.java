@@ -30,7 +30,8 @@ public class MetricsWindow extends JFrame {
     private final GUIController guiC;
 
     /**
-     * Constructor of creating MetricsWindow frame.
+     * Construct MetricsWindow which displays the information of metric values of current project
+     *
      */
     private MetricsWindow () {
         guiC = GUIController.getInstance();
@@ -147,12 +148,13 @@ public class MetricsWindow extends JFrame {
     }
 
     /**
-     * Set commit history to refresh the metrics table on the right side.
-     * @param idx the index of the git commitment.
+     * Write detail metric value of chosen commit of chosen file in the table on the right
+     *
+     * @param index index of commit of chosen file that you want to see
      */
-    public void setStatusHistory(int idx) {
+    public void setStatusHistory(int index) {
         statusPanel.removeAll();
-        List<String> ValueList = guiC.getAllValue(idx);
+        List<String> ValueList = guiC.getAllValue(index);
 
         if(ValueList.size() == 18){
             String[] header = {"Metric", "Value"};
@@ -183,8 +185,9 @@ public class MetricsWindow extends JFrame {
     }
 
     /**
-     * Since MetricsWindow is singleton class, return the singleton instance of MetricsWindow.
-     * @return the singleton instance of the MetricsWindow
+     * Return instance of class, which is used as Singleton pattern
+     *
+     * @return MetricsWindow instance of class
      */
     public static MetricsWindow getInstance() {
         if (instance == null)
@@ -193,7 +196,7 @@ public class MetricsWindow extends JFrame {
     }
 
     /**
-     * Rebuild the struct tree with new project and add action when contents of tree are chosen
+     * Rebuild the struct tree with new project and add action that reacts when contents of tree are chosen
      *
      */
     public void setTree(){
@@ -204,17 +207,21 @@ public class MetricsWindow extends JFrame {
         projectTree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
-                String path = projectTree.getSelectionPath().toString();
-                path = path.substring(1, path.length()-1);
-                path = path.replaceAll(", ", "/");
-                guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
-                graphPanel.repaint();
+                try{
+                    String path = projectTree.getSelectionPath().toString();
+                    path = path.substring(1, path.length()-1);
+                    path = path.replaceAll(", ", "/");
+                    guiC.selectFile(projectTree.getLastSelectedPathComponent().toString(), path);
+                    graphPanel.repaint();
+                } catch(NullPointerException NPE){
+
+                }
             }
         });
     }
 
     /**
-     * When opening new metric window, reset into initial state
+     * When opening new metric window, reset into current project with initial state
      *
      */
     public void Open(){

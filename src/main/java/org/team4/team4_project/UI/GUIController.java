@@ -20,6 +20,11 @@ public class GUIController {
 
     private static GUIController guiC = new GUIController();
 
+    /**
+     * Return instance of class which is used as Singleton pattern
+     *
+     * @return GUIController instance of class
+     */
     public static GUIController getInstance(){
         return guiC;
     }

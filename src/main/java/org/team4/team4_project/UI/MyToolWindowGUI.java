@@ -7,14 +7,27 @@ public class MyToolWindowGUI {
     private JPanel mainPanel;
     private JButton showMetricsButton;
 
+    /**
+     * Construct MyToolWindowGUI and add click action to "Show Metrics" button
+     *
+     */
     public MyToolWindowGUI() {
         showMetricsButton.addActionListener(event -> onClick());
     }
 
+    /**
+     * Returns main JPanel
+     *
+     * @return JPanel mainPanel
+     */
     public JPanel getMainPanel() {
         return mainPanel;
     }
 
+    /**
+     * When click "Show Metrics" button, open plugin window using currently opened project
+     *
+     */
     private void onClick() {
         String path = ProjectHandler.getProject().getBasePath();
         String name = ProjectHandler.getProject().getName();

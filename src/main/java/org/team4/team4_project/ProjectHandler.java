@@ -4,22 +4,20 @@ import com.intellij.openapi.project.Project;
 
 public class ProjectHandler {
     public static Project project;
-    public static String projectPath;
 
     /**
-     * Set current working project.
+     * Set project handler with current project
      *
-     * @param proj project
+     * @param proj current project
      */
     public static void setProject(Project proj) {
         project = proj;
-        projectPath = proj.getBasePath();
     }
 
     /**
-     * Get current working project.
+     * Return information of current project
      *
-     * @return current project
+     * @return Project of current project
      */
     public static Project getProject()
     {
