@@ -46,6 +46,10 @@ public class MetricInfo {
     private int num_import = 0;
 
 
+    /**
+     * Fill variables in this class by using operand, operator lists in visitor
+     * @param visitor a visitor which was used to visit all nodes of tree made by parsing code
+     */
     public void setByVisitor(ASTVisitorSearch visitor) {
         operands = visitor.names;
         operators = visitor.oprt;
@@ -81,63 +85,160 @@ public class MetricInfo {
         return;
     }
 
+    /**
+     * enable to get dist_operands value in ths class
+     * @return the number of dist operands
+     */
     public int getDistOperands(){
         return dist_operands;
     }
+
+    /**
+     * enable to get dist_operators value in ths class
+     * @return the number of dist operands
+     */
     public int getDistOperators(){
         return dist_operators;
     }
+
+    /**
+     * enable to get total_operands value in ths class
+     * @return the number of total operands
+     */
     public int getTotalOperands(){
         return total_operands;
     }
+
+    /**
+     * enable to get total_operators value in ths class
+     * @return the number of total operators
+     */
     public int getTotalOperators(){
         return total_operators;
     }
 
+
+    /**
+     * enable to get halsteadVocabulary value in ths class
+     * @return halsteadVocabulary stored in this class
+     */
     public int getHalsteadVocabulary(){
         return halSteadVocabulary;
     }
+
+    /**
+     * enable to get halsteadProgLength value in ths class
+     * @return halsteadProgLength stored in this class
+     */
     public int getHalsteadProgLength(){
         return halSteadProgLength;
     }
+
+    /**
+     * enable to get halsteadCalProgLength value in ths class
+     * @return halsteadCalProgLength stored in this class
+     */
     public double getHalsteadCalProgLength(){
         return halSteadCalProgLength;
     }
+
+    /**
+     * enable to get halsteadVolume value in ths class
+     * @return halsteadVolume stored in this class
+     */
     public double getHalsteadVolume(){
         return halSteadVolume;
     }
+
+    /**
+     * enable to get halsteadDifficulty value in ths class
+     * @return halsteadDifficulty stored in this class
+     */
     public double getHalsteadDifficulty(){
         return halSteadDifficulty;
     }
+
+    /**
+     * enable to get halsteadEffort value in ths class
+     * @return halsteadEffort stored in this class
+     */
     public double getHalsteadEffort(){
         return halSteadEffort;
     }
+
+    /**
+     * enable to get halsteadTimeRequired value in ths class
+     * @return halsteadTimeRequired stored in this class
+     */
     public double getHalsteadTimeRequired(){
         return halSteadTimeRequired;
     }
+
+    /**
+     * enable to get halsteadNumDelBugs value in ths class
+     * @return halsteadNumDelBugs stored in this class
+     */
     public double getHalsteadNumDelBugs(){
         return halSteadNumDelBugs;
     }
 
+
+    /**
+     * enable to get cyclomaticComplexity value in ths class
+     * @return cyclomaticComplexity stored in this class
+     */
     public int getCyclomaticComplexity(){
         return cyclomaticComplexity;
     }
 
+
+    /**
+     * enable to get codeLen value in ths class
+     * @return codeLen stored in this class
+     */
     public int getCodeLen(){
         return codeLen;
     }
+
+    /**
+     * enable to get commentLen value in ths class
+     * @return commentLen stored in this class
+     */
     public int getCommentLen(){
         return commentLen;
     }
 
+    /**
+     * enable to get maintainability value in ths class
+     * @return maintainability stored in this class
+     */
     public double getMaintainabilityIndex(){
         return maintainabilityIndex;
     }
 
+
+    /**
+     * enable to get num_method value in ths class
+     * @return num_method stored in this class
+     */
     public int getNumMethod() { return num_method; }
+
+    /**
+     * enable to get num_loop value in ths class
+     * @return num_loop stored in this class
+     */
     public int getNumLoop() { return num_loop; }
+
+    /**
+     * enable to get num_import value in ths class
+     * @return num_import stored in this class
+     */
     public int getNumImport() { return num_import; }
 
+    /**
+     * Combine metric values using operator and operand lists in a new visitor
+     * @param visitor a visitor containing calculation results by parsing another codes.
+     */
     public void addByVisitor(ASTVisitorSearch visitor){
         HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
         HashMap<String, Integer> mergedOperands = new HashMap<String,Integer>();
@@ -184,6 +285,10 @@ public class MetricInfo {
         return;
     }
 
+    /**
+     * update variables in this class by combining two metric calculation results
+     * @param cInfo CommitInfo class which we want to combine with original values in this class
+     */
     public void addByCommitInfo(CommitInfo cInfo){
         HashMap<String, Integer> mergedOperators = new HashMap<String,Integer>();
         HashMap<String, Integer> mergedOperands = new HashMap<String,Integer>();
@@ -231,6 +336,11 @@ public class MetricInfo {
         return;
 
     }
+
+    /**
+     * update ChurnResult's attributes using a new ChurnResult
+     * @param c a ChurnResult we want to add to this class's churn
+     */
     public void addChurn(ChurnResult c){
         churn = churn.clone();
         churn.setLinesAdded(churn.getLinesAdded() + c.getLinesAdded());
@@ -238,6 +348,10 @@ public class MetricInfo {
 
     }
 
+    /**
+     * Fill attributes in CommitInfo using values in this class
+     * @param cInfo a CommitInfo class which we want to fill with this class's values
+     */
     public void setToCommitInfo(CommitInfo cInfo){
         cInfo.setHalProgVocab(halSteadVocabulary);
         cInfo.setHalProgLen(halSteadProgLength);
@@ -261,6 +375,10 @@ public class MetricInfo {
         return;
     }
 
+    /**
+     * Fill variables in this class by using attributes in CommitInfo
+     * @param cInfo a CommitInfo class which we bring values from to fill this class's attribute
+     */
     public void setByCommitInfo(CommitInfo cInfo){
         operands = cInfo.getOperands();
         operators = cInfo.getOperators();

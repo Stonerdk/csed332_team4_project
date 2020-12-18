@@ -14,25 +14,7 @@ import org.team4.team4_project.git.GitHandler;
 
 public class MetricMain {
 
-    public static List<char[]> ParseFilesInDir(List<String> JavaFiles) throws IOException{
-        if(JavaFiles.isEmpty())
-        {
-            System.out.println("There is no java source code in the provided directory");
-            System.exit(0);
-        }
-
-        List<char[]> FilesRead= new ArrayList<char []>();
-
-        for(int i=0; i<JavaFiles.size(); i++)
-        {
-            System.out.println("Now, reading: "+ JavaFiles.get(i));
-            FilesRead.add(ReadFileToCharArray(JavaFiles.get(i)));
-        }
-
-        return FilesRead;
-    }
-
-    // parse file in char array
+        // parse file in char array
     public static char[] ReadFileToCharArray(String filePath) throws IOException {
         StringBuilder fileData = new StringBuilder(1000);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -48,44 +30,14 @@ public class MetricMain {
         return  fileData.toString().toCharArray();
     }
 
-    // retrieve all .java files in the directory and subdirectories.
-    public static List<String> retrieveFiles(String directory) {
-        List<String> Files = new ArrayList<String>();
-        File dir = new File(directory);
-
-
-        if(dir.isFile()){
-            if (dir.getName().endsWith((".java")))
-            {
-                Files.add(dir.getAbsolutePath());
-                return Files;
-            }
-        }
-
-        if (!dir.isDirectory())
-        {
-            System.out.println("The provided path is not a valid directory");
-            System.exit(1);
-        }
-
-
-
-        for (File file : dir.listFiles()) {
-            if(file.isDirectory())
-            {
-                Files.addAll(retrieveFiles(file.getAbsolutePath()));
-            }
-            if (file.getName().endsWith((".java")))
-            {
-                Files.add(file.getAbsolutePath());
-            }
-        }
-
-        return Files;
-    }
-
-
+    
     // construct AST of the .java files
+    /**
+     * Given a string of a java file and a parsing option, parse string to a tree and visit all nodes though a visitor
+     * @param str a string of a java file contents
+     * @param opt 1 or 2 (1: set ASTParser as a parser for compilation unit, 2: set ASTParser as a parser for a number of statements
+     * @return An ASTVisitorSearch which was used to visit all nodes in tree made by parsing input string
+     */
     public static ASTVisitorSearch parse(char[] str, int opt) {
         /**
          * option 1: using compilationUnit
@@ -150,6 +102,11 @@ public class MetricMain {
 
     }
 
+    /**
+     * UI part call a mcMain method to get List<FileInfo> which is overall structure storing all calculated metrics needed to display graph.
+     * @param path an absolute path of the directory which includes .git
+     * @param name a project name a user open using a plugin
+     */
     public List<FileInfo> mcMain(String path, String name) throws IOException, ParseException, GitAPIException {
 
         // Get from git
